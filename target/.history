@@ -1,0 +1,500 @@
+compile
+h2-browser
+run
+h2-browser
+compile
+h2-browser
+compile
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+compile
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+compile
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+compile
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+compile
+'
+compile
+run
+compile
+restart
+start
+run
+compile
+run
+compile
+run
+compile
+h2-browser
+run
+compile
+run
+compile
+h2-browser
+compile
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+compile
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+stop
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+h2-browser
+run
+last compile:run
+run
+h2-browser
+run
+exit
+run
+exit
+run
+activator
+run
+exit
+run
+exit
+compile
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+exit
+h2-browser
+exit
+h2-browser
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit\
+exit
+run
+h2-browser
+run
+exit
+run
+compile
+run
+exit
+run
+h2-browser
+run
+h2-browser
+run
+exit
+h2-browser
+exit
+h2-browser
+run
+exit
+run
+h2-browser
+run
+EXIT
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+exit
+run
+h2-browser
+run
+h2-browser
+run
+exit
+run
+h2-browser
+run
+exit
+run
+h2-browser
+run
+exit
+h2-browser
+run
+exit
+run
+h2-browser
+run
+exit
+h2-browser
+exit
+h2-browser
+run
+exit
+h2-browser
+run
+exit
+run
+exit
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+]\
+run
+run  -XX:+HeapDumpOnOutOfMemoryError 
+run
+ compile
+run
+h2-browser
+run
+h2-browser
+run
+compile
+run
+compile
+run
+compile
+run
+compile
+run
+compile
+run
+start -Dapplication.secret=abcdefghijk
+run
+h2-browser
+run
+h2-browser
+run
+compile
+run
+h2-browser
+run
+-Dhttp.port=80
+run
+-Dapplication.secret="QCY?tAnfk?aZ?iwrNwnxIlR6CTf:G3gf:90Latabg@5241AB`R5W:1uDFN];Ik@n"
+Dapplication.secret="QCY?tAnfk?aZ?iwrNwnxIlR6CTf:G3gf:90Latabg@5241AB`R5W:1uDFN];Ik@n"
+-Dapplication.secret=abcdefghijk
+start -Dapplication.secret=abcdefghijk
+Dapplication.secret="QCY?tAnfk?aZ?iwrNwnxIlR6CTf:G3gf:90Latabg@5241AB`R5W:1uDFN];Ik@n"
+-Dconfig.file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf\producation.conf
+-Dconfig.file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf\producation.
+-Dconfig.file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf \producation.
+-Dconfig.file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf \ asd===2 producation.
+-Dconfig .file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf\producation.
+play-generate-secret
+-Dconfig .file= C:\Users\staamneh\Desktop\CPL-Lab\System Desgin\first_play\conf\producation.
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+h2-browser
+run
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+\
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+compile
+run 80
+start 80
+run 80
+play-generate-secret
+updating application secret in C:\first_play\conf\application.conf
+play-updatesecret
+play-update-secret
+start -Dapplication.secret = "aCI@ve/Mk<Q0Pxvs_<^:zbmXpuoJ<LU/xXML;ynd07wL3VAGvnNESk<CXzKFsF50"
+start
+start -Dapplication.secret = abcdefghijk
+start -Dconfig.file =C:\first_play\conf\application.config
+"start -Dconfig.file =C:\first_play\conf\application.config"
+"start"
+start
+start -Dhttp.port=8080.
+start -Dhttp.port=8080
+start -Dconfig.file=/conf/application.conf
+start -Dapplication.secret=abcdefghijk
+run 80
+compile 
+sub
+run 80
+ target/universal/stage/bin/first_play 
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+h2-browser
+run 80
+run 80 -Dserver.config.resource=server.conf
+run 80 -Dserver.config.resource=server.confddd
+run -Dhttp.port=1234
+run -Dhttp.port=80 -http.netty.maxHeaderSize=16192
+run -Dserver.config.resource=server.conf
+run -Dhttp.netty.maxHeaderSize=16192
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+run -Dhttp.port=9000 -Dhttp.netty.maxHeaderSize=16192
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+h2-browser
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+compile
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+compile
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+sbt
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+start
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+start
+run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
