@@ -1,6 +1,3 @@
-compile
-h2-browser
-run
 h2-browser
 compile
 h2-browser
@@ -498,3 +495,6 @@ start
 run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
 start
 run -Dhttp.port=80 -Dhttp.netty.maxHeaderSize=16192
+play clean compile stage
+clean compile stage
+ compile stage

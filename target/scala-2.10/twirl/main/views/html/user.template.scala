@@ -198,7 +198,7 @@ Seq[Any](format.raw/*4.1*/("""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Stric
 }
               /*
                   -- GENERATED --
-                  DATE: Fri May 08 19:56:50 CDT 2015
+                  DATE: Fri May 22 00:52:14 CDT 2015
                   SOURCE: C:/first_play/app/views/user.scala.html
                   HASH: b487a8f8ac6b5324c347b9e653a4761cf114299f
                   MATRIX: 579->3|2104->1500|2133->1501|2165->1506|2491->1805|2519->1806|3521->2786|3550->2787|3583->2793|3643->2826|3671->2827|4058->3187|4073->3193|4131->3242|4171->3244|4212->3257|6371->5384|6409->5394

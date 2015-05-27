@@ -88,13 +88,27 @@
 
 
 
+
+
+
+
+
+
     <!-- Ignite UI Required Combined CSS Files -->
     <link href="/assets/stylesheets/infragistics.theme.css" rel="stylesheet">
+    <!-- <link href="http://cdn-na.infragistics.com/igniteui/2015.1/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" /> -->
+    <!--  <link href="http://cdn-na.infragistics.com/igniteui/2015.1/latest/css/structure/infragistics.css" rel="stylesheet" />-->
+
+    <!-- Used to style the API Viewer and Explorer UI -->
+    <!--  <link href="http://www.igniteui.com/css/apiviewer.css" rel="stylesheet" type="text/css" /> -->
+
+    <!--<script src="http://modernizr.com/downloads/modernizr-latest.js"></script> -->
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 
     <!-- Ignite UI Required Combined JavaScript Files -->
     <script src="http://cdn-na.infragistics.com/igniteui/2015.1/latest/js/infragistics.core.js"></script>
     <script src="http://cdn-na.infragistics.com/igniteui/2015.1/latest/js/infragistics.dv.js"></script>
+
 
 </head>
 <body>
@@ -181,6 +195,15 @@
     </div>
 
     <div class="row" id ="allInfo">
+        <div class="col-md-8" id ="phychoTop" style="display: none;">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Phychometrics <a><span data-toggle="collapse" href="#" class="icon pull-right"><em class="glyphicon glyphicon-chevron-down"></em></span> </a>
+                </div>
+                <div id ="phycho" class="panel-body">
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-4" id="BioTop" style="display: none;">
             <div class="panel panel-info">
@@ -190,17 +213,7 @@
 
                 </div>
                 <div id="Bio" class="panel-body">
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8" id ="phychoTop" style="display: none;">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    Phychometrics <a><span data-toggle="collapse" href="#" class="icon pull-right"><em class="glyphicon glyphicon-chevron-down"></em></span> </a>
-                </div>
-                <div id ="phycho" class="panel-body">
-
-
+                    <span class="glyphicons glyphicons-girl"></span>
                 </div>
             </div>
         </div>
@@ -219,7 +232,7 @@
                     @for(session <- sessions){
 
                     @for(signal <- session._2){
-                    @if(signal._2 == 11) {
+                    @if(signal._2 == 12) {
 
                     <div  id="dashboard_div@session._1@signal._1">
                         <div id="chartBar@session._1@signal._1" class="chartBar" subject="@subject" session="@session._1" signalSequence="@signal._1" signalType="@signal._2"  style="height: 250px;">
@@ -268,7 +281,7 @@
                             @{j = j + 1;}
                             @for(signal <- session._2){
                             <!-- to avoid the non signal files -->
-                            @if(signal._2 < 11) {
+                            @if(signal._2 < 12) {
                             <!-- <div id="Combo" style="border-style: solid;  border-radius: 15px; border-color: #636363;"> -->
                             <!-- <div class="panel-heading" id="header@session._1@signal._1"> </div> -->
                             <!--  <div class="panel-body">-->

@@ -176,6 +176,297 @@ public class ReadExcelJava {
         return activities;
     }
 
+    /**
+     * This function is called to generate the percentage of stress and normal states for articular signal based on value max
+     *
+     * @param max
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
+    public static BarPercentage findBarFromExcel (double max, String fileName)  throws Exception {
+
+
+
+        System.out.println("I am in BarPercentage");
+        ArrayList<Double> allNumber = new ArrayList<Double>();
+        int counter = 0;
+
+        File file = new File(fileName);
+        ForBarFromExcel barRaw = new ForBarFromExcel(fileName, 1);
+        try {
+
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
+            OldExcelFormat oldF = new OldExcelFormat(barRaw);
+            try {
+
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                oldF.readSheet();
+            }
+
+            // actual.put(entry.getKey(), barRaw.getArrayOfDouble());
+            allNumber = barRaw.getArrayOfDouble();
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            // delete the file
+            if (file.delete()) {
+                System.out.println("File has been deleted");
+            } else {
+                System.out.println("File has NOT been deleted");
+            }
+        }
+
+        double relax = 0, normal = 0, stress = 0, sum =0;
+        for(double num: allNumber){
+            sum = sum +num;
+            if (num < max) {
+                normal++;
+            } else
+                stress++;
+        }
+
+        int total = allNumber.size();
+            /*double mean = sum / allNumber.size();
+            mean = mean - max;
+            double k = 0.001701358;
+            stress = ((mean) / k) * 100;
+            if(stress > 100) stress = 100;
+            if(stress < 0) stress =0;
+            normal = 100 - stress;*/
+
+
+
+        relax = 0;
+        normal = (normal / total) * 100;
+        stress = (stress / total) * 100;
+
+
+
+        System.out.println("relax: " + relax + "  normal: " + normal + "  stress: " + stress);
+        return new BarPercentage(0.0, normal, stress);
+
+
+
+    }
+    public static MeanAndSizeOfSignal findMeanFromExcel (String fileName)  throws Exception {
+
+        System.out.println("I am in findMeanFromExcel");
+        ArrayList<Double> allNumber = new ArrayList<Double>();
+        int counter = 0;
+
+        File file = new File(fileName);
+        ForBarFromExcel barRaw = new ForBarFromExcel(fileName, 1);
+        try {
+
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
+
+            try {
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                OldExcelFormat oldF = new OldExcelFormat(barRaw);
+                oldF.readSheet();
+            }
+
+            // actual.put(entry.getKey(), barRaw.getArrayOfDouble());
+            allNumber = barRaw.getArrayOfDouble();
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            // delete the file
+            if (file.delete()) {
+                System.out.println("File has been deleted");
+            } else {
+                System.out.println("File has NOT been deleted");
+            }
+        }
+
+        double sum=0;
+        for (Double t: allNumber) {
+            counter++;
+            sum += t;
+            //sumSqure += Math.pow(temp, 2);
+        }
+
+
+
+        double sd = 0;
+
+        double mean = sum / counter;
+
+        System.out.println("The mean is : " +  mean);
+        return new MeanAndSizeOfSignal(mean, counter, allNumber);
+
+    }
+
+    public static Double findPerformanceFromExcel (double max, String fileName)  throws Exception {
+
+
+        System.out.println("I am in findPerformanceFromExcel");
+        ArrayList<Double> allNumber = new ArrayList<Double>();
+        int counter = 0;
+
+        File file = new File(fileName);
+        ForBarFromExcel barRaw = new ForBarFromExcel(fileName, 1, 4);
+        try {
+
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
+            OldExcelFormat oldF = new OldExcelFormat(barRaw);
+            try {
+
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                oldF.readSheet();
+            }
+
+            // actual.put(entry.getKey(), barRaw.getArrayOfDouble());
+            allNumber = barRaw.getArrayOfDouble();
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            // delete the file
+            if (file.delete()) {
+                System.out.println("File has been deleted");
+            } else {
+                System.out.println("File has NOT been deleted");
+            }
+        }
+
+        double relax = 0, normal = 0, stress = 0;
+        for(double num: allNumber){
+            if (Math.abs(num) < max) {
+                normal++;
+            } else
+                stress++;
+        }
+
+        int total = allNumber.size();
+        //relax = (relax / actual.get(i).size())*100;
+        relax = 0;
+        normal = (normal / total) * 100;
+        stress = (stress / total) * 100;
+
+        System.out.println("The totoal is "+ total  +"    The perfromance value is: " + stress   + "    The other one is:  " + normal);
+
+        //returnList.add(new BarPercentage(relax, normal, stress));
+
+
+        return stress;
+
+
+
+    }
+    public static MeanAndSizeOfSignal findAbsoluteMeanFromExcel (String fileName)  throws Exception {
+
+        System.out.println("I am in findMeanFromExcel");
+        ArrayList<Double> allNumber = new ArrayList<Double>();
+        int counter = 0;
+
+        File file = new File(fileName);
+        ForBarFromExcel barRaw = new ForBarFromExcel(fileName, 1,4);
+        try {
+
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
+
+            try {
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                OldExcelFormat oldF = new OldExcelFormat(barRaw);
+                oldF.readSheet();
+            }
+
+            // actual.put(entry.getKey(), barRaw.getArrayOfDouble());
+            allNumber = barRaw.getArrayOfDouble();
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            // delete the file
+            if (file.delete()) {
+                System.out.println("File has been deleted");
+            } else {
+                System.out.println("File has NOT been deleted");
+            }
+        }
+
+        double sum=0;
+        for (Double t: allNumber) {
+            counter++;
+            sum += Math.abs(t);
+            //sumSqure += Math.pow(temp, 2);
+        }
+
+
+
+        double sd = 0;
+
+        double mean = sum / counter;
+
+        System.out.println("The Absolute mean is : " +  mean);
+        return new MeanAndSizeOfSignal(mean, counter, allNumber);
+    }
+    public  static ArrayList<Double> findTotalNASA(int signalType, String fileName)  throws  Exception {
+        long startTime =System.nanoTime();
+        int i = 0, frameRate = getFrameRate(signalType);
+        org.json.simple.JSONObject all = null;
+        System.out.println("The frame rate is: " + frameRate);
+
+        System.out.println(fileName);
+        File file = new File(fileName);
+        BarChartFromExcel jsonForChart = new BarChartFromExcel(fileName, signalType);
+
+        try {
+
+            NewExcelFormatForBarData newF = new NewExcelFormatForBarData(jsonForChart);
+            OldExcelFormat oldF = new OldExcelFormat(jsonForChart);
+            try {
+
+                newF.processAllSheets();
+            } catch(InvalidOperationException ioe)
+            {
+                oldF.readSheet();
+            }
+            jsonForChart.finalize();
+        }
+        catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e)
+        {
+            return null;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+
+
+            // delete the file
+            if(file.delete()) {
+                System.out.println("File has been deleted");
+            }
+            else
+            {
+                System.out.println("File has NOT been deleted");
+            }
+            Logger.info("Singal Type: "+signalType +"  Time spent in method fromExcelInput is :" + ( System.nanoTime()- startTime));
+        }
+        return jsonForChart.getArrayOfDouble();
+    }
+
+
+
+
+
     public static JSONObject fromExcelInputTemp(int signalType, ArrayList<Activity> activities, String fileName)  throws Exception {
         long startTime =System.nanoTime();
         int i = 0, frameRate = getFrameRate(signalType);
@@ -245,28 +536,20 @@ public class ReadExcelJava {
 
         System.out.println(fileName);
         File file = new File(fileName);
-        InputStream input = new FileInputStream(file);
-        NPOIFSFileSystem npoifs = null;
-        OPCPackage pkg = null;
+        PlainChartFromExcel jsonForChart = new PlainChartFromExcel(fileName, signalType);
 
         try {
-
-            PlainChartFromExcel jsonForChart = new PlainChartFromExcel(fileName, signalType);
-
-
 
             NewExcelFormat newF = new NewExcelFormat(jsonForChart);
             OldExcelFormat oldF = new OldExcelFormat(jsonForChart);
             try {
 
                 newF.processAllSheets();
-
             } catch(InvalidOperationException ioe)
             {
                 oldF.readSheet();
             }
-
-            return jsonForChart.getJosonForChart();
+            //jsonForChart.close();
         }
         catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e)
         {
@@ -278,8 +561,54 @@ public class ReadExcelJava {
         finally {
 
 
-            if (npoifs != null) { npoifs.close(); }
-            if (pkg != null) { pkg.close(); }
+            // delete the file
+            if(file.delete()) {
+                System.out.println("File has been deleted");
+            }
+            else
+            {
+                System.out.println("File has NOT been deleted");
+            }
+            Logger.info("Singal Type: "+signalType +"  Time spent in method fromExcelInput is :" + ( System.nanoTime()- startTime));
+        }
+        return jsonForChart.getJosonForChart();
+
+
+    }
+
+    public  JSONObject fromExcelInputToCharTemp(int signalType, String fileName)  throws  Exception {
+        long startTime =System.nanoTime();
+        int i = 0, frameRate = getFrameRate(signalType);
+        org.json.simple.JSONObject all = null;
+        System.out.println("The frame rate is: " + frameRate);
+
+        System.out.println(fileName);
+        File file = new File(fileName);
+        BarChartFromExcel jsonForChart = new BarChartFromExcel(fileName, signalType);
+
+        try {
+
+            NewExcelFormatForBarData newF = new NewExcelFormatForBarData(jsonForChart);
+            OldExcelFormat oldF = new OldExcelFormat(jsonForChart);
+            try {
+
+                newF.processAllSheets();
+            } catch(InvalidOperationException ioe)
+            {
+                oldF.readSheet();
+            }
+            jsonForChart.finalize();
+            //jsonForChart.getArrayOfDouble();
+        }
+        catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e)
+        {
+            return null;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+
 
             // delete the file
             if(file.delete()) {
@@ -291,7 +620,8 @@ public class ReadExcelJava {
             }
             Logger.info("Singal Type: "+signalType +"  Time spent in method fromExcelInput is :" + ( System.nanoTime()- startTime));
         }
-        return all;
+        return jsonForChart.getJosonForChart();
+
 
     }
 
@@ -490,6 +820,8 @@ public class ReadExcelJava {
         return all;
 
     }
+
+
 
     public static JSONObject fromExcelInputToChar(int signalType, String fileName)  throws IOException {
         long startTime =System.nanoTime();
@@ -945,7 +1277,8 @@ public class ReadExcelJava {
                     cel = (JSONObject) it.next();
                     if(head.get("color")=="grey") {
                         if(cel.get("v") !=null)
-                           cel.replace("v", max);
+                            cel.toString();
+                        //cel.replace("v", max);
                     }
                     aux++;
                 }
@@ -962,7 +1295,7 @@ public class ReadExcelJava {
             e.printStackTrace();
         }
         finally {
-            if (npoifs != null) { npoifs.close();}
+            if (npoifs != null) { npoifs.close(); }
             if (pkg != null) { pkg.close(); }
 
             // delete the file
@@ -1163,6 +1496,7 @@ public class ReadExcelJava {
         return returnList;
     }
 
+
     public static TreeMap<String, BarPercentage> fromExceForPortraitTemp(TreeMap<String,String> input, int signalType)  throws    Exception {
         {
             int i = 0;
@@ -1276,4 +1610,7 @@ public class ReadExcelJava {
             return returnList;
         }
     }
+
+
+
 }

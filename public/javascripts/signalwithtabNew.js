@@ -8,7 +8,9 @@
  var SIMULATION_CODE = 2;
  var HRV_CODE =4;
  var EXPRESSION_CODE = 5;
- var BAR_CHART_CODE =11;
+ var N_PERSPIRATION_CODE =11;
+ var BAR_CHART_CODE =12;
+
 
  var VIDEO_CODE =100;
  var INFO_CODE = 101;
@@ -150,19 +152,24 @@ function showPsychometricScale( id, type, score){
                 maximumValue: 380,
                 ranges: [
                     {
-                        startValue: 35, endValue:104, name: "range1"
+                     brush: '#33FFFF',
+                        startValue: 35, endValue:104, name: "range5"
                     },
                     {
-                        startValue: 104, endValue: 173, name: "range2"
+                     brush: '#33FFCC',
+                        startValue: 104, endValue: 173, name: "range4"
                     },
                     {
+                     brush: '#33FF99',
                         startValue: 173, endValue: 242, name: "range3"
                     },
                     {
-                        startValue: 242, endValue: 311, name: "range4"
+                     brush: '#33FF66',
+                        startValue: 242, endValue: 311, name: "range2"
                     },
                     {
-                        startValue: 311, endValue: 380, name: "range5"
+                     brush: '#33FF33',
+                        startValue: 311, endValue: 380, name: "range1"
                     },
                 ]
             });
@@ -202,9 +209,6 @@ function showPsychometricScale( id, type, score){
                 });
 
      }
-
-
-
 }
 
 function showInfo(task, subject, chartDestination, studyId, signalSequence)
@@ -234,7 +238,6 @@ function showInfo(task, subject, chartDestination, studyId, signalSequence)
                             }
             }
             });
-
 
        var jsonDataPm = '';
         $.ajax({
@@ -336,7 +339,7 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                           success:function(result) {
                              jsonData = result;
                               var data = new google.visualization.DataTable(jsonData);
-                              if(signal_type ==11){
+                              if(signal_type ==12){
                                         var options = {
                                          title: 'NASA Task Load Index',
                                           hAxis: {
@@ -366,6 +369,10 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                          signal_title = "Perspiration Signal";
                                      	ytitle = "Perinasal EDA ["+ '\u00B0' +"C"+ '\xB2' +"]";
                                      	break;
+                                     case N_PERSPIRATION_CODE:
+                                     	 signal_title = "Perspiration Signal";
+                                         ytitle = "Nasal EDA ["+ '\u00B0' +"C"+ '\xB2' +"]";
+                                         break;
                                      case BREATHING_CODE:
                                          signal_title = "Breathing";
                                      	ytitle = "Rate";

@@ -22,6 +22,7 @@ public class ForBarFromExcel extends JsonFromExcel {
     private double tempVal =0;
     private int ctrForArray =0;
     private int frameCtr=1;
+    private int readFromColum = 1;
 
     public void addToHeader(String str,  boolean newRow)
     {
@@ -48,8 +49,11 @@ public class ForBarFromExcel extends JsonFromExcel {
     {
 
         if(!newRow) {     // if this is not a new record
-            if(ctrForArray ==1)
+            if(ctrForArray ==readFromColum)
             {
+               /* if(readFromColum ==4){
+                    System.out.print(num + "    ");
+                }*/
                 templst.add(num);
             }
             ctrForArray++;
@@ -72,6 +76,13 @@ public class ForBarFromExcel extends JsonFromExcel {
     {
         super(signal, fileName);
         intializeArray();
+
+    }
+    public ForBarFromExcel(String fileName, int signal, int readFrom )
+    {
+        super(signal, fileName);
+        intializeArray();
+        readFromColum = readFrom;
 
     }
 

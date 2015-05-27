@@ -4,7 +4,7 @@
 		module="first_play_2.10"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20150508195641"
+		publication="20150522110801"
 	>
 		<description>
 		first_play
@@ -43,7 +43,7 @@
 		<dependency org="com.typesafe.play" name="play-test_2.10" rev="2.3.6" conf="test->default(compile)"/>
 		<dependency org="com.typesafe.play" name="play-docs_2.10" rev="2.3.6" conf="docs->default(compile)"/>
 		<dependency org="org.aspectj" name="aspectjweaver" rev="1.7.3" conf="echo-weave->default(compile)"/>
-		<dependency org="com.typesafe.trace" name="trace-sigar-libs" rev="0.1.7" conf="echo-sigar->default(compile)"/>
+		<dependency org="com.typesafe.trace" name="trace-sigar-libs" rev="0.1.6.1" conf="echo-sigar->default(compile)"/>
 		<dependency org="com.typesafe.play" name="play-jdbc_2.10" rev="2.3.6" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.play" name="anorm_2.10" rev="2.3.6" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.play" name="play-cache_2.10" rev="2.3.6" conf="compile->default(compile)"/>
@@ -82,6 +82,6 @@
 			<exclude org="com.sun.jmx" module="jmxri" name="*" type="*" ext="*" conf="" matcher="exact"/>
 		</dependency>
 		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" conf="compile->default(compile)"/>
-		<dependency org="com.typesafe.trace" name="trace-play-2.3.6_2.10" rev="0.1.7" conf="echo-trace-compile->default(compile)"/>
+		<dependency org="com.typesafe.trace" name="trace-play-2.3.6_2.10" rev="0.1.6.1" conf="echo-trace-compile->default(compile)"/>
 	</dependencies>
 </ivy-module>

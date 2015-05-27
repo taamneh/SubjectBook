@@ -20,7 +20,7 @@ public abstract class JsonFromExcel {
     }
 
     public int getFrameRate() {
-        if(signalType == 3 || signalType == 6 || signalType==2 ) {
+        if(signalType == 3 || signalType == 6 || signalType==2 || signalType ==11 ) {
             return 8;
         }
         else if(signalType ==1  )
@@ -33,6 +33,10 @@ public abstract class JsonFromExcel {
 
     abstract void addToHeader(String str, boolean newRow);
     abstract void addToContent(Double num, boolean newRow);
+    void addToContent(String num, boolean newRow){  // this for bar chart
+
+    }
+
 
     public JSONObject getJosonForChart()
     {
@@ -48,9 +52,9 @@ public abstract class JsonFromExcel {
     {
         this.fileName = fileName;
     }
-    public void setSignalType(int signal)
+    public int setSignalType()
     {
-        this.signalType = signal;
+        return signalType;
     }
 
     public String getFileName()

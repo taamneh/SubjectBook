@@ -16,8 +16,9 @@ public class SignalType {
     private static  final int HEART_RATE_CODE = 8;
     private static  final int BELT_BREATHING_CODE = 9;
     private static  final int TEMPERATURE_CODE = 10;
-    private static  final int BAR_CHART_CODE =11;
 
+    private static  final int N_PERSPIRATION_CODE = 11;
+    private static  final int BAR_CHART_CODE =12;
 
     private static  final int VIDEO_CODE =100;
     private static  final int INFO_CODE = 101;
@@ -34,6 +35,7 @@ public class SignalType {
     private static final String EXPRESSION_EXTNESION = "expression";
     private static final String MOTION_EXTNESION ="q_motion";
     private static final String PERSPIRATION_EXTNESION = "perspiration";
+    private static final String N_PERSPIRATION_EXTNESION = "nperspiration";
     private static final String BREATHING_EXTNESION = "breathing";
     private static final String HEART_RATE_EXTNESION = "z_ecg";
     private static final String BELT_BREATHING_EXTNESION = "z_breathing";
@@ -53,8 +55,8 @@ public class SignalType {
     public static boolean isMotion(String extension) {
         return extension.equalsIgnoreCase(MOTION_EXTNESION);
     }
-    public static boolean isPerspiration(String extension) { return extension.equalsIgnoreCase(PERSPIRATION_EXTNESION);
-    }
+    public static boolean isPerspiration(String extension) { return extension.equalsIgnoreCase(PERSPIRATION_EXTNESION);    }
+    public static boolean isNPerspiration(String extension) { return extension.equalsIgnoreCase(N_PERSPIRATION_EXTNESION);    }
     public static boolean isBreathing(String extension) {
         return extension.equalsIgnoreCase(BREATHING_EXTNESION);
     }
@@ -118,6 +120,7 @@ public class SignalType {
     public static int getPerspirationCode() {
         return PERSPIRATION_CODE;
     }
+    public static int getNPerspirationCode() {  return N_PERSPIRATION_CODE;    }
     public static int getBreathingCode() {
         return BREATHING_CODE;
     }
