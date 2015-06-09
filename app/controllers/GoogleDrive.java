@@ -1151,6 +1151,8 @@ public class GoogleDrive {
         GoogleCredential googleCredential = getStoredCredentials(username);
         Drive service = buildService(googleCredential);
 
+        Double failureThreshold = findLoadedDrivingPoint(folder_id, username);
+
         // get the names of subjects folders
         List<String> subjects = returnFilesInFolder(service,folder_id, "mimeType = 'application/vnd.google-apps.folder'");
 
@@ -1207,6 +1209,9 @@ public class GoogleDrive {
             googleCredential = getStoredCredentials(username);
             service = buildService(googleCredential);
             Iterator itSession = titleWithIdSession.entrySet().iterator();
+            String ld1FileName=null, ld1SessionName=null, fdFilenmae = null, fdSessionName = null;
+            ArrayList<Activity> fdActList = null;
+
             // Iterate over the session folder for the current subject
             while (itSession.hasNext())
             {
@@ -1233,30 +1238,77 @@ public class GoogleDrive {
                             InputStream input = downloadFileByFileId(service, file2.getId());
                             baseLineSignalsPerformance.add(generateFileNameFromInputStream(input));
 
-                            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "ld1"))
+                            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "ld1")) {
                                 signalsForPerformance.add(new SessionsBar(SessionName.replaceFirst("(\\d*\\s*)", ""), file2.getId()));
+
+                            }
                         }
                         else if(! org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "bl"))
                             signalsForPerformance.add(new SessionsBar(SessionName.replaceFirst("(\\d*\\s*)", ""), file2.getId()));
                     }
+
                     if(SignalType.isPerspiration(extension) || SignalType.isNPerspiration(extension)){
                         if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "bl") || org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "pd")|| org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "nd")) {
                             InputStream input = downloadFileByFileId(service, file2.getId());
                             baseLineSignalsStress.add(generateFileNameFromInputStream(input));
                         }
-                        else
-                            signalsForIndicator.add(new SessionsBar(SessionName, file2.getId()));
+                        else if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "fd")){
+                            InputStream input = downloadFileByFileId(service, file2.getId());
+
+                            fdFilenmae = generateFileNameFromInputStream(input);
+                            fdSessionName = SessionName;
+                        }
+                        else {
+                            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "ld1")){
+                                InputStream input = downloadFileByFileId(service, file2.getId());
+                                ld1FileName = generateFileNameFromInputStream(input);
+                                ld1SessionName = SessionName;
+                            }
+                            else
+                                signalsForIndicator.add(new SessionsBar(SessionName, file2.getId()));
+
+                        }
+                    }
+                    if(SignalType.isActivity(extension) && org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "fd")){
+                        fdActList = ReadExcelJava.readActivity(downloadFileByFileId(service, file2.getId()));
                     }
 
                 }
             }
 
             // Get the stress indicator for all sessions of the current subject
-            StressBarWithThreshold tws = getStressThreshold(baseLineSignalsStress);
-            double threshold =  tws.threshold;
+
+            //double threshold =  tws.threshold;
+
+
+            MeanAndSizeOfSignal temp;
+            double threshold;
+            if(ld1FileName != null){
+                temp = ReadExcelJava.findMeanFromExcel(ld1FileName);
+                threshold = temp.mean;
+            }
+            else {
+                threshold = 0;
+            }
+
+            StressBarWithThreshold tws = getStressThreshold(baseLineSignalsStress, threshold);
             TreeMap<String, BarPercentage> tt = getPortraitStateIndiactors(username,threshold, signalsForIndicator, GOOGLE_DRIVE, 4);
-            tt.put("0TL", tws.stressBar);
+           // tt.put("0TL",  new BarPercentage(0.0, 100, 0.0));
+            if(ld1SessionName != null)
+                tt.put(ld1SessionName, new BarPercentage(0.0, 100, 0.0));
+            System.out.println("Threshold: " + failureThreshold + "*********************");
+
+
+            BarPercentage bp = ReadExcelJava.findBarFromExcelWithActivity(failureThreshold, fdFilenmae, fdActList);
+
+
+            System.out.println("Normal: " + bp.normal + ">>>>>  " + bp.stressed);
+            tt.put(fdSessionName, bp);
+
+
+
             allBarsForAllSubjs.add(tt);
+
 
 
 
@@ -1302,11 +1354,12 @@ public class GoogleDrive {
         }
 
         writer.close();
+        */
 
-        writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\performance.txt", "UTF-8");
+       /* PrintWriter writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\performance.txt", "UTF-8");
         for(TreeMap<String, Double> temp : allPerformanceForAllSubs){
             for(Map.Entry<String,Double> entry : temp.entrySet()){
-                writer.write(entry.getValue()+"\t");
+                writer.write(entry.getKey() + ": "+ entry.getValue()+"\t");
             }
             writer.write("\n");
         }
@@ -1323,6 +1376,97 @@ public class GoogleDrive {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return queryString;
+    }
+
+
+    public static Double findLoadedDrivingPoint(String folder_id,  String username )  throws  Exception
+    {
+
+        GoogleCredential googleCredential = getStoredCredentials(username);
+        Drive service = buildService(googleCredential);
+
+        // get the names of subjects folders
+        List<String> subjects = returnFilesInFolder(service,folder_id, "mimeType = 'application/vnd.google-apps.folder'");
+        TreeMap<String, String> titlteWithId = new TreeMap<String, String>();
+
+        // put subject folder name and subject id in a tree map to sort them.
+        for (int i= 0; i< subjects.size(); i++)
+            titlteWithId.put(waitUntilGetDGFile(service, subjects.get(i)).getTitle(), subjects.get(i));
+
+        Map.Entry pair, pairSession;
+        String subject, sessionId,  extension;
+        List<String> sessions, Signals;
+
+        Double startofLoadedDriveSum = 0.0;
+        Double startofLoadedDriveCtr =0.0;
+
+        TreeMap<String, String> titleWithIdSession;
+        File  file =null;
+
+        Iterator it = titlteWithId.entrySet().iterator();
+        // Iterate over the subjects in the study
+        while (it.hasNext()) {
+
+            pair = (Map.Entry)it.next();
+            subject = pair.getValue().toString();
+
+            sessions = returnFilesInFolder(service, subject, "mimeType = 'application/vnd.google-apps.folder'");
+
+            // get all the session folder inside the current subject
+            titleWithIdSession = new TreeMap<String, String>();
+
+            for (int i= 0; i< sessions.size(); i++)
+                titleWithIdSession.put(waitUntilGetDGFile(service, sessions.get(i)).getTitle(), sessions.get(i));
+
+            Iterator itSession = titleWithIdSession.entrySet().iterator();
+            // Iterate over the session folder for the current subject
+            while (itSession.hasNext())
+            {
+                pairSession = (Map.Entry)itSession.next();
+                sessionId = pairSession.getValue().toString();
+
+                file = waitUntilGetDGFile(service, sessionId);
+
+                // get all the signal inside the current session
+                Signals = returnFilesInFolder(service, sessionId, "mimeType != 'application/vnd.google-apps.folder'");
+                for(String signalId : Signals) {
+                    File file2 = waitUntilGetDGFile(service, signalId);
+
+                    // String SessionName = file.getTitle().replaceFirst("(\\d*\\s*)", "");
+                    String SessionName = file.getTitle();
+
+                    if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "fd")) {
+
+
+                        // to skip conflict files that start with ~
+                        if (file2.getTitle().contains("~"))
+                            continue;
+                        extension = file2.getFileExtension();
+                        if (SignalType.isActivity(extension)) {
+                            InputStream input = downloadFileByFileId(service, file2.getId());
+                            //baseLineSignalsStress.add(generateFileNameFromInputStream(input));
+                            ArrayList<Activity> temp = ReadExcelJava.readActivity(input);
+
+
+                            for(Activity ac : temp){
+                                if(ac.actionType == 5){
+                                    startofLoadedDriveSum +=ac.startTime;
+                                    startofLoadedDriveCtr++;
+                                }
+                            }
+
+                        }
+
+                        //  break;
+                    }
+
+                }
+            }
+
+        } // next subject
+
+
+        return (startofLoadedDriveSum/startofLoadedDriveCtr);
     }
 
 
@@ -1395,9 +1539,10 @@ public class GoogleDrive {
         }
     }
 
-    public static StressBarWithThreshold getStressThreshold(ArrayList<String> list) throws Exception
+    public static StressBarWithThreshold getStressThreshold(ArrayList<String> list, double threshold) throws Exception
     {
-        double threshold =0, sum =0, counter = 0;
+        //double threshold =0;
+        double sum =0, counter = 0;
         ArrayList<Double> allNumber = new ArrayList<Double>();
         for(String fileName: list){
             MeanAndSizeOfSignal temp = ReadExcelJava.findMeanFromExcel(fileName);
@@ -1405,7 +1550,7 @@ public class GoogleDrive {
             counter += temp.size;
             allNumber.addAll(temp.allNum);
         }
-        threshold = sum/ counter;
+        // threshold = sum/ counter;
 
 
         double normal = 0, stress = 0;
@@ -1422,7 +1567,7 @@ public class GoogleDrive {
         stress = (stress / total) * 100;
 
 
-        BarPercentage b = new BarPercentage(0.0, 100, 0.0);
+        BarPercentage b = new BarPercentage(0.0, normal, stress);
         return  new StressBarWithThreshold(threshold, b);
     }
     public static File waitUntilGetDGFile (Drive service, String fileName) throws IOException, Exception {
@@ -1458,7 +1603,7 @@ public class GoogleDrive {
             }
         }
 
-        sessionNO = standardSessionListOrdered.size();
+        sessionNO = standardSessionListOrdered.size()-1;
         int itr =0 ;
 
         // iterate over all the subject that we calaucuated their state indicator and saved it in a map of session name and bar
@@ -1481,8 +1626,10 @@ public class GoogleDrive {
                             if(prf.containsKey(entry.getValue()) && !org.apache.commons.lang3.StringUtils.containsIgnoreCase(entry.getKey(),"tl")) {
                                 performance= Long.toString(Math.round( prf.get(entry.getValue())));
                             }
-                            if(sai_list.containsKey(entry.getValue()) && !org.apache.commons.lang3.StringUtils.containsIgnoreCase(entry.getKey(),"tl")) {
-                                sai_temp= Long.toString(Math.round( sai_list.get(entry.getValue())));
+                            String neededKey = entry.getValue();
+                            if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(entry.getKey(),"fd")) neededKey = "FD";
+                            if(sai_list.containsKey(neededKey) && !org.apache.commons.lang3.StringUtils.containsIgnoreCase(neededKey,"tl")) {
+                                sai_temp= Long.toString(Math.round( sai_list.get(neededKey)));
                             }
                         }
                     }
@@ -1500,19 +1647,21 @@ public class GoogleDrive {
                             grades = grades + "," + performance;
                             tai = tai + ":" + sai_temp;
                         }
-                    }else{
+                    }else {
 
-                        if(isFirst) {
-                            examsNames = examsNames + entry.getKey().replaceFirst("(\\d*\\s*)", "");
-                            grades = grades + "NA";
-                            tai = tai + "NA";
-                            isFirst = false;
-                        }
-                        else  {
-                            examsNames = examsNames + "," + entry.getKey().replaceFirst("(\\d*\\s*)", "");
-                            sBars = sBars + ":";
-                            grades = grades + ",NA";
-                            tai = tai + ":NA";
+                        if (!org.apache.commons.lang3.StringUtils.containsIgnoreCase(entry.getValue(), "fd")) // this is used to show only one of the filure drive
+                        {
+                            if (isFirst) {
+                                examsNames = examsNames + entry.getKey().replaceFirst("(\\d*\\s*)", "");
+                                grades = grades + "NA";
+                                tai = tai + "NA";
+                                isFirst = false;
+                            } else {
+                                examsNames = examsNames + "," + entry.getKey().replaceFirst("(\\d*\\s*)", "");
+                                sBars = sBars + ":";
+                                grades = grades + ",NA";
+                                tai = tai + ":NA";
+                            }
                         }
                     }
                 }
@@ -1652,6 +1801,7 @@ public class GoogleDrive {
             return sessionCutoff;
         }
     }
+
 
     public static  TreeMap<String, BarPercentage>  bar(String username,ArrayList<ArrayList<SessionsBar>> url, int sourceType, int signalType)  throws IOException,  Exception
     {

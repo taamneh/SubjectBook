@@ -75,7 +75,7 @@ object Application extends Controller {
         val med = studies().map(row =>
           row[String]("study_name") -> row[String]("study_owner") -> row[Int]("study_id")
         ).toList
-          Ok(views.html.ShowStudies(username,med)).withSession("connected" -> username)
+        Ok(views.html.ShowStudies(username,med)).withSession("connected" -> username)
       }
   }
 
@@ -88,7 +88,7 @@ object Application extends Controller {
       var username: String = "";
       var videoIdList:  Map[String, List[ String]]= Map()
       request.session.get("connected").map { user =>
-       username = user;
+        username = user;
         DB.withConnection { implicit c =>
           val studies  =
             SQL("select  distinct(study_name), study_owner, study_id as c from study where study_owner ={un} OR study_id in (select study_id from privilege );").on('un -> username)
@@ -200,7 +200,7 @@ object Application extends Controller {
           videoIdList = videoIdList + (sess -> vList);
         }
 
-      // we send the study tybe just to decide wich player should we use
+        // we send the study tybe just to decide wich player should we use
         val studyType  =
           SQL("select study_type from study where study_id={study_id};").on('study_id-> studyNo).apply().head
         sourceType = studyType[Int]("study_type");
@@ -316,6 +316,7 @@ object Application extends Controller {
           {
             println("Kareem 21/10" + contact.folder_id)
             report = GoogleDrive.FindStudy(contact.folder_id, contact.study_name, username, studyToplogy,contact.bio,contact.psychometric, contact.physiology, contact.observation,contact.portrait, contact.public);
+            //report = GoogleDrive.Malcolm(contact.folder_id, contact.study_name, username, studyToplogy,contact.bio,contact.psychometric, contact.physiology, contact.observation,contact.portrait, contact.public);
             //println(query);
           }
           //Redirect(routes.Application.displayStudies());
@@ -344,7 +345,7 @@ object Application extends Controller {
             }
             else
               Ok("The study has not been created. Please make sure that the folder you chose follow the required format")
-              //Ok(views.html.login(userForm))
+            //Ok(views.html.login(userForm))
           }
 
           //Ok(report)
@@ -371,8 +372,20 @@ object Application extends Controller {
           BadRequest("The Study Has not been creted Correctly please check that data you entered!")
         },
         contact => {
-         Ok(contact.study_id.toString());
-       }
+
+          DB.withConnection { implicit c =>
+
+            DataBaseOperations.deleteStudy(contact.study_id)
+            val studies =
+              SQL("select  distinct(study_name), study_owner, study_id as c from study where study_owner ={un} OR study_id in (select study_id from privilege );").on('un -> username)
+            val med = studies().map(row =>
+              row[String]("study_name") -> row[String]("study_owner") -> row[Int]("study_id")
+            ).toList
+
+
+            Ok(views.html.ShowStudies(username, med)).withSession("connected" -> username)
+          }
+        }
       )
   }
 
@@ -391,12 +404,12 @@ object Application extends Controller {
       DB.withConnection { implicit c =>
 
 
-         // s  = GoogleDrive.GetSubjectInfo(username, file_location, sourceType, signal_type,bio);
-          var json = Json.parse("");
-          Ok(json);
+        // s  = GoogleDrive.GetSubjectInfo(username, file_location, sourceType, signal_type,bio);
+        var json = Json.parse("");
+        Ok(json);
 
-          Ok(s);
-        }
+        Ok(s);
+      }
   }
 
   /**
@@ -450,11 +463,11 @@ object Application extends Controller {
 
       }
       //var js = GoogleDrive.DownloadSignal(username, file_location, sourceType, signal_type);
-       var js = GoogleDrive.DownloadSignal(study_owner, file_location, sourceType, signal_type,activityFile );
+      var js = GoogleDrive.DownloadSignal(study_owner, file_location, sourceType, signal_type,activityFile );
       if(js == null)
-       Ok("");
+        Ok("");
       else
-       Ok(js.toJSONString)
+        Ok(js.toJSONString)
   }
   def getInfo (task: String, subject: String, studyId: Int, signal_type: Int) = Action {
     implicit request =>
@@ -550,6 +563,7 @@ object Application extends Controller {
           val rowOption3  =
             SQL("select study_type from study where study_id={study_id};").on('study_id-> studyId).apply().head
           sourceType = rowOption3[Int]("study_type");
+
 
 
           s  = GoogleDrive.GetSubjectPRF(username, file_location, sourceType);
@@ -706,19 +720,19 @@ object Application extends Controller {
 
         val rowOption1  =
           SQL("select subject_seq from subject where study_id={study_id};").on('study_id-> studyId)
-          seq = rowOption1().map(row => row[Int]("subject_seq")).toSeq
+        seq = rowOption1().map(row => row[Int]("subject_seq")).toSeq
 
-          println(seq);
+        println(seq);
 
         //TODO remove the fixed number 1,2,3,4....
 
 
         val rowOption2  =
           SQL("select signal_loc ,subject_id, session_name from session, subject where session.subject_seq  = subject.subject_seq and session.subject_seq in ({seq}) AND signal_signal_type in (1,2,3,4,5,6,7,8) AND run_no =1 order by subject_id;").on('seq -> seq)
-            locations = rowOption2().map(row => row[String]("signal_loc")).toList
-            subjects = rowOption2().map(row => row[String]("subject_id")).toList
-            sessions = rowOption2().map(row => row[String]("session_name")).toList
-            //all = rowOption2().map(row => row[String]("signal_loc") -> row[String]("subject_id") -> row[String]("session_id")).toList
+        locations = rowOption2().map(row => row[String]("signal_loc")).toList
+        subjects = rowOption2().map(row => row[String]("subject_id")).toList
+        sessions = rowOption2().map(row => row[String]("session_name")).toList
+        //all = rowOption2().map(row => row[String]("signal_loc") -> row[String]("subject_id") -> row[String]("session_id")).toList
       }
 
       //val x: java.util.List[String] = ListBuffer(List("3", "3"): _*)
@@ -728,30 +742,30 @@ object Application extends Controller {
       //val excelFilesList: mutable.Buffer[String] = input.asScala;
       //val dataContent: Enumerator[Array[Byte]] = Enumerator.fromStream(input.get(0))
 
-    import play.api.libs.iteratee._
-    import java.util.zip._
+      import play.api.libs.iteratee._
+      import java.util.zip._
 
-    val r = new java.util.Random()
+      val r = new java.util.Random()
 
-    val enumerator = Enumerator.outputStream { os =>
-      val zip = new ZipOutputStream(os);
-      Range(0, input.size()).map { i =>
-        //zip.putNextEntry(new ZipEntry("test-zip/README-"+i+".xlsx"))
-        zip.putNextEntry(new ZipEntry( input.get(i).subjectName+ "/" + input.get(i).fileName+i+".xlsx"))
-        //zip.write("Here are 100000 random numbers:\n".map(_.toByte).toArray)
-        zip.write(IOUtils.toByteArray(input.get(i).data));
-        // Let's do 100 writes of 1'000 numbers
-        /*Range(0, 100).map { j =>
-          zip.write((Range(0, 1000).map(_=>r.nextLong).map(_.toString).mkString("\n")).map(_.toByte).toArray);
-        }*/
-        zip.closeEntry()
+      val enumerator = Enumerator.outputStream { os =>
+        val zip = new ZipOutputStream(os);
+        Range(0, input.size()).map { i =>
+          //zip.putNextEntry(new ZipEntry("test-zip/README-"+i+".xlsx"))
+          zip.putNextEntry(new ZipEntry( input.get(i).subjectName+ "/" + input.get(i).fileName+i+".xlsx"))
+          //zip.write("Here are 100000 random numbers:\n".map(_.toByte).toArray)
+          zip.write(IOUtils.toByteArray(input.get(i).data));
+          // Let's do 100 writes of 1'000 numbers
+          /*Range(0, 100).map { j =>
+            zip.write((Range(0, 1000).map(_=>r.nextLong).map(_.toString).mkString("\n")).map(_.toByte).toArray);
+          }*/
+          zip.closeEntry()
+        }
+        zip.close()
       }
-      zip.close()
-    }
-    Ok.stream(enumerator >>> Enumerator.eof).withHeaders(
-      "Content-Type"->"application/zip",
-      "Content-Disposition"->"attachment; filename=test.zip"
-    )
+      Ok.chunked(enumerator >>> Enumerator.eof).withHeaders(
+        "Content-Type"->"application/zip",
+        "Content-Disposition"->"attachment; filename=test.zip"
+      )
   }
 
   def outputStream(a: java.io.OutputStream => Unit): Enumerator[Array[Byte]] = {
@@ -827,7 +841,7 @@ object Application extends Controller {
       "email" -> nonEmptyText,
       "role" -> number,
       "message" -> nonEmptyText,
-       "studyId"-> number
+      "studyId"-> number
     )(Sharing.apply)(Sharing.unapply)
   )
 
@@ -885,9 +899,9 @@ object Application extends Controller {
   }
 
 
-   /*
-     It will give the user the opporunity to upload more files under any subfolder
-    */
+  /*
+    It will give the user the opporunity to upload more files under any subfolder
+   */
 
   def sendRequest(StudyName: String) =TODO
 
@@ -948,8 +962,8 @@ object Application extends Controller {
           DB.withConnection { implicit c =>
             val rowOption  =
               SQL("select max(subject_seq) as c from subject;").apply().head
-              var ctr = rowOption[Long]("c");
-              ctr = ctr+1;
+            var ctr = rowOption[Long]("c");
+            ctr = ctr+1;
 
             val id: Option[Long] =
               SQL("insert into subject values({seq},{subject_id},{study_id},null, null, SYSDATE ,10,10,10,0,0,0);")
@@ -999,42 +1013,42 @@ object Application extends Controller {
 
   def uploadFile = Action(parse.multipartFormData) { implicit request =>
     newSession.bindFromRequest.fold(
-        formWithErrors => {
-          BadRequest("hh")
-        },
-        contact => {
+      formWithErrors => {
+        BadRequest("hh")
+      },
+      contact => {
 
-          //val contactId = Contact.save(contact)
-          //Redirect(routes.Application.showContact(contactId)).flashing("success" -> "Contact saved!")
-          DB.withConnection { implicit c =>
-            val rowOption1  =
-              SQL("select subject_seq from subject where subject_id={sub_id} AND study_id={study_id};").on('sub_id -> contact.subject_id, 'study_id-> contact.study_id).apply().head
-            val seq = rowOption1[Long]("subject_seq");
+        //val contactId = Contact.save(contact)
+        //Redirect(routes.Application.showContact(contactId)).flashing("success" -> "Contact saved!")
+        DB.withConnection { implicit c =>
+          val rowOption1  =
+            SQL("select subject_seq from subject where subject_id={sub_id} AND study_id={study_id};").on('sub_id -> contact.subject_id, 'study_id-> contact.study_id).apply().head
+          val seq = rowOption1[Long]("subject_seq");
 
-            val rowOption2  =
-              SQL("select coalesce(max(session_no),0) as c from session where subject_seq={seq};").on('seq -> seq).apply().head
-            var ctr = rowOption2[Long]("c");
-            ctr = ctr+1;
-            println(ctr)
-           val upload_loc = ""
-            var video_loc = upload_loc;
-            request.body.file("signal_loc").map { video =>
-              val videoFilename = video.filename
-              val contentType = video.contentType.get
-              video_loc = video_loc + video.filename;
-              //video.ref.moveTo(new File("C:\\Users\\staamneh\\Desktop\\CPL-Lab\\System Desgin\\first_play\\target\\web\\public\\main\\images" + video.filename))
-              video.ref.moveTo(new File(video_loc));
-            }.getOrElse {
-              Redirect(routes.Application.Main())
-            }
-            val id: Option[Long] =
-            //INSERT INTO session VALUES(1,1,1,'BL', 'C:\\Users\\staamneh\\Desktop\\CPL-Lab\\System Desgin\\DataSource\\S001\\BaseLine Dexterity\\RI_S001-001.Q_EDA', 1);
-              SQL("insert into session values({seq},{sess_no},{run_no} ,{sess_name},{loc},{signal_type});")
-                .on('seq -> seq, 'sess_name -> contact.session_name, 'sess_no -> ctr,'run_no-> contact.run_no ,'loc -> video_loc, 'signal_type -> contact.signal_type).executeInsert()
-            //Ok("File has been uploaded" +contact.session_name + " " + contact.signal_type +  " "  + contact.study_id  )
-            Redirect(routes.Application.editSubject(contact.study_id, contact.subject_id));
+          val rowOption2  =
+            SQL("select coalesce(max(session_no),0) as c from session where subject_seq={seq};").on('seq -> seq).apply().head
+          var ctr = rowOption2[Long]("c");
+          ctr = ctr+1;
+          println(ctr)
+          val upload_loc = ""
+          var video_loc = upload_loc;
+          request.body.file("signal_loc").map { video =>
+            val videoFilename = video.filename
+            val contentType = video.contentType.get
+            video_loc = video_loc + video.filename;
+            //video.ref.moveTo(new File("C:\\Users\\staamneh\\Desktop\\CPL-Lab\\System Desgin\\first_play\\target\\web\\public\\main\\images" + video.filename))
+            video.ref.moveTo(new File(video_loc));
+          }.getOrElse {
+            Redirect(routes.Application.Main())
           }
+          val id: Option[Long] =
+          //INSERT INTO session VALUES(1,1,1,'BL', 'C:\\Users\\staamneh\\Desktop\\CPL-Lab\\System Desgin\\DataSource\\S001\\BaseLine Dexterity\\RI_S001-001.Q_EDA', 1);
+            SQL("insert into session values({seq},{sess_no},{run_no} ,{sess_name},{loc},{signal_type});")
+              .on('seq -> seq, 'sess_name -> contact.session_name, 'sess_no -> ctr,'run_no-> contact.run_no ,'loc -> video_loc, 'signal_type -> contact.signal_type).executeInsert()
+          //Ok("File has been uploaded" +contact.session_name + " " + contact.signal_type +  " "  + contact.study_id  )
+          Redirect(routes.Application.editSubject(contact.study_id, contact.subject_id));
         }
+      }
     )
   }
 
@@ -1068,7 +1082,7 @@ object Application extends Controller {
     implicit request =>
       var file_location = "";
       var sourceType = 0;
-     // var s:String = "{\"Dummy\": \"Dummy\"}";
+      // var s:String = "{\"Dummy\": \"Dummy\"}";
 
       var s:String = "{}";
 

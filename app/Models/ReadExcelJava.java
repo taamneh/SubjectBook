@@ -253,6 +253,101 @@ public class ReadExcelJava {
 
 
     }
+    public static BarPercentage findBarFromExcelWithActivity (double threshold, String fileName, ArrayList<Activity> activities)  throws Exception {
+
+        double localThreshold = threshold;
+
+        if(activities != null) {
+            for (Activity ac : activities) {
+                if (ac.actionType == 5)
+                    localThreshold = ac.startTime;
+            }
+        }
+
+
+        System.out.println("Local: " + localThreshold + "*********************");
+
+        ArrayList<Double> allNumber = new ArrayList<Double>();
+        ArrayList<Double> allTime = new ArrayList<Double>();
+        int counter = 0;
+
+        File file = new File(fileName);
+        ForBarFromExcel barRaw = new ForBarFromExcel(fileName, 1);
+        try {
+
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
+            OldExcelFormat oldF = new OldExcelFormat(barRaw);
+            try {
+
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                oldF.readSheet();
+            }
+
+            // actual.put(entry.getKey(), barRaw.getArrayOfDouble());
+            allNumber = barRaw.getArrayOfDouble();
+            allTime = barRaw.getTimeArray();
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            // delete the file
+            if (file.delete()) {
+                System.out.println("File has been deleted");
+            } else {
+                System.out.println("File has NOT been deleted");
+            }
+        }
+
+        /// find the mean
+        double intialMean =0, intialcounter =0;
+        int index =0;
+        for(double num: allNumber){
+            if(allTime.get(index) < threshold) {
+                intialMean += num;
+                intialcounter ++;
+            }
+            else
+                break;
+            index++;
+        }
+
+        intialMean = intialMean/intialcounter;
+
+        System.out.println("intialMean: " + intialMean + "*********************");
+
+
+        double relax = 0, normal = 0, stress = 0;
+        int total =0;
+        index =0;
+        for(double num: allNumber){
+            if(index < allTime.size()) {
+                if (allTime.get(index) > threshold) {
+                    if (num < intialMean) {
+                        normal++;
+                    } else
+                        stress++;
+                    total++;
+                }
+                index++;
+            }
+        }
+
+        relax = 0;
+        normal = (normal / total) * 100;
+        stress = (stress / total) * 100;
+
+
+
+        // System.out.println("relax: " + relax + "  normal: " + normal + "  stress: " + stress);
+
+        return new BarPercentage(0.0, normal, stress);
+
+
+
+    }
     public static MeanAndSizeOfSignal findMeanFromExcel (String fileName)  throws Exception {
 
         System.out.println("I am in findMeanFromExcel");

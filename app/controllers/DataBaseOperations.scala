@@ -51,12 +51,35 @@ object DataBaseOperations extends Controller{
       refresh = id[String]("refresh_token");
 
 
+
     }
     var cred = new AccessRefreshString(access, refresh);
     /*val cred: Credential = new Credential(access);
     cred.setAccessToken(access);
     cred.setRefreshToken(refresh);*/
     return cred;
+  }
+
+  def deleteStudy(StudyNo: Int)= {
+
+    DB.withConnection { implicit c =>
+      val result1 =
+        SQL(" delete  from session where subject_seq in (select subject_seq from subject where study_id = {std});")
+          .on( 'std -> StudyNo).executeUpdate()
+
+      val result2 =
+        SQL("  delete from subject where study_id = {std};")
+          .on( 'std -> StudyNo).executeUpdate()
+
+      val result3 =
+        SQL("delete from privilege where study_id ={std};")
+          .on( 'std -> StudyNo).executeUpdate()
+
+      val result4 =
+        SQL("delete from study where study_id = {std};")
+          .on( 'std -> StudyNo).executeUpdate()
+    }
+    Logger.debug("Study: " + StudyNo + " has been deleted" );
   }
 
   def GenerateStudyNoGD(StudyName: String, username: String, study_type : Int, public: Int): Int = {
@@ -78,7 +101,7 @@ object DataBaseOperations extends Controller{
           SQL("insert into privilege values({s_id}, 1, {user});")
             .on('s_id -> ctr, 'user -> username).executeInsert()
       }
-        ctr.toInt;
+      ctr.toInt;
 
     }
   }

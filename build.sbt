@@ -11,7 +11,7 @@ val appVersion = "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-javaOptions ++= Seq("-Xms4096M", "-Xmx4096M", "-XX:-UseGCOverheadLimit")
+javaOptions ++= Seq("-Xms1024M", "-Xmx2048M")
 
 scalaVersion := "2.10.4"
 
@@ -35,7 +35,6 @@ libraryDependencies ++= Seq(
   "org.apache.poi"  % "poi" % "3.9",
   "org.apache.xmlbeans" % "xmlbeans"  % "2.4.0" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
   "org.apache.poi"  % "poi-ooxml"  % "3.9",
-  "org.apache.poi"  % "poi-ooxml"  % "3.5-beta5",
   "org.slf4j" % "slf4j-api"       % "1.7.7" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
   "org.slf4j" % "jcl-over-slf4j"  % "1.7.7" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
   "net.sourceforge.jexcelapi" % "jxl" % "2.6.3" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
@@ -43,5 +42,3 @@ libraryDependencies ++= Seq(
 )
 
 //libraryDependencies ~= { _.map(_.exclude("ch.qos.logback", "logback-classic")) }
-
-

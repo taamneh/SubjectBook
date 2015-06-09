@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class ForBarFromExcel extends JsonFromExcel {
 
     ArrayList<Double> templst = new ArrayList<Double>();
+    ArrayList<Double> timeList = new ArrayList<Double>();
     private JSONArray arrTemp= new JSONArray();
     private ArrayList<Double> avergaSignal = new ArrayList<>(20);
     private double tempVal =0;
@@ -49,6 +50,7 @@ public class ForBarFromExcel extends JsonFromExcel {
     {
 
         if(!newRow) {     // if this is not a new record
+
             if(ctrForArray ==readFromColum)
             {
                /* if(readFromColum ==4){
@@ -65,6 +67,9 @@ public class ForBarFromExcel extends JsonFromExcel {
             //}
             frameCtr++; // increase the counter for frame
             ctrForArray =0;
+            if(ctrForArray == 0)
+                timeList.add(num);
+
             //avergaSignal.set(ctrForArray,num);
             ctrForArray++;
 
@@ -89,5 +94,9 @@ public class ForBarFromExcel extends JsonFromExcel {
     public ArrayList<Double> getArrayOfDouble()
     {
         return templst;
+    }
+    public ArrayList<Double> getTimeArray()
+    {
+        return timeList;
     }
 }
