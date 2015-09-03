@@ -1,6 +1,6 @@
 // @SOURCE:C:/first_play/conf/routes
 // @HASH:ccacfec44ca8f53076e37f4606def77fdd3e941b
-// @DATE:Mon Jun 08 21:55:30 CDT 2015
+// @DATE:Wed Jun 24 02:03:48 CDT 2015
 
 
 import play.core._

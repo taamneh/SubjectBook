@@ -708,6 +708,7 @@ public class GoogleDrive {
                     else if(SignalType.isActivity(extension)) signal_type =SignalType.getActivityCode();
                     else if(SignalType.isHRV(extension)) signal_type =SignalType.getHRV();
                     else if(SignalType.isExpression(extension)) signal_type =SignalType.getExpression();
+                    else if(SignalType.isEyeTracking(extension)) signal_type = SignalType.getEyeTrackingCode();
 
 
                     else continue; // skip if the singal is not supported
@@ -782,7 +783,11 @@ public class GoogleDrive {
                 Logger.info("Calling studytoportart function");
                 long startTime = System.nanoTime();
                 //String query = studyToPortrat(folder_id, studyName, username, studyTopology, bio_code, Psycho_code, physio_code, study_no);
-                String query = studyToPortratNewAlgo(folder_id, studyName, username, studyTopology, bio_code, Psycho_code, physio_code, study_no);
+                String query ="";
+                if(studyName.toLowerCase().contains("toyota"))
+                    query = studyToPortratNewAlgo(folder_id, studyName, username, studyTopology, bio_code, Psycho_code, physio_code, study_no);
+                else
+                    query = studyToPortrat(folder_id, studyName, username, studyTopology, bio_code, Psycho_code, physio_code, study_no);
                 Logger.debug("It takes: " +  (System.nanoTime() - startTime ) +  " To generate the portrait");
             }
         }
@@ -1171,6 +1176,7 @@ public class GoogleDrive {
 
         ArrayList<TreeMap<String, BarPercentage>> allBarsForAllSubjs = new ArrayList<>();
         ArrayList<TreeMap<String, Double>> allPerformanceForAllSubs = new ArrayList<>();
+        ArrayList<String> SubjectNames = new ArrayList<>();
         ArrayList<TreeMap<String, Double>> allPsychometricForAllSubs = new ArrayList<>();
 
         ArrayList<Double> maxes = new ArrayList<Double>();
@@ -1232,7 +1238,9 @@ public class GoogleDrive {
                     if(file2.getTitle().contains("~"))
                         continue;
                     extension = file2.getFileExtension();
-                    if(SignalType.isSimulation(extension)) {
+                    // if(SignalType.isSimulation(extension)) {
+                    // I agree with malcolm that we read the sim for portrait from sim2 while for vis form sim
+                    if(extension.equalsIgnoreCase("sim2")) {
                         if(org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "ld1") || org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "pd")|| org.apache.commons.lang3.StringUtils.containsIgnoreCase(SessionName, "nd"))
                         {
                             InputStream input = downloadFileByFileId(service, file2.getId());
@@ -1293,7 +1301,7 @@ public class GoogleDrive {
 
             StressBarWithThreshold tws = getStressThreshold(baseLineSignalsStress, threshold);
             TreeMap<String, BarPercentage> tt = getPortraitStateIndiactors(username,threshold, signalsForIndicator, GOOGLE_DRIVE, 4);
-           // tt.put("0TL",  new BarPercentage(0.0, 100, 0.0));
+            //tt.put("0TL",  new BarPercentage(0.0, 100, 0.0));
             if(ld1SessionName != null)
                 tt.put(ld1SessionName, new BarPercentage(0.0, 100, 0.0));
             System.out.println("Threshold: " + failureThreshold + "*********************");
@@ -1308,12 +1316,13 @@ public class GoogleDrive {
 
 
             allBarsForAllSubjs.add(tt);
+            SubjectNames.add(file0.getTitle());
 
 
 
 
             /////////////////////////////Calculate for Dr. P///////////////////////////////////////////
-           /* double max =0;
+            /*double max =0;
             for( SessionsBar tem : signalsForIndicator) {
                 InputStream input = downloadFileByFileId(service, tem.location);
                 MeanAndSizeOfSignal t = ReadExcelJava.findMeanFromExcel(generateFileNameFromInputStream(input));
@@ -1345,7 +1354,7 @@ public class GoogleDrive {
 
         ///////////////////////////to write to external file the data that dr.p wants to see ////////////////////////
 
-       /* PrintWriter writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\P.txt", "UTF-8");
+      /*  PrintWriter writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\P.txt", "UTF-8");
         int index =0;
         for( Double tem : maxes) {
             writer.write(names.get(index)+": " +tem.toString());
@@ -1354,25 +1363,33 @@ public class GoogleDrive {
         }
 
         writer.close();
-        */
 
-       /* PrintWriter writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\performance.txt", "UTF-8");
+
+         writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\performance.txt", "UTF-8");
+        int i =0;
         for(TreeMap<String, Double> temp : allPerformanceForAllSubs){
+            writer.write(SubjectNames.get(i)+ "\t");
             for(Map.Entry<String,Double> entry : temp.entrySet()){
                 writer.write(entry.getKey() + ": "+ entry.getValue()+"\t");
             }
             writer.write("\n");
+            i++;
         }
         writer.close();
 
+        i =0;
         writer = new PrintWriter("C:\\Users\\staamneh\\Documents\\NASA.txt", "UTF-8");
         for(TreeMap<String, Double> temp : allPsychometricForAllSubs){
+            writer.write(SubjectNames.get(i)+ "\t");
             for(Map.Entry<String,Double> entry : temp.entrySet()){
                 writer.write(entry.getValue()+"\t");
             }
             writer.write("\n");
+            i++;
         }
-        writer.close();*/
+        writer.close();
+
+       */
         /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return queryString;

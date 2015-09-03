@@ -19,10 +19,15 @@ public abstract class JsonFromExcel {
         frameRate = getFrameRate();
     }
 
+
     public int getFrameRate() {
-        if(signalType == 3 || signalType == 6 || signalType==2 || signalType ==11 ) {
+        if(signalType == 3 || signalType == 6 ||  signalType ==11) {
             return 8;
         }
+        else if(signalType==2)
+            return 16;
+        else if(signalType == 13)
+            return 20;
         else if(signalType ==1  )
             return 4;
         else if(signalType ==5 )

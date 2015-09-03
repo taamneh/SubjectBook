@@ -10,6 +10,7 @@
  var EXPRESSION_CODE = 5;
  var N_PERSPIRATION_CODE =11;
  var BAR_CHART_CODE =12;
+ var EYE_TRACKING_CODE =13;
 
 
  var VIDEO_CODE =100;
@@ -322,6 +323,8 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
 
     var signal_title ;
     var ytitle = "";
+    var showYAxis = 'out' // this is used to hide the vaxis of simulation data
+    var tooltipTrigger = 'select' // just to not show the tooltip for simulation data
     var header = "#header"+task+ signalSequence;
     var dash = "dashboard_div"+task+ signalSequence;
     var filter = "filter_div" + task + signalSequence;
@@ -392,6 +395,8 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                      case SIMULATION_CODE:
                                          signal_title = "Driving Simulator Data";
                                          ytitle = "";
+                                         showYAxis = 'none'
+                                         tooltipTrigger = 'none'
                                         	break;
                                      case HRV_CODE:
                                          signal_title = "Heart Rate Variability";
@@ -401,6 +406,10 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                           signal_title = "Facial Expressions";
                                           ytitle = "";
                                              break;
+                                     case EYE_TRACKING_CODE:
+                                          signal_title = "";
+                                          ytitle = "";
+                                          break;
                                      default:
                                        signal_title = "Anonymous Signal";
                                        ytitle = "";
@@ -434,7 +443,8 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                      break;
                                    }
                                 }
-                                var colors = ["#dc3912","#3366cc","#ff9900","#109618","#990099","#0099c6","#dd4477","#66aa00","#b82e2e","#316395","#994499","#22aa99","#aaaa11","#6633cc","#e67300",'#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'];
+
+                                var colors = ["#dc3912","#3366cc","#ff9900","#109618","#A901DB","#0099c6","#dd4477","#66aa00","#b82e2e","#316395","#E88DBA","#22aa99","#aaaa11","#6633cc","#e67300",'#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6'];
                                  var chart = new google.visualization.LineChart(document.getElementById(chartDestination));
                                  var options = {
                                            //title: signal_title,
@@ -478,12 +488,12 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                                              opacity: 1          // The transparency of the text.
                                                            }
                                                    },
-                                           tooltip: { trigger: 'select' },
+                                           tooltip: { trigger: tooltipTrigger },
                                            //tooltip: { trigger: 'none' },
                                            explorer: { actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: .01 },
                                            animation:{ startup:true},
                                            vAxis: { title: ytitle,
-                                            //format: '##.###',
+                                             textPosition: showYAxis,
                                              format: '###0.000',
                                             gridlines: {
                                                    color: 'transparent'
@@ -503,28 +513,46 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
 
                                  // to assigna colors for the annotaiton series....
                                  myObj = {};
-                                 var first   = "#FFFF00";
-                                 var second  = "#A6408D";
+                                 var first   = "#FFFF80";
+                                 var second  = "#D4A1C7";
                                  var third  = "#CECEF6";
+                                 var fourth = "#66FFFF"
+                                 var fifth = "#D6D633"
+                                 var last = "#D1D1FF"
+
+                                 var isSecondTaken = false  // if the second has been assigned for failure
+
                                  var colorVar;
                                  var ctrColor =1;
-                                 for(t=startAnnotFrom;  t< indexOfLast; t++)
+                                /* for(t=startAnnotFrom;  t< indexOfLast; t++)
                                  {
+                                 // alert(t)
                                   switch(ctrColor)
                                    {
                                   case 1:
                                      colorVar = first;
                                      break;
                                   case 2:
-                                     colorVar = second;
+                                     if(! isSecondTaken)
+                                        colorVar = second;
+                                      else
+                                        colorVar = last;
                                       break;
                                    case 3:
                                      colorVar = third;
                                       break;
-                                     }
+                                   case 4:
+                                       colorVar = fourth;
+                                       break;
+                                    case 5:
+                                       colorVar = fifth;
+                                       break;
+                                   }
+                                     //alert(data.getColumnLabel(t))
+
                                     ctrColor++;
                                     myObj[t] = {type: "area", color: colorVar};
-                                 }
+                                 }*/
 
                                 var columns = [];
                                 var series = {};
@@ -533,20 +561,44 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                     columns.push(i);
                                     if(i>=startAnnotFrom)
                                     {
+                                   // alert(i + '  '+  data.getColumnLabel(i))
                                       switch(ctrColor)
                                        {
-                                      case 1:
-                                         colorVar = first;
-                                         break;
-                                      case 2:
-                                         colorVar = second;
-                                          break;
-                                       case 3:
-                                         colorVar = third;
-                                          break;
+                                        case 1:
+                                           colorVar = first;
+                                           break;
+                                        case 2:
+                                           if(! isSecondTaken)
+                                              colorVar = second;
+                                            else
+                                              colorVar = last;
+                                            break;
+                                         case 3:
+                                           colorVar = third;
+                                            break;
+                                         case 4:
+                                             colorVar = fourth;
+                                             break;
+                                          case 5:
+                                             colorVar = fifth;
+                                             break;
                                          }
+
+
+                                          //////////////////////////////////Under test code  Toyota ///////////////////////////////
+                                          if(data.getColumnLabel(i).toLowerCase().indexOf("failure") > -1)  // this is an exception of Toyota study to show all the failure drive with
+                                             {
+                                                   series[i-3].color = second;
+                                                   colors[i-3] = second
+                                                  //alert(colorVar + ' After ' + second )
+                                                  colorVar = second;
+                                                  isSecondTaken = true; // to make sure this color will not be assigned again to an
+                                             }
+                                         /////////////////////////////////////////////////////////////////////////////////////////
+
                                         ctrColor++;
-                                        series[i] = {type: "area", areaOpacity:0.2, lineWidth:0, color: colorVar};
+
+                                        series[i] = {type: "area", areaOpacity:0.9, lineWidth:0, color: colorVar};
                                         colors[i] = colorVar;
                                     }
                                     else {

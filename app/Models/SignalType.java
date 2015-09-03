@@ -19,6 +19,7 @@ public class SignalType {
 
     private static  final int N_PERSPIRATION_CODE = 11;
     private static  final int BAR_CHART_CODE =12;
+    private static  final int EYE_TRACKING_CODE =13;
 
     private static  final int VIDEO_CODE =100;
     private static  final int INFO_CODE = 101;
@@ -48,6 +49,7 @@ public class SignalType {
     private static final String PERFORMANCE_EXTNESION ="prf";
     private static final String OTHER_EXTNESION ="other";
     private static final String BAR_CHART_EXTNESION ="bar";
+    private static final String EYE_TRACKING_EXTNESION = "eye";
 
     public static boolean isEda(String extension) {
         return extension.equalsIgnoreCase(EDA_EXTNESION);
@@ -69,6 +71,7 @@ public class SignalType {
     public static boolean isBeltBreathing(String extension) {
         return extension.equalsIgnoreCase(BELT_BREATHING_EXTNESION);
     }
+    public static boolean isEyeTracking (String extension) { return extension.equalsIgnoreCase(EYE_TRACKING_EXTNESION);  }
 
     public static boolean isSimulation(String extension) {
         return extension.equalsIgnoreCase(SIMULATION_EXTNESION);
@@ -157,4 +160,5 @@ public class SignalType {
     public static int getBarChatCode() {
         return BAR_CHART_CODE;
     }
+    public static int getEyeTrackingCode() {return EYE_TRACKING_CODE;}
 }

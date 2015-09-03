@@ -152,31 +152,20 @@ object Application extends Controller {
       Logger.info("Show Subject Number: " + SubjectId + " For Study: " +studyNo);
       var sessionsPerSubjectNew : Map[String, List[(String, List[(Int, Int)])]]= Map();
       var intermidate: List[(String, List[(Int, Int)])]= List();
+      var subjectsList = List.empty[String]
       var sessionsPerSubjectMenu : Map[String, List[( String)]]= Map();
-      var signalTypes: List[Int] =List();
       var videoIdList:  Map[String, List[ String]]= Map()
       var sourceType: Int = 1;
       var studyName = "";
       DB.withConnection { implicit c =>
+
+        // we first get all the sessions for this subject
         val sessions  =
           SQL("select distinct(session_name), session_no from subject, session where study_id ={study_no} AND subject.subject_seq = session.subject_seq AND subject_id ={subject_id} AND session_name not in( 'INFO', 'PM', 'PRF' ) order by session_name desc;")
             .on('study_no -> studyNo, 'subject_id -> SubjectId)
 
-        val med = sessions().map(row =>
-          (  row[String]("session_name"))
-        ).toList
-        var medSess = sessions().map(row =>
-          (  row[Int]("session_no") -> row[String]("session_name"))
-        ).toList
-
-        val signals  =
-          SQL("select signal_signal_type from  session where  session_name not in( 'INFO', 'PM', 'PRF')  AND subject_seq = (select subject_seq from subject where subject_id ={sub_id}  AND study_id ={study_no});")
-            .on('study_no -> studyNo, 'sub_id -> SubjectId)
-        val med2 = signals().map(row =>
-          (  row[Int]("signal_signal_type"))
-        ).toList
-        signalTypes= med2;
-
+        var medSess = sessions().map(row => (  row[Int]("session_no") -> row[String]("session_name"))).toList
+        // for each session we retrieve all signals
         for(sess <- medSess) {
           val signals2 =
             SQL("select signal_seq, signal_signal_type from  session where  session_no={sess_no} AND session_name not in( 'INFO', 'PM', 'PRF')  AND subject_seq = (select subject_seq from subject where subject_id ={sub_id}  AND study_id ={study_no}) order by signal_signal_type;")
@@ -185,58 +174,37 @@ object Application extends Controller {
             (row[Int]("signal_seq") -> row[Int]("signal_signal_type"))
           ).toList
           val signalNum: List[(Int, Int)]= med3;
-
           intermidate = intermidate.::(sess._2, signalNum);
-        }
 
-        sessionsPerSubjectNew = sessionsPerSubjectNew + (SubjectId -> intermidate);
-        for(sess <- med) {
+          // find the videos for each session
           val videoIds =
             SQL("select signal_loc from session  where signal_signal_type = {video} AND session_name = {sess_id} AND subject_seq = (select subject_seq from subject where subject_id ={sub_id}  AND study_id ={study_no});")
-              .on('video -> SignalType.getVideoCode,'sess_id -> sess, 'study_no -> studyNo, 'sub_id -> SubjectId)
+              .on('video -> SignalType.getVideoCode,'sess_id -> sess._2, 'study_no -> studyNo, 'sub_id -> SubjectId)
           val vList = videoIds().map(row =>
             (row[String]("signal_loc"))
           ).toList
-          videoIdList = videoIdList + (sess -> vList);
+          videoIdList = videoIdList + (sess._2 -> vList);
+
         }
 
-        // we send the study tybe just to decide wich player should we use
+        sessionsPerSubjectNew = sessionsPerSubjectNew + (SubjectId -> intermidate);
+        // we send the study type just to decide wich player should we use
         val studyType  =
-          SQL("select study_type from study where study_id={study_id};").on('study_id-> studyNo).apply().head
+          SQL("select study_type, study_name from study where study_id={study_id};").on('study_id-> studyNo).apply().head
         sourceType = studyType[Int]("study_type");
+        studyName = studyType[String]("study_name");
 
-
-        val stName  =
-          SQL("select study_name from study where study_id={study_id};").on('study_id-> studyNo).apply().head
-        studyName = stName[String]("study_name");
 
         //for menu sake
-
         val subjects  =
           SQL("select distinct(subject_id) from subject, session where study_id ={study_no} AND subject.subject_seq = session.subject_seq order by subject_id;")
             .on('study_no -> studyNo)
-        val subectList = subjects().map(row =>
-          row[String]("subject_id")).toList
-        subectList.sorted;
+        subjectsList = subjects().map(row =>  row[String]("subject_id")).toList
 
 
-        for(sub <- subectList)
-        {
-          val sessions  =
-            SQL("select distinct session_name  from subject, session where study_id ={study_no} AND session_name not in( 'INFO', 'PM') AND subject.subject_seq = session.subject_seq AND subject_id ={subject_id} order by session_name asc;")
-              .on('study_no -> studyNo, 'subject_id -> sub)
-              .on('study_no -> studyNo, 'subject_id -> sub)
-          val med = sessions().map(row =>
-            (  row[String]("session_name"))
-          ).toList
-
-          val tt : List[(String)] = med;
-          sessionsPerSubjectMenu = sessionsPerSubjectMenu + (sub ->tt);
-        }
       }
-
-      val sortedMap = TreeMap(sessionsPerSubjectMenu.toSeq:_*)
-      Ok(views.html.ShowSignals(SubjectId, sessionsPerSubjectNew,studyNo, username, signalTypes, videoIdList,sourceType, sortedMap, studyName))
+      //val sortedMap = TreeMap(sessionsPerSubjectMenu.toSeq:_*)
+      Ok(views.html.ShowSignals(SubjectId, sessionsPerSubjectNew,studyNo, username, videoIdList,sourceType, subjectsList, studyName))
   }
 
   /**

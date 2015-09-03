@@ -1,4 +1,4 @@
-@(SubjectId: String, sub_sess:Map[String, List[(String, List[(Int, Int)])]], studyNo:Int, userName: String, signals: List[Int], videos:  Map[String, List[ String]], study_type: Int, sub_sess_menu: Map[String, List[String]], studyName: String)
+@(SubjectId: String, sub_sess:Map[String, List[(String, List[(Int, Int)])]], studyNo:Int, userName: String, videos:  Map[String, List[ String]], study_type: Int, sub_sess_menu: List[String], studyName: String)
 <!DOCTYPE html>
 <html>
 <head>
@@ -155,7 +155,7 @@
                 <span class="glyphicon glyphicon-list"></span> Subjects <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span>
             </a>
             <ul class="children collapse" id="sub-item-1">
-                @for((subject,sessions) <- sub_sess_menu){
+                @for(subject <- sub_sess_menu){
 
                 <li>
 
@@ -281,7 +281,7 @@
                             @{j = j + 1;}
                             @for(signal <- session._2){
                             <!-- to avoid the non signal files -->
-                            @if(signal._2 < 12) {
+                            @if(signal._2 < 100) {
                             <!-- <div id="Combo" style="border-style: solid;  border-radius: 15px; border-color: #636363;"> -->
                             <!-- <div class="panel-heading" id="header@session._1@signal._1"> </div> -->
                             <!--  <div class="panel-body">-->
