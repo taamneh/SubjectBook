@@ -13,14 +13,15 @@ public abstract class JsonFromExcel {
     public  JSONArray header = new JSONArray();
     public  JSONArray content = new JSONArray();
 
-    public JsonFromExcel(int signalType, String fileName){
+
+    public JsonFromExcel(int f_Rate, String fileName){
         this.fileName = fileName;
         this.signalType = signalType;
-        frameRate = getFrameRate();
+        // frameRate = getFrameRate();
+        frameRate = f_Rate;
     }
 
-
-    public int getFrameRate() {
+    /*public int getFrameRate() {
         if(signalType == 3 || signalType == 6 ||  signalType ==11) {
             return 8;
         }
@@ -34,7 +35,7 @@ public abstract class JsonFromExcel {
             return 16;
         else
             return 1;
-    }
+    }*/
 
     abstract void addToHeader(String str, boolean newRow);
     abstract void addToContent(Double num, boolean newRow);
@@ -56,10 +57,6 @@ public abstract class JsonFromExcel {
     public void setFileName(String fileName)
     {
         this.fileName = fileName;
-    }
-    public int setSignalType()
-    {
-        return signalType;
     }
 
     public String getFileName()

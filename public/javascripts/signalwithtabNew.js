@@ -1,13 +1,14 @@
- var EDA_CODE = 3;
- var MOTION_CODE = 6;
  var PERSPIRATION_CODE = 1;
+ var SIMULATION_CODE = 2;
+ var EDA_CODE = 3;
+ var HRV_CODE =4;
+ var EXPRESSION_CODE = 5;
+ var MOTION_CODE = 6;
  var BREATHING_CODE = 7;
  var HEART_RATE_CODE = 8;
  var BELT_BREATHING_CODE = 9;
  var TEMPERATURE_CODE = 10;
- var SIMULATION_CODE = 2;
- var HRV_CODE =4;
- var EXPRESSION_CODE = 5;
+
  var N_PERSPIRATION_CODE =11;
  var BAR_CHART_CODE =12;
  var EYE_TRACKING_CODE =13;
@@ -29,10 +30,14 @@ var refreshIntervalId = null;
 var player1 = null, player2 = null, player3 = null, player4 = null;
 var videonum =0 ;
 
- var subject;
+var subject;
 var session;
+var newSessionName;
 var studyId;
 var occupied ;
+
+var gChart= null;
+var gData = null;
 
 $(document).ready(function(){
 // when user click on the tab (i.e., session)
@@ -40,11 +45,14 @@ $(document).ready(function(){
 
  $('.panel-body.tabs .nav.nav-tabs a').click(function() {
 
-
    function intermediate ()
      {
+
+
+
+
           var counter =0, iterator=0;
-          // just to add horzontal axis to the last chart
+          // just to add horizontal axis to the last chart
           $( ".chart" ).each(function( index ) {
             if($(this).attr('session') == session)
                     {
@@ -61,36 +69,31 @@ $(document).ready(function(){
 
                var signalType = $(this).attr('signalType');
                var signalSequence = $(this).attr('signalSequence');
+               var yTitle = $(this).attr('yTitle');
+               var ymin = $(this).attr('ymin');
+               var ymax = $(this).attr('ymax');
+               var log = $(this).attr('log');
                var chartname = "chart"+session+signalSequence;
                var dynamicbtn = "dynamic"+session+signalSequence;
                if(iterator== counter -1){
-                 drawStuff_temp1(session, subject , chartname, studyId, signalSequence,signalType, dynamicbtn, info, true);
+                 drawStuff_temp1(session, subject , chartname, studyId, signalSequence,signalType, dynamicbtn, info, true, yTitle, ymin, ymax, log);
                }
                else
-                 drawStuff_temp1(session, subject , chartname, studyId, signalSequence,signalType, dynamicbtn, info, false);
+                 drawStuff_temp1(session, subject , chartname, studyId, signalSequence,signalType, dynamicbtn, info, false, yTitle, ymin, ymax, log);
                info = 0;
                iterator++;
                showVideo($(this).attr('session'),signalSequence);
-               // this call is meant to attach some event to show video button
-               /*var videoButton = "#showvideo"+$(this).attr('session') + signalSequence;
-               if(firstVideo)
-               {
-                $(videoButton).trigger("click");
-                firstVideo = false;
-                }*/
 
           }
 
           });
      }
-
-
-
        var currentAttrValue = $(this).attr('href');
       $(currentAttrValue).show().siblings().hide();
 
         subject= $(this).attr('subject');
         session = $(this).attr('session');
+        newSessionName = $(this).attr('newSessionName');
         studyId = $(this).attr('studyId');
         occupied = $(this).attr('occupied');
 
@@ -107,70 +110,146 @@ $(document).ready(function(){
             $(videoDiv).slideDown("slow");
        }
 
+
+        if (gData !== null)
+         {
+
+
+           var match = /\d*/
+           for( i =1; i< gData.getNumberOfColumns(); i++){
+              // alert(gData.getColumnLabel(i).toUpperCase()  +  '    '  + newSessionName)
+             //alert(session.replace(match, "").toUpperCase()  +'   '+  gData.getColumnLabel(i).toUpperCase() )
+             if(gData.getColumnLabel(i).toUpperCase() == newSessionName.replace(match, "").toUpperCase())
+             {
+                gChart.setSelection([{row:null,column:i}]);
+                //alert('fonnd it');
+             }
+           }
+
+         }
+
+
     });
 
 
-
-
     var info = 1; // this var is used to avoid calling the information function every time
-     // this is used to automatically request data from the firstt tab
-      $('.panel-body.tabs .nav.nav-tabs a').first().trigger("click");
+     // this is used to automatically request data from the first tab
+    $('.panel-body.tabs .nav.nav-tabs a').first().trigger("click");
       //$('.btn.btn-default.show-video').first().trigger("click");
-
-       // this is to show the Bar information----
-       $(".chartBar" ).each(function() {
-            $("#generalInfo" ).show();
-             var signalType = $(this).attr('signalType');
-             var signalSequence = $(this).attr('signalSequence');
-             var chartName = "chartBar"+"BAR"+signalSequence;
-
-             drawStuff_temp1("BAR", subject , chartName, studyId, signalSequence,signalType, "", 1, true);
-            });
-
-
-
-
-
-
+     showAllGeneral();  // this fucntion will show all the general infromation
 });
+
+function showAllGeneral(){
+         $('div[id^="generalData"]').each(function() {
+             var signalCode = $(this).attr('signalCode');
+             var dataType = $(this).attr('dataType');
+             var yTitle = $(this).attr('yTitle');
+             var signalSequence = $(this).attr('signalSequence');
+             var chartName = "generalInfo" + signalSequence + signalCode;
+
+            if(dataType == 4) {   /// if this is bar
+              $(this).attr( "class", "col-lg-12" );
+                   $(this).append( "<div class=\"panel panel-info\"> \
+                                          <div class=\"panel-heading\" > \
+                                              NASA Task Load Index <a><span data-toggle=\"collapse\" href=\"#\" class=\"icon pull-right\"><em class=\"glyphicon glyphicon-chevron-down\"></em></span> </a> \
+                                          </div> \
+                                          <div id =\"general123\" class=\"panel-body\"> \
+                                               <div  id=\"dashboard_div@temp._1@temp._1\"> \
+                                                      <div id=\"" + chartName   + "\" class=\"chartBar\" style=\"height: 250px;\"> \
+                                                      </div> \
+                                               </div> \
+                                          </div> \
+                                    </div>");
+                   $(this).show();
+                    drawStuff_temp1("BAR", subject , chartName , studyId, signalSequence,dataType, "", 1, true, yTitle, -1, -1, 0);
+                 }
+               if(dataType == 3) {
+                                   $(this).append( "<div class=\"panel panel-info\"> \
+                                          <div class=\"panel-heading\" > \
+                                               Biography <a><span data-toggle=\"collapse\" href=\"#\" class=\"icon pull-right\"><em class=\"glyphicon glyphicon-chevron-down\"></em></span> </a> \
+                                          </div> \
+                                         <div id=\"" + chartName + "\" class=\"panel-body\"> \
+                                            <span class=\"glyphicons glyphicons-girl\"></span> \
+                                         </div> \
+                                    </div>");
+                  $(this).show();
+                  getBiography (" ", subject, chartName, studyId, signalSequence);
+              }
+               if(dataType == 5) {
+               $(this).attr( "class", "col-lg-8" );
+                                $(this).append( "<div class=\"panel panel-info\"> \
+                                         <div class=\"panel-heading\" > \
+                                              Psychometrics  <a><span data-toggle=\"collapse\" href=\"#\" class=\"icon pull-right\"><em class=\"glyphicon glyphicon-chevron-down\"></em></span> </a> \
+                                         </div> \
+                                        <div id=\"" + chartName + "\" class=\"panel-body\"> \
+                                        </div> \
+                                   </div>");
+                  $(this).show();
+                  getPsychometric (" ", subject, chartName, studyId, signalSequence);
+               }
+
+               // this code to allow minimize each panel
+               var temp =  $(this).attr('id');
+                var str = "div#" + temp  +" div.panel div.panel-heading > a > span.icon"
+                                $(document).on("click",str, function(){
+                                   $("div.panel div#" +chartName ).slideToggle();
+                });
+               /*if(dataType == 1) {
+                   $(this).attr( "class", "col-lg-12" );
+                              $(this).append( "<div class=\"panel panel-info\"> \
+                                       <div class=\"panel-heading\" > \
+                                            Signal <a><span data-toggle=\"collapse\" href=\"#\" class=\"icon pull-right\"><em class=\"glyphicon glyphicon-chevron-down\"></em></span> </a> \
+                                       </div> \
+                                      <div id=\"" + chartName + "\" class=\"panel-body\"> \
+                                      </div> \
+                                 </div>");
+                            $(this).show();
+                           // getPsychometric (" ", subject, chartName, studyId, signalSequence);
+                            drawStuff_temp1(" ss", subject , chartName, studyId, signalSequence, signalCode, dynamicbtn, info, true);
+
+               }*/
+          });
+}
 
 var marker ="";
 var stopBar = false;
 var STAI = 0;
 var TypeAB = 1;
 
-function showPsychometricScale( id, type, score){
+function showPsychometricScale( id, type, score, min_value , max_value){
 
     var target =  "#" + id;
     if(type == "TYPE AB") {
 
 
+            var jump = (max_value-min_value)/5;
+
             $(target).igLinearGauge({
                 height: "60px",
                 width: "100%",
                 value: score,
-                minimumValue: 35,
-                maximumValue: 380,
+                minimumValue: min_value,
+                maximumValue: max_value,
                 ranges: [
                     {
                      brush: '#33FFFF',
-                        startValue: 35, endValue:104, name: "range5"
+                        startValue: min_value, endValue: min_value + jump, name: "range5"
                     },
                     {
                      brush: '#33FFCC',
-                        startValue: 104, endValue: 173, name: "range4"
+                        startValue: min_value + jump, endValue: min_value + (2*jump), name: "range4"
                     },
                     {
                      brush: '#33FF99',
-                        startValue: 173, endValue: 242, name: "range3"
+                        startValue:  min_value + (2*jump), endValue:  min_value + (3*jump), name: "range3"
                     },
                     {
                      brush: '#33FF66',
-                        startValue: 242, endValue: 311, name: "range2"
+                        startValue:  min_value + (3*jump), endValue:  min_value + (4*jump), name: "range2"
                     },
                     {
                      brush: '#33FF33',
-                        startValue: 311, endValue: 380, name: "range1"
+                        startValue:  min_value + (4*jump), endValue:  min_value + (5*jump), name: "range1"
                     },
                 ]
             });
@@ -179,107 +258,123 @@ function showPsychometricScale( id, type, score){
 
     else  {
 
+    var jump = (max_value-min_value)/5;
+
      $(target).igLinearGauge({
                     height: "60px",
                     width: "100%",
                      value: score,
-                    minimumValue: 20,
-                    maximumValue: 80,
+                    minimumValue: min_value,
+                    maximumValue: max_value,
                     ranges: [
                         {
                             brush: '#FFFFCC',
-                            startValue: 20, endValue:32, name: "range1"
+                            startValue: min_value, endValue:min_value + jump, name: "range1"
                         },
                         {
                              brush: '#FFFF99',
-                            startValue: 32, endValue: 44, name: "range2"
+                            startValue: min_value + jump, endValue: min_value + (2*jump), name: "range2"
                         },
                         {
                         brush: '#FFFF66',
-                            startValue: 44, endValue: 56, name: "range3"
+                            startValue: min_value + (2*jump), endValue: min_value + (3*jump), name: "range3"
                         },
                         {
                        brush: '#FFFF33',
-                            startValue: 56, endValue: 68, name: "range4"
+                            startValue: min_value + (3*jump), endValue: min_value + (4*jump), name: "range4"
                         },
                         {
                            brush: '#FFFF00',
-                            startValue: 68, endValue: 80, name: "range5"
+                            startValue: min_value + (4*jump), endValue: min_value + (5*jump), name: "range5"
                         },
                     ]
                 });
 
      }
 }
+var globalCtr = 1
+function getBiography(task, subject, chartDestination, studyId, signalSequence) {
 
-function showInfo(task, subject, chartDestination, studyId, signalSequence)
-{
-      var jsonDataInfo;
-        $.ajax({
-             type: 'GET',
-             url: "/getInfo",
-             dataType:"json",
-             data: "task=" + task + "&subject=" + subject + "&studyId=" + studyId  + "&signal_type=" + INFO_CODE ,
-             async: true,
-            success:function(result) {
-                jsonDataInfo = result;
-                //jsonDataInfo= JSON.parse(jsonDataInfo);
-                       var bio1;
-                             $('#Bio').empty();
-                           //  alert(jsonDataInfo);
-                            if( !jQuery.isEmptyObject(jsonDataInfo))
-                            {
-                                $("#BioTop" ).show();
-                                jQuery.each(jsonDataInfo, function(key, val) {
-                               $('#Bio').append( "<p style=\"font-weight: bold\">" + key + ": " + val +" </p>" );
-                                });
-                            }
-                            else{
-                               $( "#BioTop" ).hide();
-                            }
-            }
-            });
-
-       var jsonDataPm = '';
-        $.ajax({
-              type: 'GET',
-              url: "/getPsycho",
-              dataType:"json",
-              data: "task=" + task + "&subject=" + subject + "&studyId=" + studyId  + "&signal_type=" + PSYCHOMETRIC_CODE ,
-               async: true,
+  var chart = "#" + chartDestination ;
+   var jsonDataInfo;
+           $.ajax({
+                type: 'GET',
+                url: "/getInfo",
+                dataType:"json",
+                data: "task=" + task + "&subject=" + subject + "&studyId=" + studyId  + "&signal_seq=" + signalSequence ,
+                async: true,
                success:function(result) {
-               jsonDataPm = result;
-                 // jsonDataPm= JSON.parse(jsonDataPm);
-                        var sycho;
-                        var ctr=1;
-
-                       $('#phycho').empty();
-                       if( !jQuery.isEmptyObject (jsonDataPm))
-                       {
-                           $("#phychoTop" ).show();
-                           jQuery.each(jsonDataPm, function(key, val) {
-                             var name = "lineargauge" + ctr;
-                              ctr++;
-                            //<div >Absolute Zero</div> <div style="height:60px"> <div id="lineargauge"></div> </div>
-
-                            $('#phycho').append( "<div style=\"font-weight: bold\" >"+ key +": " + val +"</div> <div style=\"height:60px\"> <div id=\"" + name + "\"></div> </div> &nbsp; &nbsp;");
-                            showPsychometricScale(name, key, val)
-
-                            // $('#phycho').append( "<p>" + key + ": " + val +" </p>" );
-                           });
-                       }
-                       else{
-                          $( "#phychoTop" ).hide();
-                       }
-
+                   jsonDataInfo = result;
+                   //jsonDataInfo= JSON.parse(jsonDataInfo);
+                          var bio1;
+                                $(chart).empty();
+                              //  alert(jsonDataInfo);
+                               if( !jQuery.isEmptyObject(jsonDataInfo))
+                               {
+                                   //$("#BioTop" ).show();
+                                   jQuery.each(jsonDataInfo, function(key, val) {
+                                  //$(chart).append( "<p style=\"font-weight: bold\">" + key + ": " + val +" </p>" );
+                                  $(chart).append( "<p style=\"font-weight: bold\">" +  val +" </p>" );
+                                   });
+                               }
+                               else{
+                                 // $( "#BioTop" ).hide();
+                               }
                }
+               });
+}
+function getPsychometric(task, subject, chartDestination, studyId, signalSequence) {
+  var chart = "#" + chartDestination ;
+   var jsonDataPm = '';
+          $.ajax({
+                type: 'GET',
+                url: "/getPsycho",
+                dataType:"json",
+                data: "task=" + task + "&subject=" + subject + "&studyId=" + studyId  + "&signal_seq=" + signalSequence ,
+                 async: true,
+                 success:function(result) {
+                 jsonDataPm = result;
+                   // jsonDataPm= JSON.parse(jsonDataPm);
+                          var sycho;
+                         $(chart).empty();
 
-              })
+                          var pName, min, max, score;
+                         if( !jQuery.isEmptyObject (jsonDataPm))
+                         {
+                            // $("#phychoTop" ).show();
+                             jQuery.each(jsonDataPm, function(key, val) {
 
+                             jQuery.each(val, function(key2, val2) {
+                               if (key2 == "name")
+                                  pName = val2;
+                                if(key2=="score")
+                                  score= val2;
+                                 if(key2=="min")
+                                   min = val2;
+                                 if(key2=="max")
+                                   max = val2;
 
+                             });
+                               var name = "lineargauge" + globalCtr;
+                                globalCtr++;
+                              //<div >Absolute Zero</div> <div style="height:60px"> <div id="lineargauge"></div> </div>
 
+                              $(chart).append( "<div style=\"font-weight: bold\" >"+ pName +": " + score +"</div> <div style=\"height:60px\"> <div id=\"" + name + "\"></div> </div> &nbsp; &nbsp;");
+                              showPsychometricScale(name, pName, score, min, max)
 
+                              // $('#phycho').append( "<p>" + key + ": " + val +" </p>" );
+                             });
+                         }
+                         else{
+                         //  $( "#phychoTop" ).hide();
+                         }
 
+                 }
+
+                })
+}
+
+function showPerformance(task, subject, chartDestination, studyId, signalSequence){
          var jsonDataPRF = '';
            $.ajax({
                          type: 'GET',
@@ -318,7 +413,9 @@ function showInfo(task, subject, chartDestination, studyId, signalSequence)
 
 }
 
-function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequence,signal_type, dynamicbtn, info, showhAxis) {
+
+
+function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequence,signal_type, dynamicbtn, info, showhAxis, vTitle, ymin, ymax, log) {
 
 
     var signal_title ;
@@ -329,6 +426,20 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
     var dash = "dashboard_div"+task+ signalSequence;
     var filter = "filter_div" + task + signalSequence;
     var editme = "#editchart"  + task + signalSequence;
+    var max_yvalue = "auto"
+    var min_xvalue = 0
+    var logType = null;
+
+       if(ymin != null ){
+             min_xvalue = ymin;
+          }
+      if(ymax != null){
+        max_yvalue = ymax;
+      }
+
+    if(log ==1)
+       logType = 'log'
+
 
     var jsonData;
      $.ajax({
@@ -342,7 +453,10 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                           success:function(result) {
                              jsonData = result;
                               var data = new google.visualization.DataTable(jsonData);
-                              if(signal_type ==12){
+
+                             if(signal_type ==4){
+                             gData = data;
+
                                         var options = {
                                          title: 'NASA Task Load Index',
                                           hAxis: {
@@ -353,12 +467,36 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                           legend: { position: 'top'},
                                           bars: 'vertical'
                                         };
-                               var chart = new google.visualization.ColumnChart(document.getElementById(chartDestination));
-                              chart.draw(data,options );
-                              }
-                                 else{
+                              gChart = new google.visualization.ColumnChart(document.getElementById(chartDestination));
+                              gChart.draw(data,options );
 
-                                   switch(parseInt(signal_type))
+
+                              //chart.setSelection([{row:null, column:0}])
+                               //gChart.setSelection([{row:null,column:1}]);
+                              }
+                              else if(signal_type == 3){
+                                  getBiography (" ", subject, chartDestination, studyId, signalSequence);
+
+                              }
+                              else if(signal_type == 5){
+                                 chartDestination = "#"+ chartDestination;
+
+                                 $(chartDestination).attr( "class", "col-lg-8" );
+                                 var chartName = "sessionRelated" + signalSequence;
+                                    $(chartDestination).append( "<div class=\"panel panel-info\"> \
+                                                                           <div class=\"panel-heading\" > \
+                                                                                Psychometric <a><span data-toggle=\"collapse\" href=\"#\" class=\"icon pull-right\"><em class=\"glyphicon glyphicon-chevron-down\"></em></span> </a> \
+                                                                           </div> \
+                                                                          <div id=\"" + chartName + "\" class=\"panel-body\"> \
+                                                                          </div> \
+                                                                     </div>");
+
+                                     getPsychometric (" ", subject, chartName, studyId, signalSequence);
+
+                              }
+                              else{
+
+                                   /*switch(parseInt(signal_type))
                                    {
                                      case EDA_CODE:
                                         signal_title = "EDA Signal";
@@ -406,22 +544,44 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                           signal_title = "Facial Expressions";
                                           ytitle = "";
                                              break;
-                                     case EYE_TRACKING_CODE:
-                                          signal_title = "";
-                                          ytitle = "";
-                                          break;
+                                      case EYE_TRACKING_CODE:
+                                            signal_title = "Malcolm is Idiot";
+                                            ytitle = "Eye Tracker";
+                                            break;
+
                                      default:
                                        signal_title = "Anonymous Signal";
                                        ytitle = "";
                                    }
+                                   */
+                                    ytitle = vTitle;      /// Just use the parameter vtitle as the ytile for the chart
+
+                                    // Tempraray
+
+
+                                      if(ytitle.toLowerCase().indexOf("perinasal") > -1)
+                                         ytitle = "Perinasal EDA ["+ '\u00B0' +"C"+ '\xB2' +"]";
+                                      else if(ytitle.toLowerCase().indexOf("ohm") > -1)
+                                        ytitle =  "Palm EDA ["+ '\u2126' + "]";
+                                      else if(ytitle.toLowerCase().indexOf("nasal") > -1)
+                                        ytitle = "Nasal EDA ["+ '\u00B0' +"C"+ '\xB2' +"]";
+                                      else if(ytitle.toLowerCase().indexOf("eda") > -1)
+                                        ytitle = "Palm EDA [µS]";
+                                     /* else if(ytitle.toLowerCase().indexOf("hrv") > -1)
+                                        ytitle =  "HRV [bpm]";*/
+
+
+
+
+                                    ////////////////////////////
+
+
                                   // to set the title for each signal
                                   $( header ).html( signal_title );
 
                                    if(info == 1){
-                                     showInfo(task, subject, chartDestination, studyId, signalSequence);
+                                    // showInfo(task, subject, chartDestination, studyId, signalSequence);
                                }
-
-
                                 // this is to show the axis for the last chart
                                 var showAx = "none";
                                 var titleVar =null;
@@ -448,30 +608,33 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                  var chart = new google.visualization.LineChart(document.getElementById(chartDestination));
                                  var options = {
                                            //title: signal_title,
-                                           legend: { position: 'top' },
+
+                                           legend: { position: 'top', maxLines: 2 },
                                            curveType: 'function',
                                            colors: colors,
                                           // backgroundColor:  '#F5F5F5',
                                            chartArea:{left:100,top: 50, width:'85%',height:'65%'},
-                                             series: {
+                                           series: {
                                               //2 : {type: "area"}
 
                                                           },
-                                           hAxis: {title: titleVar,
-                                           gridlines: {
-                                                              color: 'transparent'
-                                                          },
-                                           textStyle:{
-                                                                //color : 'green',
-                                                                bold: true,
-                                                                italic: false
-                                                               },
-                                           titleTextStyle:{
-                                                            //color : 'green',
-                                                             bold: true,
-                                                             italic: false
-                                           },
-                                           textPosition : showAx
+                                           hAxis: {
+                                                  title: titleVar,
+                                                   baseline: 0,
+                                                   gridlines: {
+                                                                      color: 'transparent'
+                                                                  },
+                                                   textStyle:{
+                                                                        //color : 'green',
+                                                                        bold: true,
+                                                                        italic: false
+                                                                       },
+                                                   titleTextStyle:{
+                                                                    //color : 'green',
+                                                                     bold: true,
+                                                                     italic: false
+                                                   },
+                                                  textPosition : showAx
 
                                                 },
                                            crosshair: { trigger: 'selection', orientation: 'vertical', color: 'black'},
@@ -488,27 +651,55 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                                              opacity: 1          // The transparency of the text.
                                                            }
                                                    },
-                                           tooltip: { trigger: tooltipTrigger },
+                                             tooltip: { trigger: tooltipTrigger, showColorCode: true },
                                            //tooltip: { trigger: 'none' },
                                            explorer: { actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: .01 },
                                            animation:{ startup:true},
-                                           vAxis: { title: ytitle,
-                                             textPosition: showYAxis,
-                                             format: '###0.000',
-                                            gridlines: {
-                                                   color: 'transparent'
-                                               },
-                                            textStyle:{
-                                                    //color : 'green',
-                                                    bold: true,
-                                                    italic: false
-                                           },
-                                            titleTextStyle:{
-                                                           // color : 'green',
+                                           vAxis: {
+                                           scaleType: logType,
+                                           title: ytitle,
+                                           baseline: min_xvalue,
+                                            textPosition: showYAxis,
+                                            format: '###0.000',
+                                           gridlines: {
+                                                  color: 'transparent'
+                                              },
+                                           textStyle:{
+                                                   //color : 'green',
+                                                   bold: true,
+                                                   italic: false
+                                          },
+                                           titleTextStyle:{
+                                                          // color : 'green',
+                                                           bold: true,
+                                                           italic: false
+                                                           },
+                                           viewWindow :{
+                                                       min : min_xvalue,
+                                                       max : max_yvalue
+                                                      }}
+                                           /*vAxis: { title: ytitle,
+                                                    baseline: min_xvalue,
+                                                     textPosition: showYAxis,
+                                                     format: '###0.000',
+                                                    gridlines: {
+                                                           color: 'transparent'
+                                                       },
+                                                    textStyle:{
+                                                            //color : 'green',
                                                             bold: true,
                                                             italic: false
-                                                            }
-                                            }
+                                                   },
+                                                    titleTextStyle:{
+                                                                   // color : 'green',
+                                                                    bold: true,
+                                                                    italic: false
+                                                                    },
+                                                   viewWindow :{
+                                                    min : min_xvalue,
+                                                    max : max_yvalue
+                                                   }
+                                            }*/
                                       };
 
                                  // to assigna colors for the annotaiton series....
@@ -524,35 +715,6 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
 
                                  var colorVar;
                                  var ctrColor =1;
-                                /* for(t=startAnnotFrom;  t< indexOfLast; t++)
-                                 {
-                                 // alert(t)
-                                  switch(ctrColor)
-                                   {
-                                  case 1:
-                                     colorVar = first;
-                                     break;
-                                  case 2:
-                                     if(! isSecondTaken)
-                                        colorVar = second;
-                                      else
-                                        colorVar = last;
-                                      break;
-                                   case 3:
-                                     colorVar = third;
-                                      break;
-                                   case 4:
-                                       colorVar = fourth;
-                                       break;
-                                    case 5:
-                                       colorVar = fifth;
-                                       break;
-                                   }
-                                     //alert(data.getColumnLabel(t))
-
-                                    ctrColor++;
-                                    myObj[t] = {type: "area", color: colorVar};
-                                 }*/
 
                                 var columns = [];
                                 var series = {};
@@ -894,6 +1056,7 @@ function onYouTubePlayerReady(playerId)
   switch(videonum)
      {
        case 0:
+
          player1 = document.getElementById(playerId);
          player1.seekTo(goToTime, true);
          player1.playVideo();
@@ -902,6 +1065,7 @@ function onYouTubePlayerReady(playerId)
          player1.addEventListener("onStateChange", "onytplayerStateChange");
           break;
        case 1:
+
           player2 = document.getElementById(playerId);
           player2.seekTo(goToTime, true);
           player2.playVideo();
@@ -910,6 +1074,7 @@ function onYouTubePlayerReady(playerId)
           player2.addEventListener("onStateChange", "onytplayerStateChange");
         break;
        case 2:
+
            player3 = document.getElementById(playerId);
            player3.seekTo(goToTime, true);
            player3.playVideo();

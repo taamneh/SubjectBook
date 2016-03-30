@@ -3,6 +3,7 @@ package Models;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -14,13 +15,15 @@ public class PlainChartFromExcel extends JsonFromExcel {
 
 
     private JSONArray arrTemp= new JSONArray();
-    private ArrayList<Double> avergaSignal = new ArrayList<>(20);
+    private ArrayList<Double> avergaSignal = new ArrayList<>(40);
     private int ctrForArray =0;
     private int frameCtr=1;
 
     public void addToHeader(String str,  boolean newRow)
     {
 
+        if(str.toLowerCase().contains("breaking"))
+            str = "Braking";
         JSONObject obj = new JSONObject();
         obj.put("id","");
         obj.put("label",str);
@@ -30,7 +33,7 @@ public class PlainChartFromExcel extends JsonFromExcel {
     }
     public void intializeArray()
     {
-        for(int i=0; i<20; i++)
+        for(int i=0; i<40; i++)
             avergaSignal.add(-1.0);
     }
 
@@ -83,11 +86,11 @@ public class PlainChartFromExcel extends JsonFromExcel {
         }
 
     }
-
     public PlainChartFromExcel(String fileName, int signal )
     {
         super(signal, fileName);
         intializeArray();
 
     }
+
 }

@@ -1,8 +1,3 @@
-h2-browser
-run
-h2-browser
-run
-h2-browser
 run
 h2-browser
 compile
@@ -497,4 +492,9 @@ play clean compile stage
 clean compile stage
 play clean compile stage
  clean compile stage
+compile
+clean complete stage
+compile
+clean complete stage
+clean compile stage
 compile

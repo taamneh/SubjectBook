@@ -1,5 +1,8 @@
 package Models;
 
+import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
+import scala.util.parsing.json.JSONObject;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -21,52 +24,41 @@ public class TestMyJAvaCode {
         public int y;
 
     }
-    public static void main(String[] args)
+    public static void round(Integer x) {
+
+        x.equals(7);
+    }
+    public static void main(String[] args) throws   Exception
     {
 
-        TreeMap<Integer, Dat> mp= new TreeMap();
-        ArrayList<Dat> lst = new ArrayList<>();
+        String salah = "Salah";
+        Integer x = new Integer(3);
+        round(x);
+        System.out.println(x);
 
-        Dat x = new Dat(0, 0);
-        for(int i=0; i<5; i++)
-        {
-             x.x= i+2;
-            x.y= i+4;
-            mp.put(i, x);
-        }
+        /*ForBarFromExcel barRaw = new ForBarFromExcel("C:\\Users\\staamneh\\Downloads\\T001-005.sim", 1, 4);
 
-        System.out.print(mp.get(0).x + "    " + mp.get(0).y);
-        System.out.print(mp.get(1).x + "    " + mp.get(1).y);
-
-
-        Dat y = new Dat(0,0);
-        for(int i=0; i<5; i++)
-        {
-            y.x= i+2;
-            y.y= i+4;
-            lst.add(y);
-        }
-
-        System.out.print(lst.get(0).x + "    " +  lst.get(0).y);
-        System.out.print(lst.get(1).x + "    " +  lst.get(1).y);
-
-        /*System.out.print("salah");
         try {
-            InputStream input = new FileInputStream("C:\\Users\\staamneh\\Desktop\\test\\RI_S001-001.Z_ECG");
-            InputStream act = new FileInputStream("C:\\Users\\staamneh\\Desktop\\test\\RI_S001-001[ErrorReport].activity");
-            OutputStream output= new FileOutputStream("C:\\Users\\staamneh\\Desktop\\test\\result.txt");
-            PrintWriter print = new PrintWriter(output);
 
+            NewExcelFormat newF = new NewExcelFormat(barRaw);
 
+            try {
+                newF.processAllSheets();
+            } catch (InvalidOperationException ioe) {
+                OldExcelFormat oldF = new OldExcelFormat(barRaw);
+                oldF.readSheet();
+            }
 
-            print.write(ReadExcelJava.fromExcelInput( 1, ReadExcelJava.readActivity(act), "").toString());
-
+        } catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
+            //return null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e)
-        {
-
-        }*/
 
 
+        System.out.println();
+        //System.out.println(ReadExcelJava.findAbsoluteMeanFromExcel("C:\\Users\\staamneh\\Downloads\\T001-005.sim"));
+        double x = ReadExcelJava.findAbsoluteMeanFromExcel("C:\\Users\\staamneh\\Downloads\\T001-005.sim");
+        ReadExcelJava.findPerformanceFromExcel(x, "C:\\Users\\staamneh\\Downloads\\T001-005.sim");*/
     }
 }

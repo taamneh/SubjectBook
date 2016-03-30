@@ -60,11 +60,22 @@ public class AnnotatedChartFromExcel extends JsonFromExcel {
         String columnName = "bgCol";
         int util = 1;
         for(int ct=0; ct< distinctAnno.size(); ct++) {
+            String str = distinctAnno.get(ct);
+            if(str.toLowerCase().contains("multitasking"))
+                str = "No Stressor";
+            else if(str.toLowerCase().contains("motoric"))
+                str = "Sensorimotor Stressor";
+            else if(str.toLowerCase().contains("cognitive"))
+                str = "Cognitive Stressor";
+            else if(str.toLowerCase().contains("motoric"))
+                str = "Sensorimotor Stressor";
+
+
             columnName = columnName + util;
             util++;
             obj = new JSONObject();
             obj.put("id",columnName);
-            obj.put("label",distinctAnno.get(ct));
+            obj.put("label",str);
             obj.put("type","number");
             obj.put("color","grey");
             header.add(obj);
@@ -101,6 +112,9 @@ public class AnnotatedChartFromExcel extends JsonFromExcel {
     public void addToHeader(String str,  boolean newRow)
     {
 
+        if(str.toLowerCase().contains("breaking"))
+            str = "Braking";
+
         JSONObject obj = new JSONObject();
         //obj.put("id","");
         obj.put("label",str);
@@ -136,10 +150,10 @@ public class AnnotatedChartFromExcel extends JsonFromExcel {
             else
                 avergaSignal.set(ctrForArray,num);
 
-            if(ctrForArray != 0){
+           /* if(ctrForArray != 0){ // not the time
                 if(max < num)
                     max = num;
-            }
+            }*/
             ctrForArray++;
 
 
@@ -190,7 +204,10 @@ public class AnnotatedChartFromExcel extends JsonFromExcel {
                         }
                     }
                     else {
-                        addObjectToArrayJson( new DecimalFormat("#.####").format(avergaSignal.get(i) / frameRate));
+                        double temp = (avergaSignal.get(i) / frameRate);
+                        addObjectToArrayJson( new DecimalFormat("#.####").format(temp));
+                        if(max < temp)
+                            max = temp;
                     }
                 }
                 for(int itr=0; itr<distinctActionType.size(); itr++)
@@ -271,7 +288,8 @@ public class AnnotatedChartFromExcel extends JsonFromExcel {
                 cel = (JSONObject) it.next();
                 if(head.get("color")=="grey") {
                     if(cel.get("v") !=null)
-                        cel.replace("v", max);
+                        //cel.replace("v", max);
+                        cel.put("v",max);
                 }
                 aux++;
             }

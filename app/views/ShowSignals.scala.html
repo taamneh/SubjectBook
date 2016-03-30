@@ -1,4 +1,4 @@
-@(SubjectId: String, sub_sess:Map[String, List[(String, List[(Int, Int)])]], studyNo:Int, userName: String, videos:  Map[String, List[ String]], study_type: Int, sub_sess_menu: List[String], studyName: String)
+@(SubjectId: String, sub_sess:Map[String, (String, List[(String, Int, Int, Option[String], Option[java.math.BigDecimal], Option[java.math.BigDecimal], Int)])], studyNo:Int, userName: String, videos:  Map[String, List[(String, String)]], study_type: Int, sub_sess_menu: List[String], generalList: List[(Int, Int, Int)], studyName: String)
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +37,8 @@
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type='text/javascript' src='@routes.Assets.at("javascripts/changevideo.js")'></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <!-- <script type='text/javascript' src='@routes.Assets.at("javascripts/changevideo.js")'></script> -->
     <script type='text/javascript' src='@routes.Assets.at("javascripts/signalwithtabNew.js")'></script>
     <link rel="stylesheet" type="text/css" href="/assets/stylesheets/jquery-ui-1.9.2.css">
 
@@ -53,20 +54,6 @@
 		!function ($) {
 		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){
 		        $(this).find('em:first').toggleClass("glyphicon-minus");
-		    });
-
-
-		     $(document).on("click","div#BioTop div.panel div.panel-heading > a > span.icon", function(){
-		        $("div.panel div#Bio").slideToggle();
-		    });
-
-		      $(document).on("click","div#phychoTop div.panel div.panel-heading > a > span.icon", function(){
-		        $("div.panel div#phycho").slideToggle();
-		    });
-
-
-		      $(document).on("click","div#generalInfo div.panel div.panel-heading > a > span.icon", function(){
-		        $("div.panel div#general").slideToggle();
 		    });
 
 
@@ -122,15 +109,15 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#"><span>Subject</span>Book</a> <a class="navbar-brand" href="/allStudies"><span></span>My Studies</a>
-            <a class="navbar-brand" href="#"><span></span>Share</a>
-            <a class="navbar-brand" href="#"><span></span>Recommend us</a>
+            <!-- <a class="navbar-brand" href="#"><span></span>Share</a> -->
+            <a class="navbar-brand" href="/frontPage"><span></span>Help</a>
             <ul class="user-menu">
                 <li class="dropdown pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> @userName <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -149,7 +136,8 @@
 
         <li><a href="/allStudies"><span class="glyphicon glyphicon-th"></span> My Studies </a></li>
         <li><a href="/createStudy"><span class="glyphicon glyphicon-pencil"></span> New Study</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon glyphicon-share"></span> Share study</a></li>
+        <li><a href="/showAllDataTypes"><span class="glyphicon glyphicon-cog"></span> Manage your Data</a></li>
+        <li><a href="/showAllPsychometric"><span class="glyphicon glyphicon-cog"></span> Manage your Psychometric data</a></li>
         <li class="parent ">
             <a href="#">
                 <span class="glyphicon glyphicon-list"></span> Subjects <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span>
@@ -183,7 +171,9 @@
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="/allStudies"><span class="glyphicon glyphicon-home"></span></a></li>
-            <li class="active"><a href="/showStudy/@studyNo">@studyName </a> </li><li>@SubjectId</li>
+            <li class="active"><a href="/showStudy/@studyNo">@studyName </a> </li>
+            <li class="active"><a href="/showStudySkipTop/@studyNo">User Portrait </a> </li>
+            <li>@SubjectId</li>
 
 
 
@@ -195,58 +185,18 @@
     </div>
 
     <div class="row" id ="allInfo">
-        <div class="col-md-8" id ="phychoTop" style="display: none;">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    Phychometrics <a><span data-toggle="collapse" href="#" class="icon pull-right"><em class="glyphicon glyphicon-chevron-down"></em></span> </a>
-                </div>
-                <div id ="phycho" class="panel-body">
-                </div>
-            </div>
+
+
+        <!-- <a href="/showRadar?SubjectId=@SubjectId&studyNo=@studyNo"> Show Session view </a> -->
+
+        @for(temp <- generalList){
+
+        <div class="col-md-4" id="generalData@temp._1@temp._2"  subject="@SubjectId" session="sss" signalSequence="@temp._1" signalCode="@temp._2" dataType="@temp._3" style="display: none;">
+
         </div>
 
-        <div class="col-md-4" id="BioTop" style="display: none;">
-            <div class="panel panel-info">
+        }
 
-                <div class="panel-heading">
-                    Biography <a><span data-toggle="collapse" href="#" class="icon pull-right"><em class="glyphicon glyphicon-chevron-down"></em></span> </a>
-
-                </div>
-                <div id="Bio" class="panel-body">
-                    <span class="glyphicons glyphicons-girl"></span>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-lg-12" id ="generalInfo" style="display: none;">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    NASA Task Load Index <a><span data-toggle="collapse" href="#" class="icon pull-right"><em class="glyphicon glyphicon-chevron-down"></em></span> </a>
-                </div>
-                <div id ="general" class="panel-body">
-
-
-                    @import java.math.BigInteger; var ctr =1;
-                    @for((subject,sessions) <- sub_sess){
-                    @for(session <- sessions){
-
-                    @for(signal <- session._2){
-                    @if(signal._2 == 12) {
-
-                    <div  id="dashboard_div@session._1@signal._1">
-                        <div id="chartBar@session._1@signal._1" class="chartBar" subject="@subject" session="@session._1" signalSequence="@signal._1" signalType="@signal._2"  style="height: 250px;">
-                        </div>
-                    </div>
-
-                    }
-                    }
-
-                    }
-                    }
-                </div>
-            </div>
-        </div>
 
 
     </div><!--/.row-->
@@ -254,75 +204,75 @@
         <div class="panel panel-default">
             <div class="panel-body tabs">
                 @import java.math.BigInteger; var i=1;
-                @for((subject,sessions) <- sub_sess){
                 <ul class="nav nav-tabs">
-                    @for(session <- sessions if session._1 != "BAR"){
+                    @for((name,session) <- sub_sess){
                     @if(i == 1) {
-                    <li class="active"><a  href="#@session._1" id="link@session._1" class="onesignal" subject="@subject" session="@session._1" studyId=@studyNo  occupied ="no" data-toggle="tab">@session._1</a></li>
+                    <li class="active"><a  href="#@session._1" id="link@session._1" class="onesignal" subject="@SubjectId" session="@session._1" newSessionName="@name" studyId=@studyNo  occupied ="no" data-toggle="tab">@name.replaceFirst("(\\d*\\s*)", "")</a></li>
                     } else {
-                    <li><a  href="#@session._1" id="link@session._1" class="onesignal" subject="@subject" session="@session._1" studyId=@studyNo  occupied ="no" data-toggle="tab">@session._1</a></li>
+                    <li><a  href="#@session._1" id="link@session._1" class="onesignal" subject="@SubjectId" session="@session._1" newSessionName="@name" studyId=@studyNo  occupied ="no" data-toggle="tab">@name.replaceFirst("(\\d*\\s*)", "")</a></li>
                     }
                     @{i = i + 1;}
                     }
                 </ul>
-                }
 
                 <div class="tab-content">
 
                     @import java.math.BigInteger; var j =1;
-                    @for((subject,sessions) <- sub_sess){
-                    @for(session <- sessions){
-
-                    @if(j == 1) {
-                    <div id="@session._1" class="tab-pane fade in active">
-                        } else {
-                        <div id="@session._1" class="tab-pane fade">
+                    @for((name,sessions) <- sub_sess){
+                            @if(j == 1) {
+                             <div id="@sessions._1" class="tab-pane fade in active">
+                            } else {
+                            <div id="@sessions._1" class="tab-pane fade">
                             }
                             @{j = j + 1;}
-                            @for(signal <- session._2){
-                            <!-- to avoid the non signal files -->
-                            @if(signal._2 < 100) {
-                            <!-- <div id="Combo" style="border-style: solid;  border-radius: 15px; border-color: #636363;"> -->
-                            <!-- <div class="panel-heading" id="header@session._1@signal._1"> </div> -->
-                            <!--  <div class="panel-body">-->
-                            <div  id="dashboard_div@session._1@signal._1">
-                                <div id="chart@session._1@signal._1" class="chart" subject="@subject" session="@session._1" signalSequence="@signal._1" signalType="@signal._2"  style="height: 250px;">
-                                </div>
-                                <!--<div id="filter_div@session._1@signal._1" style="height: 50px;"></div> -->
-                            </div>
-                            <!--<br> -->
+                                @for(signal <- sessions._2){
+                                    <!-- to avoid the non signal files -->
+                                        @if(signal._3 == 1 || signal._3 == 3 || signal._3 == 4|| signal._3 == 5) {
+                                        <div  id="dashboard_div@sessions._1@signal._2">
+                                            <div id="chart@sessions._1@signal._2" class="chart" subject="@SubjectId" session="@sessions._1" newSessionName="@name" signalSequence="@signal._2" signalType="@signal._3" yTitle = "@signal._4" ymin ="@signal._5" ymax ="@signal._6"  log = "@signal._7" style="height: 250px;">
+                                            </div>
+                                        </div>
+                                        <!--<br> -->
 
-                            <!--<br> -->
-                            &nbsp;<div id="videoboard@session._1@signal._1" class= "video-board" name="videoboard@session._1@signal._1" style="position:relative; left: 40px; width: 80%; height: 400px; overflow-x:scroll;  white-space: nowrap;" hidden>
-                            <div class="button-station"> <a id = "showvideo@session._1@signal._1" class = "btn btn-default show-video" >Hide Videos</a> <!--&nbsp; &nbsp; &nbsp; &nbsp; <a id = "dynamic@session._1@signal._1" class="btn btn-default" style="display: none;">Dynamic</a>  &nbsp; &nbsp; <a id = "showvideo@session._1@signal._1" class = "btn btn-default show-video" style="display: none;" >Show Videos</a> &nbsp; &nbsp; <a id = "editchart@session._1@signal._1" class = "btn btn-default" style="display: none;">Edit Chart</a> &nbsp; &nbsp;<a id = "export@session._1@signal._1" style="display: none;" class = "btn btn-default">Export data</a>  <br>--> </div>
-                            @{import java.math.BigInteger; var i=1}
-                            @for((sess,videoList) <- videos){
-                            @if(sess == session._1) {
-                            @for(video <- videoList){
-                            @if(study_type == 1) {
-                            <object id="@video">
-                                <param name='movie' value='https://video.google.com/get_player?docid=0B2TDTGk9sqZLQjlxcVRxYUNqOFE&amp;ps=docs&amp;partnerid=30&amp;cc_load_policy=1'></param>
-                                <param name='allowFullScreen' value='true'></param>
-                                <param name='allowScriptAccess' value='always'></param>
-                                <embed id='video@video@signal._1' src='https://video.google.com/get_player?docid=@video&amp;ps=docs&amp;partnerid=30&amp;cc_load_policy=1&amp;color=white&amp;autoplay=0&amp;enablejsapi=1&amp;playerapiid=video@video@signal._1' type='application/x-shockwave-flash' allowfullscreen='true' allowScriptAccess='always' width=50% height='300'></embed>
-                            </object>
-                            } else {
-                            <object width='400' height='250' id="@video">
-                                <embed src='@video' type='video/x-ms-wm' allowfullscreen='true' play ='false' autostart="false"  allowScriptAccess='always' width='350' height='250'></embed></object>
+                                        <!--<br> -->
+                                            @if(signal._3 == 1){
+                                                &nbsp;<div id="videoboard@sessions._1@signal._2" class= "video-board" name="videoboard@sessions._1@signal._2" style="position:relative; left: 40px; width: 80%; height: 400px; overflow-x:scroll;  white-space: nowrap;" hidden>
+                                                <div class="button-station"> <a id = "showvideo@sessions._1@signal._2" class = "btn btn-default show-video" >Hide Videos</a>  </div>
+                                                @{import java.math.BigInteger; var i=1}
+                                                    @for((sess,videoList) <- videos){
+                                                        @if(sess == signal._1) {
+                                                            @for(video <- videoList){
+                                                                @if(study_type == 1) {
+                                                                <object id="@video">
+                                                                    <param name='movie' value='https://video.google.com/get_player?docid=0B2TDTGk9sqZLQjlxcVRxYUNqOFE&amp;ps=docs&amp;partnerid=30&amp;cc_load_policy=1'></param>
+                                                                    <param name='allowFullScreen' value='true'></param>
+                                                                    <param name='allowScriptAccess' value='always'></param>
+                                                                    <embed id='video@video._2@signal._2' src='https://video.google.com/get_player?docid=@video._2&amp;ps=docs&amp;partnerid=30&amp;cc_load_policy=1&amp;color=white&amp;autoplay=0&amp;enablejsapi=1&amp;playerapiid=video@video._2@signal._2' type='application/x-shockwave-flash' allowfullscreen='true' allowScriptAccess='always' width=50% height='300'></embed>
+                                                                </object>
+                                                                } else {
+
+                                                                <video id="@video" width="640" height="264" controls>
+                                                                    <source src="/videoB" controls type='video/mp4' >
+                                                                    <source src="file:///@video._2"
+                                                                            type='video/ogg; codecs="theora, vorbis"'>
+                                                                    Your user agent does not support the HTML5 Video element.
+                                                                </video>
+
+                                                                } <!-- else -->
+                                                            @{i = i + 1}
+                                                            } <!-- video List -->
+                                                        } <!-- if sess== session._1 -->
+                                                    }<!-- main for for videos -->
+                                                <br>
+                                                <a id = "stopvideo@sessions._1@signal._2"  class="btn btn-default">Stop Videos</a>   &nbsp; &nbsp;
+                                                </div>
+
+                                            } <!-- check the sequence number  -->
+                                        } <!-- check the type of signal -->
+
+
                             }
-                            @{i = i + 1}
-                            }
-                            }
-                            }
-                            <br>
-                            <a id = "stopvideo@session._1@signal._1"  class="btn btn-default">Stop Videos</a>   &nbsp; &nbsp;
-                        </div>
-                            <!--</div> -->
-                            <!-- <br><br><br> <br><br><br> -->
-                            }
-                            }
-                        </div>
-                        }
+                            </div>
                         }
 
                     </div>

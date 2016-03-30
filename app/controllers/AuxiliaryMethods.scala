@@ -20,17 +20,17 @@ object AuxiliaryMethods extends Controller {
       {
         count match {
           case 1 => age =1;
-            println("Age has been selected");
+           // println("Age has been selected");
           case 2 => height =1;
-            println("Height has been selected");
+            //println("Height has been selected");
           case 3 =>weight =1
-            println("weight has been selected");
+            //println("weight has been selected");
           case 4 =>gender =1
-            println("gender has been selected");
+            //println("gender has been selected");
           case 5 => ethnicity=1
-            println("ethnicity has been selected");
+            //println("ethnicity has been selected");
           case 6 =>bio_other=1
-            println("bio_other has been selected");
+            //println("bio_other has been selected");
         }
       }
       count+=1;
@@ -56,15 +56,15 @@ object AuxiliaryMethods extends Controller {
       {
         count match {
           case 1 => SAI = 1;
-            println("SAI has been selected");
+           // println("SAI has been selected");
           case 2 => TAI = 1;
-            println("TAI has been selected");
+            //println("TAI has been selected");
           case 3 => PA = 1
-            println("PA has been selected");
+            //println("PA has been selected");
           case 4 => NA = 1
-            println("NA has been selected");
+            //println("NA has been selected");
           case 5 => Other = 1
-            println("Other has been selected");
+            //println("Other has been selected");
         }
       }
       count+=1;

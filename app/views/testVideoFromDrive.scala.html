@@ -53,59 +53,26 @@
 
 -->
 
+<div>
+   <!-- <video src="/videoB" controls>
+        Your browser does not support the <code>video</code> element.
+    </video> -->
 
+    <video controls="controls"  autoplay="autoplay" poster="eh5v.files/html5video/T002-008.jpg" style="width:100%" title="T002-008">
+        <source src="/videoB" />
+    </video>
+
+
+
+
+</div>
 
 
 
 
 <script>
 
-    var player;
-    function onYouTubeIframeAPIReady() {
-	
-	if(document.getElementById('myytplayer')!=null)
-	{
-	   alert('exist')
-	}
-	   /* player = document.getElementById('player');
-		player.playVideo();
-		alert(ply);*/
-    }
-	function onYouTubePlayerReady(playerId)
-	{
 
-	    //playerId.seekTo(100, true);
-	   	player = document.getElementById("toto");
-	   	//ytplayer.playVideo()
-	   	player.addEventListener("onStateChange", "onytplayerStateChange");
-	   	alert('what' + playerId);
-	}
-    function onPlayerReady(evt) {
-	    alert('fuckl');
-        evt.target.playVideo();
-		
-    }
-    function onPlayerStateChange(evt) {
-    alert('fuckl');
-        if (evt.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(stopVideo, 6000);
-            done = true;
-        }
-    }
-    function stopVideo() {
-        player.stopVideo();
-    }
-
-    function play() {
-    alert('bef');
-  if (player) {
-    alert(player);
-
-    player.seekTo(60, true)
-    player.playVideo();
-    alert(player.getDuration())
-  }
-}
 </script>
 <div id="chart_div" style="width: 900px; height: 500px;"></div>
 <a href="javascript:void(0);" onclick="play();">Play</a>

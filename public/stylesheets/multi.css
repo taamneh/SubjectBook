@@ -38,7 +38,7 @@ body {
 	display: none;
 }
 /*inputs*/
-#msform input, #msform textarea, #msform select {
+ #msform textarea, #msform select {
 	padding: 15px;
 	border: 1px solid #ccc;
 	border-radius: 3px;
@@ -49,6 +49,21 @@ body {
 	color: #2C3E50;
 	font-size: 13px;
 }
+
+#kareem  input{
+	padding: 15px;
+    	border: 1px solid #ccc;
+    	border-radius: 3px;
+    	margin-bottom: 10px;
+    	width: 100%;
+    	box-sizing: border-box;
+    	font-family: montserrat;
+    	color: #2C3E50;
+    	font-size: 13px;
+
+}
+
+
 /*buttons*/
 #msform .action-button {
 	width: 100px;

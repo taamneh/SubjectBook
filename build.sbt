@@ -21,7 +21,10 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   javaCore,  // The core Java API
+  "org.nuiton.thirdparty" % "REngine" % "1.7-3",
+  "org.nuiton.thirdparty" % "Rserve" % "1.7-3",
   "org.sorm-framework" % "sorm" % "0.3.8",
+  "com.monitorjbl"  % "xlsx-streamer" % "0.2.6",
   //"com.google.http-client" %  "google-http-client-jackson2"  % "1.18.0-rc",
   "com.google.http-client" %  "google-http-client-jackson2"  % "1.15.0-rc",
   //"com.google.apis" % "google-api-services-oauth2" % "v2-rev78-1.18.0-rc",
@@ -38,7 +41,8 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-api"       % "1.7.7" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
   "org.slf4j" % "jcl-over-slf4j"  % "1.7.7" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
   "net.sourceforge.jexcelapi" % "jxl" % "2.6.3" exclude("javax.jms", "jms") exclude("com.sun.jdmk", "jmxtools") exclude("com.sun.jmx", "jmxri"),
-  "com.googlecode.json-simple" % "json-simple" % "1.1.1"
+  "com.googlecode.json-simple" % "json-simple" % "1.1.1",
+  "com.google.gdata" % "core" % "1.47.1"
 )
 
 //libraryDependencies ~= { _.map(_.exclude("ch.qos.logback", "logback-classic")) }

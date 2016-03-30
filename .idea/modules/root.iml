@@ -16,7 +16,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.10/resource_managed/test" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/resolution-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/../../target/scala-2.11" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -167,5 +166,16 @@
     <orderEntry type="library" name="SBT: com.typesafe.play:play_2.10:2.3.6:jar" level="project" />
     <orderEntry type="library" name="SBT: io.netty:netty:3.9.3.Final:jar" level="project" />
     <orderEntry type="library" name="SBT: mysql:mysql-connector-java:5.1.18:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.monitorjbl:xlsx-streamer:0.2.6:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.google.gdata:core:1.47.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.google.oauth-client:google-oauth-client-java6:1.11.0-beta:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.google.oauth-client:google-oauth-client-jetty:1.11.0-beta:jar" level="project" />
+    <orderEntry type="library" name="SBT: javax.activation:activation:1.1:jar" level="project" />
+    <orderEntry type="library" name="SBT: javax.mail:mail:1.4:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.mortbay.jetty:jetty:6.1.26:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.mortbay.jetty:jetty-util:6.1.26:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.mortbay.jetty:servlet-api:2.5-20081211:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.nuiton.thirdparty:REngine:1.7-3:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.nuiton.thirdparty:Rserve:1.7-3:jar" level="project" />
   </component>
 </module>

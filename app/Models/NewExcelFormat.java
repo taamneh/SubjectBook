@@ -23,10 +23,31 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 public class NewExcelFormat {
 
+    private int first_row;
+    private int first_col;
+
     public JsonFromExcel dataFromExcel;  // polymorphism
 
     public NewExcelFormat(JsonFromExcel data){
         dataFromExcel = data;
+        first_row =9;
+        first_col = 2;
+    }
+
+
+
+    public NewExcelFormat(JsonFromExcel data, int fr, int fc){
+        dataFromExcel = data;
+        first_row =fr;
+        first_col = fc;
+    }
+
+    private int ColMatching(String colName) {
+        int num =0;
+        for(int i =0; i < colName.length() ; i++)
+            num += (int)colName.charAt(i) - 64;
+
+        return num;
     }
 
 
@@ -57,7 +78,7 @@ public class NewExcelFormat {
         Iterator<InputStream> sheets = r.getSheetsData();
         Boolean isFirst = true;
         while(sheets.hasNext() && isFirst) {
-            System.out.println("Processing new sheet:\n");
+            //System.out.println("Processing new sheet:\n");
             InputStream sheet = sheets.next();
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
@@ -88,6 +109,7 @@ public class NewExcelFormat {
         private String lastContents;
         private boolean nextIsString;
         private int rowNumber=0;
+        private int colNumber;
         private int tempRowNum =-1;
         private boolean isFirstCol;
         // salah ..
@@ -101,10 +123,13 @@ public class NewExcelFormat {
                                  Attributes attributes) throws SAXException {
 
             // c => cell
+
             if(name.equals("c")) {
                 // Print the cell reference
 
                 rowNumber = Integer.parseInt(attributes.getValue("r").replaceAll("[^\\d.]", ""));
+                colNumber = ColMatching(attributes.getValue("r").replaceAll("[^a-zA-Z]", ""));
+
                 if(attributes.getValue("r").startsWith("A"))
                     isFirstCol = false;
                 else
@@ -136,12 +161,15 @@ public class NewExcelFormat {
                 int idx = Integer.parseInt(lastContents);
                 lastContents = new XSSFRichTextString(sst.getEntryAt(idx)).toString();
                 nextIsString = false;
-                if(rowNumber ==9 && idx >0 )  // to avoid the title of the sheet at row 8 and frame at first col
+                // if(rowNumber ==9 && idx >0 )
+                if(rowNumber == first_row && colNumber >= first_col )  // to avoid the title of the sheet at row 8 and frame at first col
                     addToHeader(lastContents);
             }
             else {
 
-                if (rowNumber >9) { // this to avoid the first 8 rows
+                if (rowNumber >first_row) { // this to avoid the first 8 rows
+                    //Double idx = Double.parseDouble(lastContents);
+
                     if (tempRowNum == -1) { // this only executed once
                         tempRowNum = rowNumber;
                     }
@@ -156,6 +184,7 @@ public class NewExcelFormat {
         }
 
         private void addToHeader (String str){
+
             dataFromExcel.addToHeader(str, true);
         }
         private void addToContent (){
@@ -181,9 +210,6 @@ public class NewExcelFormat {
     }
 
     public static void main(String[] args) throws Exception {
-        // NewExcelFormat example = new NewExcelFormat();
-        //example.processOneSheet("C:\\temp\\ffc8a113-6555-49cf-b00d-aaa233019fd5.xlsx");
-        //example.processAllSheets("C:\\temp\\576a8560-16cf-4933-b527-52ebcdf6a49b.xlsx");
 
 
 

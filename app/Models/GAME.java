@@ -19,7 +19,11 @@ public class GAME {
     public static void main(String[] args) throws IOException
     {
 
-        try {
+
+        Random randomGenerator = new Random();
+        System.out.println((1 << 3) * 1000 + randomGenerator.nextInt(1001)*3);
+
+        /*try {
 
             List<List<String>> steps_dv = new ArrayList<>();
             List<List<Integer>> time_dv = new ArrayList<>();
@@ -274,15 +278,6 @@ public class GAME {
                 lp++;
             }
 
-            /*for(List<Integer>  t : time_dv)
-                System.out.println(Arrays.deepToString(t.toArray()));
-
-
-            for(List<Integer>  t : time_mv)
-                System.out.println(Arrays.deepToString(t.toArray()));
-
-            for(List<String>  t : steps_mv)
-                System.out.println(Arrays.deepToString(t.toArray()));*/
 
 
 
@@ -291,5 +286,6 @@ public class GAME {
         catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 }

@@ -32,6 +32,7 @@ case class Performance(Perfro_name: Int=0, Per_min: Int=0, Per_mix: Int=0 )
 case class NewUser(fullName: String, email: String, password: String, retypePassword: String);
 case class UserLogin(username: String, password: String);
 case class deleteStudyData (study_id: Int);
+
 // this class is used to gather all the information about the study in one place
 
 

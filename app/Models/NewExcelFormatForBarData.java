@@ -56,7 +56,7 @@ public class NewExcelFormatForBarData {
         Iterator<InputStream> sheets = r.getSheetsData();
         Boolean isFirst = true;
         while(sheets.hasNext() && isFirst) {
-            System.out.println("Processing new sheet:\n");
+            //System.out.println("Processing new sheet:\n");
             InputStream sheet = sheets.next();
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
@@ -148,6 +148,35 @@ public class NewExcelFormatForBarData {
                 } else {
 
                     if (rowNumber > 9) { // this to avoid the first 8 rows
+                        if (tempRowNum == -1) { // this only executed once
+                            tempRowNum = rowNumber;
+                        }
+
+                        if (name.equals("v"))
+                            addToContent();
+                    }
+                }
+
+            }
+            else  if(dataFromExcel instanceof StudyDescriptionFromExcel){
+
+                if (nextIsString) {
+                    int idx = Integer.parseInt(lastContents);
+                    lastContents = new XSSFRichTextString(sst.getEntryAt(idx)).toString();
+                    nextIsString = false;
+                    if (rowNumber == 1)  // to avoid the title of the sheet at row 8 and frame at first col
+                        addToHeader(lastContents);
+                    else if(rowNumber >1) {
+
+                        if (tempRowNum == -1) { // this only executed once
+                            tempRowNum = rowNumber;
+                        }
+                        addToContentForBar();
+                    }
+
+                } else {
+
+                    if (rowNumber > 1) { // this to avoid the first 8 rows
                         if (tempRowNum == -1) { // this only executed once
                             tempRowNum = rowNumber;
                         }

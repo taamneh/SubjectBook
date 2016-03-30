@@ -38,35 +38,30 @@ public class OldExcelFormat
          *
          * @param record The record that was found while reading.
          */
-
-
         public void processRecord(Record record) {
             switch (record.getSid()) {
                 // the BOFRecord can represent either the beginning of a sheet or the workbook
                 case BOFRecord.sid:
                     BOFRecord bof = (BOFRecord) record;
                     if (bof.getType() == bof.TYPE_WORKBOOK) {
-                        System.out.println("Encountered workbook");
+                       // System.out.println("Encountered workbook");
                         // assigned to the class level member
                     } else if (bof.getType() == bof.TYPE_WORKSHEET) {
-                        System.out.println("Encountered sheet reference");
+                       // System.out.println("Encountered sheet reference");
                         numberOfSheet++;
                     }
                     break;
                 case BoundSheetRecord.sid:
-                    System.out.println(SSTRecord.sid);
-                    BoundSheetRecord bsr = (BoundSheetRecord) record;
-                    System.out.println("New sheet named: " + bsr.getSheetname());
+                   // System.out.println(SSTRecord.sid);
+                        BoundSheetRecord bsr = (BoundSheetRecord) record;
+                       // System.out.println("New sheet named: " + bsr.getSheetname());
 
                     break;
                 case RowRecord.sid:
                     RowRecord rowrec = (RowRecord) record;
                /* System.out.println("Row found, first column at "
                         + rowrec.getFirstCol() + " last column at " + rowrec.getLastCol());*/
-
-
-
-                    // System.out.println(rowNumber);
+                   // System.out.println(rowNumber);
                     break;
                 case NumberRecord.sid:
                     NumberRecord numrec = (NumberRecord) record;
@@ -135,6 +130,6 @@ public class OldExcelFormat
         fin.close();
         // and our document input stream (don't want to leak these!)
         din.close();
-        System.out.println("done.");
+        //System.out.println("done.");
     }
 }
