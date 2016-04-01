@@ -2,8 +2,9 @@ package controllers
 
 //import Models.{DB, Person, ReadExcelScala}
 
-import java.io.{FileInputStream, InputStream, File, OutputStream}
-import java.util.Date
+import java.io._
+import java.nio.file.Path
+import java.util.{UUID, Date}
 import akka.actor.{Props, ActorSystem}
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.services.drive.Drive
@@ -1041,7 +1042,6 @@ object Application extends Controller {
               row[String]("study_name") -> row[String]("study_owner") -> row[Int]("study_id")
             ).toList
 
-
             Ok(views.html.ShowStudies(username, med)).withSession("connected" -> username)
           }
         }
@@ -1077,6 +1077,8 @@ object Application extends Controller {
 
   def GetSignal(task: String, subject: String, studyId: Int, signal_type: Int, signal_sequence: Int) = Action {
     implicit request =>
+      var subjectSeq : Long = 0
+      var jsonFromDB = ""
       var file_location = "";
       var isFdn = false;
       var frameRate =  1;
@@ -1094,85 +1096,122 @@ object Application extends Controller {
       }.getOrElse {
         Unauthorized("Oops, you are not connected")
       }
+      println("Recived A signal")
       DB.withConnection { implicit c =>
 
-        val rowOption1  =
-          SQL("select subject_seq from subject where subject_id={sub_id} AND study_id={study_id};").on('sub_id -> subject, 'study_id-> studyId).apply().head
-        val seq = rowOption1[Long]("subject_seq");
+        val rowOption1 =
+          SQL("select subject_seq from subject where subject_id={sub_id} AND study_id={study_id};").on('sub_id -> subject, 'study_id -> studyId).apply().head
+        subjectSeq = rowOption1[Long]("subject_seq");
 
-        val rowOption2  =
-          SQL("select signal_code, signal_loc, frame_rate, first_row, first_col  from session, signals  where signal_signal_code = signal_code AND subject_seq ={seq}  AND run_no =1 And signal_seq= {signal_seq};").on('seq -> seq,  'signal_seq -> signal_sequence).apply().head
-        file_location = rowOption2[String]("signal_loc");
-        frameRate = rowOption2[Int]("frame_rate");
-        first_row = rowOption2[Int]("first_row");
-        first_col = rowOption2[Int]("first_col");
-        signalCode = rowOption2[Int]("signal_code");
 
-        val rowOption3  =
-          SQL("select study_type, study_owner from study where study_id={study_id};").on('study_id-> studyId).apply().head
-        sourceType = rowOption3[Int]("study_type");
-        study_owner = rowOption3[String]("study_owner");
 
-        val activity2 =
-        //SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code={activity};").on('seq -> seq, 'sess_name-> task, 'activity -> SignalType.getActivityCode).apply().headOption
-          SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code in (select signal_code from signals where owner = {owner} AND data_type = 6);").on('seq -> seq, 'sess_name-> task, 'owner -> study_owner).apply().headOption
+        ///////////////////////////////
+        val test =
+          SQL("select signal_json   from session  where  subject_seq ={seq}  AND run_no =1 And signal_seq= {signal_seq};").on('seq -> subjectSeq, 'signal_seq -> signal_sequence).apply().head
+        val tempSignal = test[Option[String]]("signal_json");
+        jsonFromDB = tempSignal match{
+          case Some(str) =>
+            val source = scala.io.Source.fromFile(str)
+            val lines = try source.mkString
+            catch{
+              case ex: IOException => {
+                null
+              }
+            }
+            finally source.close()
+            lines
+          case None =>
+            val rowOption2  =
+              SQL("select signal_code, signal_loc, frame_rate, first_row, first_col  from session, signals  where signal_signal_code = signal_code AND subject_seq ={seq}  AND run_no =1 And signal_seq= {signal_seq};").on('seq -> subjectSeq,  'signal_seq -> signal_sequence).apply().head
+            file_location = rowOption2[String]("signal_loc");
+            frameRate = rowOption2[Int]("frame_rate");
+            first_row = rowOption2[Int]("first_row");
+            first_col = rowOption2[Int]("first_col");
+            signalCode = rowOption2[Int]("signal_code");
 
-        activity2 match {
-          case firstDay if firstDay.size >0 =>
-            activityFile = firstDay.head[String]("signal_loc");
-          case None=>
-            activityFile = null
+            val rowOption3  =
+              SQL("select study_type, study_owner from study where study_id={study_id};").on('study_id-> studyId).apply().head
+            sourceType = rowOption3[Int]("study_type");
+            study_owner = rowOption3[String]("study_owner");
 
+            val activity2 =
+            //SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code={activity};").on('seq -> seq, 'sess_name-> task, 'activity -> SignalType.getActivityCode).apply().headOption
+              SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code in (select signal_code from signals where owner = {owner} AND data_type = 6);").on('seq -> subjectSeq, 'sess_name-> task, 'owner -> study_owner).apply().headOption
+
+            activity2 match {
+              case firstDay if firstDay.size >0 =>
+                activityFile = firstDay.head[String]("signal_loc");
+              case None=>
+                activityFile = null
+
+            }
+            val testForfailure =
+            //SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code={activity};").on('seq -> seq, 'sess_name-> task, 'activity -> SignalType.getActivityCode).apply().headOption
+              SQL("select session_name from session where subject_seq={seq} AND session_name Like '%FDN%' AND run_no =1;").on('seq -> subjectSeq).apply().headOption
+
+            testForfailure match {
+              case firstDay if firstDay.size >0 =>
+                isFdn =true;
+              case None=>
+                isFdn = false;
+            }
+            val blSignal  = SQL("select signal_loc, SESSION_NAME from session where subject_seq={seq} AND  run_no =1 And signal_signal_code ={sc} AND is_baseline =1 ;").on('seq -> subjectSeq, 'sc -> signalCode).apply().headOption
+            blSignal match {
+              case firstDay if firstDay.size >0 =>
+                baslineFile = firstDay.head[String]("signal_loc");
+                baselineSessionName = firstDay.head[String]("SESSION_NAME").replaceFirst("(\\d*\\s*)", "") ;
+              case None=>
+                baslineFile = null;
+            }
+            // this is to declare that not json was found
+            null
         }
+      }
 
-        val testForfailure =
-        //SQL("select signal_loc from session where subject_seq={seq} AND session_name ={sess_name} AND run_no =1 And signal_signal_code={activity};").on('seq -> seq, 'sess_name-> task, 'activity -> SignalType.getActivityCode).apply().headOption
-          SQL("select session_name from session where subject_seq={seq} AND session_name Like '%FDN%' AND run_no =1;").on('seq -> seq).apply().headOption
 
-        testForfailure match {
-          case firstDay if firstDay.size >0 =>
-            isFdn =true;
-          case None=>
-            isFdn = false;
-
-        }
-
-        val blSignal  = SQL("select signal_loc, SESSION_NAME from session where subject_seq={seq} AND  run_no =1 And signal_signal_code ={sc} AND is_baseline =1 ;").on('seq -> seq, 'sc -> signalCode).apply().headOption
-        blSignal match {
-          case firstDay if firstDay.size >0 =>
-            baslineFile = firstDay.head[String]("signal_loc");
-            baselineSessionName = firstDay.head[String]("SESSION_NAME").replaceFirst("(\\d*\\s*)", "") ;
-          case None=>
-            baslineFile = null;
-        }
-
-        //This is only for failure drive in toyota project
-        if(task.toLowerCase.contains("failure") || task.toLowerCase.contains("fdl") || task.toLowerCase.contains("fdn"))
+      //This is only for failure drive in toyota project
+      if(jsonFromDB== null) {
+        if (task.toLowerCase.contains("failure") || task.toLowerCase.contains("fdl") || task.toLowerCase.contains("fdn"))
           baslineFile = null;
 
-      }
-
-      var desc : java.util.TreeMap[String, String] = null
-      if(signal_type ==4 || baslineFile != null){
+        var desc: java.util.TreeMap[String, String] = null
+        if (signal_type == 4 || baslineFile != null) {
 
 
-        desc = DataBaseOperations.getDescriptorAsMapJava(studyId)
-        //TODO this code should be remove becuase it is not practical to call it every time We can let the user provide us with the baselinename
-        // we can send the session schema to user at the beginign and users provide use with it.
-        if(desc != null){
-          if(desc.contains(baselineSessionName.replaceFirst("(\\d*\\s*)", "") ))
-            baselineSessionName = desc(baselineSessionName.replaceFirst("(\\d*\\s*)", "") )
-          if(isFdn) desc.put("Failure Drive", "FDN")
-          else desc.put("Failure Drive", "FDL")
+          desc = DataBaseOperations.getDescriptorAsMapJava(studyId)
+          //TODO this code should be remove becuase it is not practical to call it every time We can let the user provide us with the baselinename
+          // we can send the session schema to user at the beginign and users provide use with it.
+          if (desc != null) {
+            if (desc.contains(baselineSessionName.replaceFirst("(\\d*\\s*)", "")))
+              baselineSessionName = desc(baselineSessionName.replaceFirst("(\\d*\\s*)", ""))
+            if (isFdn) desc.put("Failure Drive", "FDN")
+            else desc.put("Failure Drive", "FDL")
+          }
+
+        }
+
+        var js = GoogleDrive.DownloadSignal(study_owner, file_location, sourceType, signal_type, frameRate, first_row, first_col, activityFile, baslineFile, baselineSessionName, desc);
+        if (js == null)
+          Ok("");
+        else{
+          var destination: Path = null
+          val id: UUID = UUID.randomUUID
+          val fileNmae = "\\jsonFiles\\" + id +".txt";
+          val pw = new PrintWriter(new File(fileNmae ))
+          DataBaseOperations.UpdateSignalJson(subjectSeq, signal_sequence, fileNmae)
+          pw.write(js.toJSONString)
+          pw.close
+          println("Sent a signal " + request.queryString)
+          Ok(js.toJSONString)
         }
 
       }
+      else{
+        println("Sent a signal " + request.queryString)
+        Ok(jsonFromDB)
+      }
 
-      var js = GoogleDrive.DownloadSignal(study_owner, file_location, sourceType, signal_type,frameRate, first_row, first_col, activityFile, baslineFile,baselineSessionName,  desc);
-      if(js == null)
-        Ok("");
-      else
-        Ok(js.toJSONString)
+
   }
 
 

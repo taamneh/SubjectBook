@@ -41,16 +41,16 @@ var gData = null;
 
 $(document).ready(function(){
 // when user click on the tab (i.e., session)
+google.load('visualization', '1', { 'packages': ['corechart', 'bar'], callback: startProcess});
+  //google.setOnLoadCallback(tala);
 
-
+function startProcess()
+{
+  
  $('.panel-body.tabs .nav.nav-tabs a').click(function() {
-
+ 
    function intermediate ()
      {
-
-
-
-
           var counter =0, iterator=0;
           // just to add horizontal axis to the last chart
           $( ".chart" ).each(function( index ) {
@@ -104,7 +104,7 @@ $(document).ready(function(){
 
             // $("#loading").show();
            $(this).attr("occupied", "yes");
-           google.load('visualization', '1', { 'packages': ['corechart', 'bar'], callback: intermediate});
+		   intermediate();
            //e.preventDefault();
            var videoDiv ="#"+session;
             $(videoDiv).slideDown("slow");
@@ -131,12 +131,15 @@ $(document).ready(function(){
 
     });
 
-
     var info = 1; // this var is used to avoid calling the information function every time
      // this is used to automatically request data from the first tab
     $('.panel-body.tabs .nav.nav-tabs a').first().trigger("click");
       //$('.btn.btn-default.show-video').first().trigger("click");
+	  
+      //google.load('visualization', '1', { 'packages': ['corechart', 'bar'], callback: showAllGeneral});
      showAllGeneral();  // this fucntion will show all the general infromation
+	 
+}
 });
 
 function showAllGeneral(){
@@ -642,7 +645,7 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                                        //style: 'line',
                                                        color: 'red',
                                                            textStyle: {
-                                                             fontName: 'Times-Roman',
+                                                             //fontName: 'Times-Roman',
                                                              fontSize:5,
                                                              bold: true,
                                                              //italic: true,
@@ -775,8 +778,8 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
 
 
                                   //  var currentdate = new Date("July 21, 1983 01:15:00:526");
-                              google.visualization.events.addListener(chart, 'select', selectHandler);
-                              function selectHandler(e) {
+								  
+								     function selectHandler(e) {
                                    var videoButton = "#showvideo"+ task + signalSequence;
                                    var videoBoard = "#videoboard" + task + signalSequence;
                                     var sel =  chart.getSelection();
@@ -854,8 +857,10 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
 
                                    }
 
+                              google.visualization.events.addListener(chart, 'select', selectHandler);
+                           
 
-                                 $(editme).show();
+                                 /*$(editme).show();
                                  $(editme).click(function()
                                  {
                                       var chartEditor = new google.visualization.ChartEditor();
@@ -882,7 +887,7 @@ function drawStuff_temp1(task, subject, chartDestination, studyId, signalSequenc
                                                                                   seek(point + absStart);
                                                                      });
                                           }
-                                  });
+                                  });*/
 
 
 

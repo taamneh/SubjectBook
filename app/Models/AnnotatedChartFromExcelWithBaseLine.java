@@ -158,7 +158,7 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
         int ctr =0;
         for(Activity act: activities)
         {
-            if((Math.floor(val)== Math.floor(act.startTime) /*|| Math.floor(val)== Math.floor(act.endTime)*/) && !consumedActivity.contains(ctr)) {
+            if((Math.floor(val)>= Math.floor(act.startTime) /*|| Math.floor(val)== Math.floor(act.endTime)*/) && !consumedActivity.contains(ctr)) {
                 consumedActivity.add(ctr);
                 return act.annotationText;
             }

@@ -315,6 +315,18 @@ object DataBaseOperations extends Controller{
     Logger.debug("Study: " + StudyNo + "has been Updated with Portrait string" );
   }
 
+  def UpdateSignalJson( subjectSeq: Long, signalSeq: Long, data:String)= {
+
+    DB.withConnection { implicit c =>
+      val id: Int =
+        SQL("update session set signal_json  = {dt} WHERE subject_seq ={seq}  AND run_no =1 And signal_seq= {signal_seq};")
+          .on( 'dt -> data, 'seq -> subjectSeq, 'signal_seq -> signalSeq).executeUpdate()
+    }
+    // Logger.debug("Study: " + StudyNo + "has been Updated with Portrait string" );
+  }
+
+
+
 
   def InsertStudyRadar(StudyNo: Int, queryString: String)= {
 
@@ -359,12 +371,12 @@ object DataBaseOperations extends Controller{
 
       if(isBL){
         val id: Option[Long] =
-          SQL("insert into session values({signal_seq}, {seq},{sess_no},1 ,{sess_name}, {url},'',{general},1, {signal_code}, {odr});")
+          SQL("insert into session values({signal_seq}, {seq},{sess_no},1 ,{sess_name}, {url},NULL,{general},1, {signal_code}, {odr});")
             .on( 'signal_seq -> {ctr}, 'seq -> seq, 'sess_name -> session_name, 'sess_no -> session_no,'url -> url, 'general -> isGeneral ,'signal_code -> signal_code, 'odr -> order).executeInsert()
       }
       else{
         val id: Option[Long] =
-          SQL("insert into session values({signal_seq}, {seq},{sess_no},1 ,{sess_name}, {url},'',{general},0, {signal_code}, {odr});")
+          SQL("insert into session values({signal_seq}, {seq},{sess_no},1 ,{sess_name}, {url},NULL,{general},0, {signal_code}, {odr});")
             .on( 'signal_seq -> {ctr}, 'seq -> seq, 'sess_name -> session_name, 'sess_no -> session_no,'url -> url, 'general -> isGeneral ,'signal_code -> signal_code, 'odr -> order).executeInsert()
       }
 
