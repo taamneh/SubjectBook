@@ -31,10 +31,14 @@ public class TestMyJAvaCode {
     public static void main(String[] args) throws   Exception
     {
 
+
+        Runtime.getRuntime().exec("cmd /c start");
         String salah = "Salah";
         Integer x = new Integer(3);
         round(x);
         System.out.println(x);
+
+
 
         /*ForBarFromExcel barRaw = new ForBarFromExcel("C:\\Users\\staamneh\\Downloads\\T001-005.sim", 1, 4);
 

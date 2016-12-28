@@ -1,8 +1,5 @@
 run
 h2-browser
-compile
-run
-h2-browser
 run
 h2-browser
 run
@@ -498,3 +495,6 @@ compile
 clean complete stage
 clean compile stage
 compile
+clean compile stage
+activator clean compile stage
+acti

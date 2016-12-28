@@ -1,13 +1,14 @@
 package controllers
 
 import java.util
+import java.util.UUID
 
 import Models.StudyTopology
-import akka.actor.{ActorRef, Props, ActorSystem}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.RoundRobinPool
 import controllers.CreatingStudyMessages.{ScanStudy, ScanStudyAbstract}
-import controllers.{ FindNewMultiModal}
-import play.api.GlobalSettings
+import controllers.FindNewMultiModal
+import play.api.{GlobalSettings, Logger}
 
 /**
  * Created by staamneh on 6/17/2015.
@@ -16,11 +17,21 @@ object Global extends GlobalSettings {
 
   var Salah = 99;
   val system = ActorSystem("salah")
+  //var systemForVideos = ActorSystem("videos")
   val leader = system.actorOf(Props[CreatingStudy])
-
   val routerForPortrait: ActorRef = system.actorOf(RoundRobinPool(3).props(Props[ScanSubjectPortrait]), "routerForPortrait")
-
   val routerForPortraitAbstraction: ActorRef = system.actorOf(RoundRobinPool(3).props(Props[ScanSubjectPortraitAbstraction]), "routerForPortrait2")
+
+  val routerForVideos: ActorRef = system.actorOf(RoundRobinPool(16).props(Props[ScanSubject]), "routerForVideos" + UUID.randomUUID)
+
+
+   def startScanningVideos(studyNo : Int, studyLoc: String): Unit ={
+     var videoHead = system.actorOf(Props[ScanVideosForStudy])
+     println("what is goning onnnnnnn")
+     videoHead ! ScanVidoeInStudy(studyNo, studyLoc)
+   }
+
+
 
 
 
@@ -34,7 +45,6 @@ object Global extends GlobalSettings {
   def CreateSTudyAbstractWay(topology : Abstraction) {
     println("THIS IS ABSTRACTION")
     leader ! ScanStudyAbstract(topology)
-
   }
 
 

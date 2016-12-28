@@ -13,13 +13,13 @@ import play.api.data._
 import views.html._
 
 /**/
-object ShowCreateStudy extends BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with play.twirl.api.Template3[String,List[scala.Tuple3[String, Int, Int]],RequestHeader,play.twirl.api.HtmlFormat.Appendable] {
+object ShowCreateStudy extends BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with play.twirl.api.Template3[String,List[scala.Tuple3[Option[String], Int, Int]],RequestHeader,play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*1.2*/(userName: String, explVar : List[(String, Int, Int)])(implicit request: RequestHeader):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*1.2*/(userName: String, explVar : List[(Option[String], Int, Int)])(implicit request: RequestHeader):play.twirl.api.HtmlFormat.Appendable = {
       _display_ {import helper._
 
-Seq[Any](format.raw/*1.89*/("""
+Seq[Any](format.raw/*1.97*/("""
 """),format.raw/*3.1*/("""<!DOCTYPE html>
 <html>
 <head>
@@ -233,7 +233,7 @@ Seq[Any](format.raw/*1.89*/("""
             </div>
         </div>
 
-        <fieldset>
+        <fieldset  style="width: 700px;">
             <h2 class="fs-title">Experimental Design</h2>
             <h3 class="fs-subtitle"></h3>
             <table id="zob" cellspacing="0" class="data_table" id="add_sessions_table">
@@ -242,13 +242,13 @@ Seq[Any](format.raw/*1.89*/("""
                 <input type="hidden" name="code" id= "code" value=" ">
                 <input type="hidden" name="studyId"  value="1">
 
-                    <label>How many unique sessions your study have? </label>
+                    <label>How many unique sessions your study has? </label>
                     <input type="number" class="form-control"  name="pName", id = "noVar">
 
 
 
 
-                    <label>How many treatems arms this study have? </label>
+                    <label>How many treatem arms this study has? </label>
                     <input type="number" class="form-control" name="min" value ="1" id = "noPoints">
 
 
@@ -323,6 +323,7 @@ Seq[Any](format.raw/*1.89*/("""
             <tr>
                 <td id = "kareem"><input  type="checkbox" id="publicCh" name="publicCh" value=1 style="width: 20px;">Public study&nbsp;&nbsp;&nbsp;&nbsp;<br> </td>
                 <td id = "kareem"><input type="checkbox" id="portraitCh" name="portraitCh" value=1 style="width: 20px">Generate Portrait&nbsp;&nbsp;&nbsp;<br> </td>
+                <td id = "kareem3"><input type="checkbox" id="quickCreation" name="quickCreation" value=1 style="width: 20px">Quick &nbsp;&nbsp;&nbsp;<br> </td>
                 <input  type="hidden" name="public" id='public' value=0>
                 <input  type="hidden" name="portrait" id='portrait' value=0>
             </tr>
@@ -344,15 +345,28 @@ Seq[Any](format.raw/*1.89*/("""
             <h2 class="fs-title">Explanatory Variables</h2>
             <table cellspacing="0" class="data_table" id="add_sessions_table">
                 <tr>
-                    <td class="cell_1">Key Explanatory Variables:</td>
+                    <td class="cell_1">Key Explanatory Variable:</td>
                     <td>
                         <select class="select_field"  id="explanatoryPrim" name="study_type"  style="width: 300px" required>
-                            """),_display_(/*330.30*/for(temp <- explVar) yield /*330.50*/{_display_(Seq[Any](format.raw/*330.51*/("""
-                            """),_display_(/*331.30*/if(temp._3 == 1 )/*331.47*/ {_display_(Seq[Any](format.raw/*331.49*/("""
-                             """),format.raw/*332.30*/("""<option id="op1" value="""),_display_(/*332.54*/temp/*332.58*/._2),format.raw/*332.61*/("""  """),format.raw/*332.63*/("""selected ="selected"> """),_display_(/*332.86*/temp/*332.90*/._1),format.raw/*332.93*/(""" """),format.raw/*332.94*/("""</option>
-                            """)))}),format.raw/*333.30*/("""
+                            """),_display_(/*331.30*/for(temp <- explVar) yield /*331.50*/{_display_(Seq[Any](format.raw/*331.51*/("""
+                            """),_display_(/*332.30*/if(temp._3 == 1 )/*332.47*/ {_display_(Seq[Any](format.raw/*332.49*/("""
+                             """),format.raw/*333.30*/("""<option id="op1" value="""),_display_(/*333.54*/temp/*333.58*/._2),format.raw/*333.61*/("""  """),format.raw/*333.63*/("""selected ="selected"> """),_display_(/*333.86*/temp/*333.90*/._1),format.raw/*333.93*/(""" """),format.raw/*333.94*/("""</option>
                             """)))}),format.raw/*334.30*/("""
-                        """),format.raw/*335.25*/("""</select>
+                            """)))}),format.raw/*335.30*/("""
+                        """),format.raw/*336.25*/("""</select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cell_1">Backup Key Explanatory Variables:</td>
+                    <td>
+                        <select class="select_field"  id="explanatoryPrimBackUp" name="study_type"  style="width: 300px" required>
+                            """),_display_(/*344.30*/for(temp <- explVar) yield /*344.50*/{_display_(Seq[Any](format.raw/*344.51*/("""
+                            """),_display_(/*345.30*/if(temp._3 == 1 )/*345.47*/ {_display_(Seq[Any](format.raw/*345.49*/("""
+                            """),format.raw/*346.29*/("""<option id="op3" value="""),_display_(/*346.53*/temp/*346.57*/._2),format.raw/*346.60*/("""  """),format.raw/*346.62*/("""selected ="selected"> """),_display_(/*346.85*/temp/*346.89*/._1),format.raw/*346.92*/(""" """),format.raw/*346.93*/("""</option>
+                            """)))}),format.raw/*347.30*/("""
+                            """)))}),format.raw/*348.30*/("""
+                        """),format.raw/*349.25*/("""</select>
                     </td>
                 </tr>
                 <tr>
@@ -363,12 +377,12 @@ Seq[Any](format.raw/*1.89*/("""
                             <div class="button-group">
                                 <button type="button" style="width: 300px" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"> Select Variables <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    """),_display_(/*346.38*/for(temp <- explVar) yield /*346.58*/{_display_(Seq[Any](format.raw/*346.59*/("""
-                                    """),_display_(/*347.38*/if(temp._3 == 1 )/*347.55*/ {_display_(Seq[Any](format.raw/*347.57*/("""
-                                    """),format.raw/*348.37*/("""<li><a href="#" class="small1" data-value=""""),_display_(/*348.81*/temp/*348.85*/._2),format.raw/*348.88*/("""" tabIndex="-1"><input type="checkbox"/>&nbsp;"""),_display_(/*348.135*/temp/*348.139*/._1),format.raw/*348.142*/("""</a></li>
-                                     """)))}),format.raw/*349.39*/("""
-                                    """)))}),format.raw/*350.38*/("""
-                                """),format.raw/*351.33*/("""</ul>
+                                    """),_display_(/*360.38*/for(temp <- explVar) yield /*360.58*/{_display_(Seq[Any](format.raw/*360.59*/("""
+                                    """),_display_(/*361.38*/if(temp._3 == 1 )/*361.55*/ {_display_(Seq[Any](format.raw/*361.57*/("""
+                                    """),format.raw/*362.37*/("""<li><a href="#" class="small1" data-value=""""),_display_(/*362.81*/temp/*362.85*/._2),format.raw/*362.88*/("""" tabIndex="-1"><input type="checkbox"/>&nbsp;"""),_display_(/*362.135*/temp/*362.139*/._1),format.raw/*362.142*/("""</a></li>
+                                     """)))}),format.raw/*363.39*/("""
+                                    """)))}),format.raw/*364.38*/("""
+                                """),format.raw/*365.33*/("""</ul>
                             </div>
                         </div>
 
@@ -380,12 +394,12 @@ Seq[Any](format.raw/*1.89*/("""
                     <td>
                         <select class="select_field"  id="staticB" name="study_type" >
 
-                            """),_display_(/*363.30*/for(temp <- explVar) yield /*363.50*/{_display_(Seq[Any](format.raw/*363.51*/("""
-                            """),_display_(/*364.30*/if(temp._3 == 4)/*364.46*/ {_display_(Seq[Any](format.raw/*364.48*/("""
-                            """),format.raw/*365.29*/("""<option id="op1" value=""""),_display_(/*365.54*/temp/*365.58*/._2),format.raw/*365.61*/("""" > """),_display_(/*365.66*/temp/*365.70*/._1),format.raw/*365.73*/("""</option>
-                            """)))}),format.raw/*366.30*/("""
-                            """)))}),format.raw/*367.30*/("""
-                            """),format.raw/*368.29*/("""<option id="op1" value=-1 > none </option>
+                            """),_display_(/*377.30*/for(temp <- explVar) yield /*377.50*/{_display_(Seq[Any](format.raw/*377.51*/("""
+                            """),_display_(/*378.30*/if(temp._3 == 4)/*378.46*/ {_display_(Seq[Any](format.raw/*378.48*/("""
+                            """),format.raw/*379.29*/("""<option id="op1" value=""""),_display_(/*379.54*/temp/*379.58*/._2),format.raw/*379.61*/("""" > """),_display_(/*379.66*/temp/*379.70*/._1),format.raw/*379.73*/("""</option>
+                            """)))}),format.raw/*380.30*/("""
+                            """)))}),format.raw/*381.30*/("""
+                            """),format.raw/*382.29*/("""<option id="op1" value=-1 > none </option>
                         </select>
 
                     </td>
@@ -395,12 +409,12 @@ Seq[Any](format.raw/*1.89*/("""
                     <td class="cell_1">Static Data After Sessions</td>
                     <td>
                         <select class="select_field"  id="staticA" name="study_type" >
-                            """),_display_(/*378.30*/for(temp <- explVar) yield /*378.50*/{_display_(Seq[Any](format.raw/*378.51*/("""
-                            """),_display_(/*379.30*/if(temp._3 == 4)/*379.46*/ {_display_(Seq[Any](format.raw/*379.48*/("""
-                            """),format.raw/*380.29*/("""<option id="op1" value=""""),_display_(/*380.54*/temp/*380.58*/._2),format.raw/*380.61*/(""""  > """),_display_(/*380.67*/temp/*380.71*/._1),format.raw/*380.74*/("""</option>
-                            """)))}),format.raw/*381.30*/("""
-                            """)))}),format.raw/*382.30*/("""
-                            """),format.raw/*383.29*/("""<option id="op1" value=-1 > none </option>
+                            """),_display_(/*392.30*/for(temp <- explVar) yield /*392.50*/{_display_(Seq[Any](format.raw/*392.51*/("""
+                            """),_display_(/*393.30*/if(temp._3 == 4)/*393.46*/ {_display_(Seq[Any](format.raw/*393.48*/("""
+                            """),format.raw/*394.29*/("""<option id="op1" value=""""),_display_(/*394.54*/temp/*394.58*/._2),format.raw/*394.61*/(""""  > """),_display_(/*394.67*/temp/*394.71*/._1),format.raw/*394.74*/("""</option>
+                            """)))}),format.raw/*395.30*/("""
+                            """)))}),format.raw/*396.30*/("""
+                            """),format.raw/*397.29*/("""<option id="op1" value=-1 > none </option>
                         </select>
 
                     </td>
@@ -419,13 +433,13 @@ Seq[Any](format.raw/*1.89*/("""
                     <td class="cell_1">Key Response Variables:</td>
                     <td>
                         <select class="select_field"  id="responsePrim" name="study_type"  style="width: 300px">
-                            """),_display_(/*402.30*/for(temp <- explVar) yield /*402.50*/{_display_(Seq[Any](format.raw/*402.51*/("""
-                                """),_display_(/*403.34*/if(temp._3 == 1)/*403.50*/ {_display_(Seq[Any](format.raw/*403.52*/("""
-                                """),format.raw/*404.33*/("""<option id="op1" value="""),_display_(/*404.57*/temp/*404.61*/._2),format.raw/*404.64*/("""  """),format.raw/*404.66*/("""selected ="selected"> """),_display_(/*404.89*/temp/*404.93*/._1),format.raw/*404.96*/(""" """),format.raw/*404.97*/("""</option>
-                                """)))}),format.raw/*405.34*/("""
-                            """)))}),format.raw/*406.30*/("""
+                            """),_display_(/*416.30*/for(temp <- explVar) yield /*416.50*/{_display_(Seq[Any](format.raw/*416.51*/("""
+                                """),_display_(/*417.34*/if(temp._3 == 1)/*417.50*/ {_display_(Seq[Any](format.raw/*417.52*/("""
+                                """),format.raw/*418.33*/("""<option id="op1" value="""),_display_(/*418.57*/temp/*418.61*/._2),format.raw/*418.64*/("""  """),format.raw/*418.66*/("""selected ="selected"> """),_display_(/*418.89*/temp/*418.93*/._1),format.raw/*418.96*/(""" """),format.raw/*418.97*/("""</option>
+                                """)))}),format.raw/*419.34*/("""
+                            """)))}),format.raw/*420.30*/("""
 
-                        """),format.raw/*408.25*/("""</select>
+                        """),format.raw/*422.25*/("""</select>
                     </td>
                 </tr>
                 <tr>
@@ -439,12 +453,12 @@ Seq[Any](format.raw/*1.89*/("""
                             <div class="button-group">
                                 <button type="button" style="width: 300px" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"> Select Variables <span class="caret"></span></button>
                                 <ul class="dropdown-menu">
-                                    """),_display_(/*422.38*/for(temp <- explVar) yield /*422.58*/{_display_(Seq[Any](format.raw/*422.59*/("""
-                                    """),_display_(/*423.38*/if(temp._3 == 1 )/*423.55*/ {_display_(Seq[Any](format.raw/*423.57*/("""
-                                    """),format.raw/*424.37*/("""<li><a href="#"   class="small2" data-value=""""),_display_(/*424.83*/temp/*424.87*/._2),format.raw/*424.90*/("""" tabIndex="-1"><input type="checkbox"/>&nbsp;"""),_display_(/*424.137*/temp/*424.141*/._1),format.raw/*424.144*/("""</a></li>
-                                    """)))}),format.raw/*425.38*/("""
-                                    """)))}),format.raw/*426.38*/("""
-                                """),format.raw/*427.33*/("""</ul>
+                                    """),_display_(/*436.38*/for(temp <- explVar) yield /*436.58*/{_display_(Seq[Any](format.raw/*436.59*/("""
+                                    """),_display_(/*437.38*/if(temp._3 == 1 )/*437.55*/ {_display_(Seq[Any](format.raw/*437.57*/("""
+                                    """),format.raw/*438.37*/("""<li><a href="#"   class="small2" data-value=""""),_display_(/*438.83*/temp/*438.87*/._2),format.raw/*438.90*/("""" tabIndex="-1"><input type="checkbox"/>&nbsp;"""),_display_(/*438.137*/temp/*438.141*/._1),format.raw/*438.144*/("""</a></li>
+                                    """)))}),format.raw/*439.38*/("""
+                                    """)))}),format.raw/*440.38*/("""
+                                """),format.raw/*441.33*/("""</ul>
                             </div>
                         </div>
 
@@ -468,12 +482,12 @@ Seq[Any](format.raw/*1.89*/("""
                     <td class="cell_1">Covariates</td>
                     <td>
                         <select class="select_field"  id="cov" name="study_type"  style="width: 300px">
-                            """),_display_(/*451.30*/for(temp <- explVar) yield /*451.50*/{_display_(Seq[Any](format.raw/*451.51*/("""
-                            """),_display_(/*452.30*/if(temp._3 == 3 )/*452.47*/ {_display_(Seq[Any](format.raw/*452.49*/("""
-                            """),format.raw/*453.29*/("""<option id="op1" value="""),_display_(/*453.53*/temp/*453.57*/._2),format.raw/*453.60*/("""  """),format.raw/*453.62*/("""selected ="selected"> """),_display_(/*453.85*/temp/*453.89*/._1),format.raw/*453.92*/("""</option>
-                            """)))}),format.raw/*454.30*/("""
-                            """)))}),format.raw/*455.30*/("""
-                            """),format.raw/*456.29*/("""<option id="op1" value=-1 > none </option>
+                            """),_display_(/*465.30*/for(temp <- explVar) yield /*465.50*/{_display_(Seq[Any](format.raw/*465.51*/("""
+                            """),_display_(/*466.30*/if(temp._3 == 3 )/*466.47*/ {_display_(Seq[Any](format.raw/*466.49*/("""
+                            """),format.raw/*467.29*/("""<option id="op1" value="""),_display_(/*467.53*/temp/*467.57*/._2),format.raw/*467.60*/("""  """),format.raw/*467.62*/("""selected ="selected"> """),_display_(/*467.85*/temp/*467.89*/._1),format.raw/*467.92*/("""</option>
+                            """)))}),format.raw/*468.30*/("""
+                            """)))}),format.raw/*469.30*/("""
+                            """),format.raw/*470.29*/("""<option id="op1" value=-1 > none </option>
                         </select>
 
                     </td>
@@ -492,108 +506,108 @@ Seq[Any](format.raw/*1.89*/("""
                 </tr> -->
             </table>
             <script>
-                    $(document).ready(function()"""),format.raw/*475.49*/("""{"""),format.raw/*475.50*/("""
-                    """),format.raw/*476.21*/("""$('#publicCh').change(function() """),format.raw/*476.54*/("""{"""),format.raw/*476.55*/("""
-                    """),format.raw/*477.21*/("""if($(this).is(":checked")) """),format.raw/*477.48*/("""{"""),format.raw/*477.49*/("""
-                           """),format.raw/*478.28*/("""$("#public").val(1);
-                           """),format.raw/*479.28*/("""}"""),format.raw/*479.29*/("""
-                           """),format.raw/*480.28*/("""else
-                           """),format.raw/*481.28*/("""{"""),format.raw/*481.29*/("""
-                            """),format.raw/*482.29*/("""$("#public").val(0);
-                           """),format.raw/*483.28*/("""}"""),format.raw/*483.29*/("""
-                         """),format.raw/*484.26*/("""}"""),format.raw/*484.27*/(""");
-                       $('#portraitCh').change(function() """),format.raw/*485.59*/("""{"""),format.raw/*485.60*/("""
-                    """),format.raw/*486.21*/("""if($(this).is(":checked")) """),format.raw/*486.48*/("""{"""),format.raw/*486.49*/("""
-                           """),format.raw/*487.28*/("""$("#portrait").val(1);
-                           """),format.raw/*488.28*/("""}"""),format.raw/*488.29*/("""
-                           """),format.raw/*489.28*/("""else
-                           """),format.raw/*490.28*/("""{"""),format.raw/*490.29*/("""
-                            """),format.raw/*491.29*/("""$("#portrait").val(0);
-                           """),format.raw/*492.28*/("""}"""),format.raw/*492.29*/("""
-                         """),format.raw/*493.26*/("""}"""),format.raw/*493.27*/(""");
-                    $('#Age').change(function() """),format.raw/*494.49*/("""{"""),format.raw/*494.50*/("""
-                        """),format.raw/*495.25*/("""if($(this).is(":checked")) """),format.raw/*495.52*/("""{"""),format.raw/*495.53*/("""
-                           """),format.raw/*496.28*/("""var a =  parseInt($("#ir").val()) + 1
+                    $(document).ready(function()"""),format.raw/*489.49*/("""{"""),format.raw/*489.50*/("""
+                    """),format.raw/*490.21*/("""$('#publicCh').change(function() """),format.raw/*490.54*/("""{"""),format.raw/*490.55*/("""
+                    """),format.raw/*491.21*/("""if($(this).is(":checked")) """),format.raw/*491.48*/("""{"""),format.raw/*491.49*/("""
+                           """),format.raw/*492.28*/("""$("#public").val(1);
+                           """),format.raw/*493.28*/("""}"""),format.raw/*493.29*/("""
+                           """),format.raw/*494.28*/("""else
+                           """),format.raw/*495.28*/("""{"""),format.raw/*495.29*/("""
+                            """),format.raw/*496.29*/("""$("#public").val(0);
+                           """),format.raw/*497.28*/("""}"""),format.raw/*497.29*/("""
+                         """),format.raw/*498.26*/("""}"""),format.raw/*498.27*/(""");
+                       $('#portraitCh').change(function() """),format.raw/*499.59*/("""{"""),format.raw/*499.60*/("""
+                    """),format.raw/*500.21*/("""if($(this).is(":checked")) """),format.raw/*500.48*/("""{"""),format.raw/*500.49*/("""
+                           """),format.raw/*501.28*/("""$("#portrait").val(1);
+                           """),format.raw/*502.28*/("""}"""),format.raw/*502.29*/("""
+                           """),format.raw/*503.28*/("""else
+                           """),format.raw/*504.28*/("""{"""),format.raw/*504.29*/("""
+                            """),format.raw/*505.29*/("""$("#portrait").val(0);
+                           """),format.raw/*506.28*/("""}"""),format.raw/*506.29*/("""
+                         """),format.raw/*507.26*/("""}"""),format.raw/*507.27*/(""");
+                    $('#Age').change(function() """),format.raw/*508.49*/("""{"""),format.raw/*508.50*/("""
+                        """),format.raw/*509.25*/("""if($(this).is(":checked")) """),format.raw/*509.52*/("""{"""),format.raw/*509.53*/("""
+                           """),format.raw/*510.28*/("""var a =  parseInt($("#ir").val()) + 1
                            $("#ir").val(a.toString() );
-                           """),format.raw/*498.28*/("""}"""),format.raw/*498.29*/("""
-                           """),format.raw/*499.28*/("""else
-                           """),format.raw/*500.28*/("""{"""),format.raw/*500.29*/("""
-                            """),format.raw/*501.29*/("""var a =  parseInt($("#ir").val()) - 1
+                           """),format.raw/*512.28*/("""}"""),format.raw/*512.29*/("""
+                           """),format.raw/*513.28*/("""else
+                           """),format.raw/*514.28*/("""{"""),format.raw/*514.29*/("""
+                            """),format.raw/*515.29*/("""var a =  parseInt($("#ir").val()) - 1
                            $("#ir").val(a.toString() );
-                           """),format.raw/*503.28*/("""}"""),format.raw/*503.29*/("""
-                         """),format.raw/*504.26*/("""}"""),format.raw/*504.27*/(""");
+                           """),format.raw/*517.28*/("""}"""),format.raw/*517.29*/("""
+                         """),format.raw/*518.26*/("""}"""),format.raw/*518.27*/(""");
 
-                         $('#Height').change(function() """),format.raw/*506.57*/("""{"""),format.raw/*506.58*/("""
-                         """),format.raw/*507.26*/("""if($(this).is(":checked")) """),format.raw/*507.53*/("""{"""),format.raw/*507.54*/("""
-                             """),format.raw/*508.30*/("""var a =  parseInt($("#ir").val()) + 10
+                         $('#Height').change(function() """),format.raw/*520.57*/("""{"""),format.raw/*520.58*/("""
+                         """),format.raw/*521.26*/("""if($(this).is(":checked")) """),format.raw/*521.53*/("""{"""),format.raw/*521.54*/("""
+                             """),format.raw/*522.30*/("""var a =  parseInt($("#ir").val()) + 10
                            $("#ir").val(a.toString() );
-                           """),format.raw/*510.28*/("""}"""),format.raw/*510.29*/("""
-                           """),format.raw/*511.28*/("""else
-                           """),format.raw/*512.28*/("""{"""),format.raw/*512.29*/("""
-                             """),format.raw/*513.30*/("""var a =  parseInt($("#ir").val()) - 10
+                           """),format.raw/*524.28*/("""}"""),format.raw/*524.29*/("""
+                           """),format.raw/*525.28*/("""else
+                           """),format.raw/*526.28*/("""{"""),format.raw/*526.29*/("""
+                             """),format.raw/*527.30*/("""var a =  parseInt($("#ir").val()) - 10
                            $("#ir").val(a.toString() );
-                           """),format.raw/*515.28*/("""}"""),format.raw/*515.29*/("""
-                         """),format.raw/*516.26*/("""}"""),format.raw/*516.27*/(""");
+                           """),format.raw/*529.28*/("""}"""),format.raw/*529.29*/("""
+                         """),format.raw/*530.26*/("""}"""),format.raw/*530.27*/(""");
 
-                          $('#Weight').change(function() """),format.raw/*518.58*/("""{"""),format.raw/*518.59*/("""
-                         """),format.raw/*519.26*/("""if($(this).is(":checked")) """),format.raw/*519.53*/("""{"""),format.raw/*519.54*/("""
+                          $('#Weight').change(function() """),format.raw/*532.58*/("""{"""),format.raw/*532.59*/("""
+                         """),format.raw/*533.26*/("""if($(this).is(":checked")) """),format.raw/*533.53*/("""{"""),format.raw/*533.54*/("""
 
-                           """),format.raw/*521.28*/("""var a =  parseInt($("#ir").val()) + 100
+                           """),format.raw/*535.28*/("""var a =  parseInt($("#ir").val()) + 100
                            $("#ir").val(a.toString() );
-                           """),format.raw/*523.28*/("""}"""),format.raw/*523.29*/("""
-                           """),format.raw/*524.28*/("""else
-                           """),format.raw/*525.28*/("""{"""),format.raw/*525.29*/("""
-                               """),format.raw/*526.32*/("""var a =  parseInt($("#ir").val()) - 100
+                           """),format.raw/*537.28*/("""}"""),format.raw/*537.29*/("""
+                           """),format.raw/*538.28*/("""else
+                           """),format.raw/*539.28*/("""{"""),format.raw/*539.29*/("""
+                               """),format.raw/*540.32*/("""var a =  parseInt($("#ir").val()) - 100
                            $("#ir").val(a.toString() );
-                           """),format.raw/*528.28*/("""}"""),format.raw/*528.29*/("""
-                         """),format.raw/*529.26*/("""}"""),format.raw/*529.27*/(""");
+                           """),format.raw/*542.28*/("""}"""),format.raw/*542.29*/("""
+                         """),format.raw/*543.26*/("""}"""),format.raw/*543.27*/(""");
 
-                          $('#Gender').change(function() """),format.raw/*531.58*/("""{"""),format.raw/*531.59*/("""
-                         """),format.raw/*532.26*/("""if($(this).is(":checked")) """),format.raw/*532.53*/("""{"""),format.raw/*532.54*/("""
+                          $('#Gender').change(function() """),format.raw/*545.58*/("""{"""),format.raw/*545.59*/("""
+                         """),format.raw/*546.26*/("""if($(this).is(":checked")) """),format.raw/*546.53*/("""{"""),format.raw/*546.54*/("""
 
-                           """),format.raw/*534.28*/("""var a =  parseInt($("#ir").val()) + 1000
+                           """),format.raw/*548.28*/("""var a =  parseInt($("#ir").val()) + 1000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*536.28*/("""}"""),format.raw/*536.29*/("""
-                           """),format.raw/*537.28*/("""else
-                           """),format.raw/*538.28*/("""{"""),format.raw/*538.29*/("""
-                               """),format.raw/*539.32*/("""var a =  parseInt($("#ir").val()) - 1000
+                           """),format.raw/*550.28*/("""}"""),format.raw/*550.29*/("""
+                           """),format.raw/*551.28*/("""else
+                           """),format.raw/*552.28*/("""{"""),format.raw/*552.29*/("""
+                               """),format.raw/*553.32*/("""var a =  parseInt($("#ir").val()) - 1000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*541.28*/("""}"""),format.raw/*541.29*/("""
-                         """),format.raw/*542.26*/("""}"""),format.raw/*542.27*/(""");
+                           """),format.raw/*555.28*/("""}"""),format.raw/*555.29*/("""
+                         """),format.raw/*556.26*/("""}"""),format.raw/*556.27*/(""");
 
-                          $('#Ethnicity').change(function() """),format.raw/*544.61*/("""{"""),format.raw/*544.62*/("""
-                         """),format.raw/*545.26*/("""if($(this).is(":checked")) """),format.raw/*545.53*/("""{"""),format.raw/*545.54*/("""
+                          $('#Ethnicity').change(function() """),format.raw/*558.61*/("""{"""),format.raw/*558.62*/("""
+                         """),format.raw/*559.26*/("""if($(this).is(":checked")) """),format.raw/*559.53*/("""{"""),format.raw/*559.54*/("""
 
-                           """),format.raw/*547.28*/("""var a =  parseInt($("#ir").val()) + 10000
+                           """),format.raw/*561.28*/("""var a =  parseInt($("#ir").val()) + 10000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*549.28*/("""}"""),format.raw/*549.29*/("""
-                           """),format.raw/*550.28*/("""else
-                           """),format.raw/*551.28*/("""{"""),format.raw/*551.29*/("""
-                               """),format.raw/*552.32*/("""var a =  parseInt($("#ir").val()) - 10000
+                           """),format.raw/*563.28*/("""}"""),format.raw/*563.29*/("""
+                           """),format.raw/*564.28*/("""else
+                           """),format.raw/*565.28*/("""{"""),format.raw/*565.29*/("""
+                               """),format.raw/*566.32*/("""var a =  parseInt($("#ir").val()) - 10000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*554.28*/("""}"""),format.raw/*554.29*/("""
-                         """),format.raw/*555.26*/("""}"""),format.raw/*555.27*/(""");
+                           """),format.raw/*568.28*/("""}"""),format.raw/*568.29*/("""
+                         """),format.raw/*569.26*/("""}"""),format.raw/*569.27*/(""");
 
-                          $('#Bio_other').change(function() """),format.raw/*557.61*/("""{"""),format.raw/*557.62*/("""
-                         """),format.raw/*558.26*/("""if($(this).is(":checked")) """),format.raw/*558.53*/("""{"""),format.raw/*558.54*/("""
+                          $('#Bio_other').change(function() """),format.raw/*571.61*/("""{"""),format.raw/*571.62*/("""
+                         """),format.raw/*572.26*/("""if($(this).is(":checked")) """),format.raw/*572.53*/("""{"""),format.raw/*572.54*/("""
 
-                           """),format.raw/*560.28*/("""var a =  parseInt($("#ir").val()) + 100000
+                           """),format.raw/*574.28*/("""var a =  parseInt($("#ir").val()) + 100000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*562.28*/("""}"""),format.raw/*562.29*/("""
-                           """),format.raw/*563.28*/("""else
-                           """),format.raw/*564.28*/("""{"""),format.raw/*564.29*/("""
-                               """),format.raw/*565.32*/("""var a =  parseInt($("#ir").val()) - 100000
+                           """),format.raw/*576.28*/("""}"""),format.raw/*576.29*/("""
+                           """),format.raw/*577.28*/("""else
+                           """),format.raw/*578.28*/("""{"""),format.raw/*578.29*/("""
+                               """),format.raw/*579.32*/("""var a =  parseInt($("#ir").val()) - 100000
                            $("#ir").val(a.toString() );
-                           """),format.raw/*567.28*/("""}"""),format.raw/*567.29*/("""
-                         """),format.raw/*568.26*/("""}"""),format.raw/*568.27*/(""");
+                           """),format.raw/*581.28*/("""}"""),format.raw/*581.29*/("""
+                         """),format.raw/*582.26*/("""}"""),format.raw/*582.27*/(""");
 
-                     """),format.raw/*570.22*/("""}"""),format.raw/*570.23*/(""");
+                     """),format.raw/*584.22*/("""}"""),format.raw/*584.23*/(""");
                                         </script>
             <input type="hidden" name="bio" id='ir' value=0>
 
             <input type="button" name="previous" class="previous action-button" value="Previous" />
            <!-- <input type="button" name="next" class="next action-button" value="Next" /> -->
-            <input type="submit" name="submit" class="submit action-button" value="Submit" id="createStudy"/>
+            <input type="submit" id="sb" name="submit" class="submit action-button" value="Submit" id="createStudy"/>
       </fieldset>
     <!--<fieldset>
         <h2 class="fs-title">Psychometrics</h2>
@@ -616,71 +630,71 @@ Seq[Any](format.raw/*1.89*/("""
         </table>
 
         <script>
-                                                $(document).ready(function()"""),format.raw/*599.77*/("""{"""),format.raw/*599.78*/("""
-                                                    """),format.raw/*600.53*/("""$('#SAI').change(function() """),format.raw/*600.81*/("""{"""),format.raw/*600.82*/("""
-                                                    """),format.raw/*601.53*/("""if($(this).is(":checked")) """),format.raw/*601.80*/("""{"""),format.raw/*601.81*/("""
-                                                       """),format.raw/*602.56*/("""var a =  parseInt($("#Psychometric").val()) + 1
+                                                $(document).ready(function()"""),format.raw/*613.77*/("""{"""),format.raw/*613.78*/("""
+                                                    """),format.raw/*614.53*/("""$('#SAI').change(function() """),format.raw/*614.81*/("""{"""),format.raw/*614.82*/("""
+                                                    """),format.raw/*615.53*/("""if($(this).is(":checked")) """),format.raw/*615.80*/("""{"""),format.raw/*615.81*/("""
+                                                       """),format.raw/*616.56*/("""var a =  parseInt($("#Psychometric").val()) + 1
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*604.56*/("""}"""),format.raw/*604.57*/("""
-                                                       """),format.raw/*605.56*/("""else
-                                                       """),format.raw/*606.56*/("""{"""),format.raw/*606.57*/("""
-                                                        """),format.raw/*607.57*/("""var a =  parseInt($("#Psychometric").val()) - 1
+                                                       """),format.raw/*618.56*/("""}"""),format.raw/*618.57*/("""
+                                                       """),format.raw/*619.56*/("""else
+                                                       """),format.raw/*620.56*/("""{"""),format.raw/*620.57*/("""
+                                                        """),format.raw/*621.57*/("""var a =  parseInt($("#Psychometric").val()) - 1
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*609.56*/("""}"""),format.raw/*609.57*/("""
-                                                     """),format.raw/*610.54*/("""}"""),format.raw/*610.55*/(""");
+                                                       """),format.raw/*623.56*/("""}"""),format.raw/*623.57*/("""
+                                                     """),format.raw/*624.54*/("""}"""),format.raw/*624.55*/(""");
 
-                                                     $('#TAI').change(function() """),format.raw/*612.82*/("""{"""),format.raw/*612.83*/("""
-                                                     """),format.raw/*613.54*/("""if($(this).is(":checked")) """),format.raw/*613.81*/("""{"""),format.raw/*613.82*/("""
-                                                       """),format.raw/*614.56*/("""var a =  parseInt($("#Psychometric").val()) + 10
+                                                     $('#TAI').change(function() """),format.raw/*626.82*/("""{"""),format.raw/*626.83*/("""
+                                                     """),format.raw/*627.54*/("""if($(this).is(":checked")) """),format.raw/*627.81*/("""{"""),format.raw/*627.82*/("""
+                                                       """),format.raw/*628.56*/("""var a =  parseInt($("#Psychometric").val()) + 10
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*616.56*/("""}"""),format.raw/*616.57*/("""
-                                                       """),format.raw/*617.56*/("""else
-                                                       """),format.raw/*618.56*/("""{"""),format.raw/*618.57*/("""
-                                                         """),format.raw/*619.58*/("""var a =  parseInt($("#Psychometric").val()) - 10
+                                                       """),format.raw/*630.56*/("""}"""),format.raw/*630.57*/("""
+                                                       """),format.raw/*631.56*/("""else
+                                                       """),format.raw/*632.56*/("""{"""),format.raw/*632.57*/("""
+                                                         """),format.raw/*633.58*/("""var a =  parseInt($("#Psychometric").val()) - 10
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*621.56*/("""}"""),format.raw/*621.57*/("""
-                                                     """),format.raw/*622.54*/("""}"""),format.raw/*622.55*/(""");
+                                                       """),format.raw/*635.56*/("""}"""),format.raw/*635.57*/("""
+                                                     """),format.raw/*636.54*/("""}"""),format.raw/*636.55*/(""");
 
-                                                      $('#PA').change(function() """),format.raw/*624.82*/("""{"""),format.raw/*624.83*/("""
-                                                     """),format.raw/*625.54*/("""if($(this).is(":checked")) """),format.raw/*625.81*/("""{"""),format.raw/*625.82*/("""
+                                                      $('#PA').change(function() """),format.raw/*638.82*/("""{"""),format.raw/*638.83*/("""
+                                                     """),format.raw/*639.54*/("""if($(this).is(":checked")) """),format.raw/*639.81*/("""{"""),format.raw/*639.82*/("""
 
-                                                       """),format.raw/*627.56*/("""var a =  parseInt($("#Psychometric").val()) + 100
+                                                       """),format.raw/*641.56*/("""var a =  parseInt($("#Psychometric").val()) + 100
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*629.56*/("""}"""),format.raw/*629.57*/("""
-                                                       """),format.raw/*630.56*/("""else
-                                                       """),format.raw/*631.56*/("""{"""),format.raw/*631.57*/("""
-                                                           """),format.raw/*632.60*/("""var a =  parseInt($("#Psychometric").val()) - 100
+                                                       """),format.raw/*643.56*/("""}"""),format.raw/*643.57*/("""
+                                                       """),format.raw/*644.56*/("""else
+                                                       """),format.raw/*645.56*/("""{"""),format.raw/*645.57*/("""
+                                                           """),format.raw/*646.60*/("""var a =  parseInt($("#Psychometric").val()) - 100
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*634.56*/("""}"""),format.raw/*634.57*/("""
-                                                     """),format.raw/*635.54*/("""}"""),format.raw/*635.55*/(""");
+                                                       """),format.raw/*648.56*/("""}"""),format.raw/*648.57*/("""
+                                                     """),format.raw/*649.54*/("""}"""),format.raw/*649.55*/(""");
 
-                                                      $('#NA').change(function() """),format.raw/*637.82*/("""{"""),format.raw/*637.83*/("""
-                                                     """),format.raw/*638.54*/("""if($(this).is(":checked")) """),format.raw/*638.81*/("""{"""),format.raw/*638.82*/("""
+                                                      $('#NA').change(function() """),format.raw/*651.82*/("""{"""),format.raw/*651.83*/("""
+                                                     """),format.raw/*652.54*/("""if($(this).is(":checked")) """),format.raw/*652.81*/("""{"""),format.raw/*652.82*/("""
 
-                                                       """),format.raw/*640.56*/("""var a =  parseInt($("#Psychometric").val()) + 1000
+                                                       """),format.raw/*654.56*/("""var a =  parseInt($("#Psychometric").val()) + 1000
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*642.56*/("""}"""),format.raw/*642.57*/("""
-                                                       """),format.raw/*643.56*/("""else
-                                                       """),format.raw/*644.56*/("""{"""),format.raw/*644.57*/("""
-                                                           """),format.raw/*645.60*/("""var a =  parseInt($("#Psychometric").val()) - 1000
+                                                       """),format.raw/*656.56*/("""}"""),format.raw/*656.57*/("""
+                                                       """),format.raw/*657.56*/("""else
+                                                       """),format.raw/*658.56*/("""{"""),format.raw/*658.57*/("""
+                                                           """),format.raw/*659.60*/("""var a =  parseInt($("#Psychometric").val()) - 1000
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*647.56*/("""}"""),format.raw/*647.57*/("""
-                                                     """),format.raw/*648.54*/("""}"""),format.raw/*648.55*/(""");
+                                                       """),format.raw/*661.56*/("""}"""),format.raw/*661.57*/("""
+                                                     """),format.raw/*662.54*/("""}"""),format.raw/*662.55*/(""");
 
-                                                      $('#Trait_Other').change(function() """),format.raw/*650.91*/("""{"""),format.raw/*650.92*/("""
-                                                     """),format.raw/*651.54*/("""if($(this).is(":checked")) """),format.raw/*651.81*/("""{"""),format.raw/*651.82*/("""
+                                                      $('#Trait_Other').change(function() """),format.raw/*664.91*/("""{"""),format.raw/*664.92*/("""
+                                                     """),format.raw/*665.54*/("""if($(this).is(":checked")) """),format.raw/*665.81*/("""{"""),format.raw/*665.82*/("""
 
-                                                       """),format.raw/*653.56*/("""var a =  parseInt($("#Psychometric").val()) + 10000
+                                                       """),format.raw/*667.56*/("""var a =  parseInt($("#Psychometric").val()) + 10000
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*655.56*/("""}"""),format.raw/*655.57*/("""
-                                                       """),format.raw/*656.56*/("""else
-                                                       """),format.raw/*657.56*/("""{"""),format.raw/*657.57*/("""
-                                                           """),format.raw/*658.60*/("""var a =  parseInt($("#Psychometric").val()) - 10000
+                                                       """),format.raw/*669.56*/("""}"""),format.raw/*669.57*/("""
+                                                       """),format.raw/*670.56*/("""else
+                                                       """),format.raw/*671.56*/("""{"""),format.raw/*671.57*/("""
+                                                           """),format.raw/*672.60*/("""var a =  parseInt($("#Psychometric").val()) - 10000
                                                        $("#Psychometric").val(a.toString() );
-                                                       """),format.raw/*660.56*/("""}"""),format.raw/*660.57*/("""
-                                                     """),format.raw/*661.54*/("""}"""),format.raw/*661.55*/(""");
+                                                       """),format.raw/*674.56*/("""}"""),format.raw/*674.57*/("""
+                                                     """),format.raw/*675.54*/("""}"""),format.raw/*675.55*/(""");
 
-                                                 """),format.raw/*663.50*/("""}"""),format.raw/*663.51*/(""");
+                                                 """),format.raw/*677.50*/("""}"""),format.raw/*677.51*/(""");
                                     </script>
         <input type="hidden" name="psychometric" id='Psychometric' value=0>
 
@@ -711,97 +725,97 @@ Seq[Any](format.raw/*1.89*/("""
 
         </table>
         <script>
-                                                $(document).ready(function()"""),format.raw/*694.77*/("""{"""),format.raw/*694.78*/("""
-                                                """),format.raw/*695.49*/("""$('#EDA').change(function() """),format.raw/*695.77*/("""{"""),format.raw/*695.78*/("""
-                                                    """),format.raw/*696.53*/("""if($(this).is(":checked")) """),format.raw/*696.80*/("""{"""),format.raw/*696.81*/("""
-                                                       """),format.raw/*697.56*/("""var a =  parseInt($("#physiology").val()) + 1
+                                                $(document).ready(function()"""),format.raw/*708.77*/("""{"""),format.raw/*708.78*/("""
+                                                """),format.raw/*709.49*/("""$('#EDA').change(function() """),format.raw/*709.77*/("""{"""),format.raw/*709.78*/("""
+                                                    """),format.raw/*710.53*/("""if($(this).is(":checked")) """),format.raw/*710.80*/("""{"""),format.raw/*710.81*/("""
+                                                       """),format.raw/*711.56*/("""var a =  parseInt($("#physiology").val()) + 1
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*699.56*/("""}"""),format.raw/*699.57*/("""
-                                                       """),format.raw/*700.56*/("""else
-                                                       """),format.raw/*701.56*/("""{"""),format.raw/*701.57*/("""
-                                                        """),format.raw/*702.57*/("""var a =  parseInt($("#physiology").val()) - 1
+                                                       """),format.raw/*713.56*/("""}"""),format.raw/*713.57*/("""
+                                                       """),format.raw/*714.56*/("""else
+                                                       """),format.raw/*715.56*/("""{"""),format.raw/*715.57*/("""
+                                                        """),format.raw/*716.57*/("""var a =  parseInt($("#physiology").val()) - 1
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*704.56*/("""}"""),format.raw/*704.57*/("""
-                                                     """),format.raw/*705.54*/("""}"""),format.raw/*705.55*/(""");
+                                                       """),format.raw/*718.56*/("""}"""),format.raw/*718.57*/("""
+                                                     """),format.raw/*719.54*/("""}"""),format.raw/*719.55*/(""");
 
-                                                     $('#Motion').change(function() """),format.raw/*707.85*/("""{"""),format.raw/*707.86*/("""
-                                                     """),format.raw/*708.54*/("""if($(this).is(":checked")) """),format.raw/*708.81*/("""{"""),format.raw/*708.82*/("""
-                                                       """),format.raw/*709.56*/("""var a =  parseInt($("#physiology").val()) + 10
+                                                     $('#Motion').change(function() """),format.raw/*721.85*/("""{"""),format.raw/*721.86*/("""
+                                                     """),format.raw/*722.54*/("""if($(this).is(":checked")) """),format.raw/*722.81*/("""{"""),format.raw/*722.82*/("""
+                                                       """),format.raw/*723.56*/("""var a =  parseInt($("#physiology").val()) + 10
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*711.56*/("""}"""),format.raw/*711.57*/("""
-                                                       """),format.raw/*712.56*/("""else
-                                                       """),format.raw/*713.56*/("""{"""),format.raw/*713.57*/("""
-                                                         """),format.raw/*714.58*/("""var a =  parseInt($("#physiology").val()) - 10
+                                                       """),format.raw/*725.56*/("""}"""),format.raw/*725.57*/("""
+                                                       """),format.raw/*726.56*/("""else
+                                                       """),format.raw/*727.56*/("""{"""),format.raw/*727.57*/("""
+                                                         """),format.raw/*728.58*/("""var a =  parseInt($("#physiology").val()) - 10
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*716.56*/("""}"""),format.raw/*716.57*/("""
-                                                     """),format.raw/*717.54*/("""}"""),format.raw/*717.55*/(""");
+                                                       """),format.raw/*730.56*/("""}"""),format.raw/*730.57*/("""
+                                                     """),format.raw/*731.54*/("""}"""),format.raw/*731.55*/(""");
 
-                                                      $('#GSR_Finger').change(function() """),format.raw/*719.90*/("""{"""),format.raw/*719.91*/("""
-                                                     """),format.raw/*720.54*/("""if($(this).is(":checked")) """),format.raw/*720.81*/("""{"""),format.raw/*720.82*/("""
+                                                      $('#GSR_Finger').change(function() """),format.raw/*733.90*/("""{"""),format.raw/*733.91*/("""
+                                                     """),format.raw/*734.54*/("""if($(this).is(":checked")) """),format.raw/*734.81*/("""{"""),format.raw/*734.82*/("""
 
-                                                       """),format.raw/*722.56*/("""var a =  parseInt($("#physiology").val()) + 100
+                                                       """),format.raw/*736.56*/("""var a =  parseInt($("#physiology").val()) + 100
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*724.56*/("""}"""),format.raw/*724.57*/("""
-                                                       """),format.raw/*725.56*/("""else
-                                                       """),format.raw/*726.56*/("""{"""),format.raw/*726.57*/("""
-                                                           """),format.raw/*727.60*/("""var a =  parseInt($("#physiology").val()) - 100
+                                                       """),format.raw/*738.56*/("""}"""),format.raw/*738.57*/("""
+                                                       """),format.raw/*739.56*/("""else
+                                                       """),format.raw/*740.56*/("""{"""),format.raw/*740.57*/("""
+                                                           """),format.raw/*741.60*/("""var a =  parseInt($("#physiology").val()) - 100
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*729.56*/("""}"""),format.raw/*729.57*/("""
-                                                     """),format.raw/*730.54*/("""}"""),format.raw/*730.55*/(""");
+                                                       """),format.raw/*743.56*/("""}"""),format.raw/*743.57*/("""
+                                                     """),format.raw/*744.54*/("""}"""),format.raw/*744.55*/(""");
 
-                                                      $('#Breathing_Belt').change(function() """),format.raw/*732.94*/("""{"""),format.raw/*732.95*/("""
-                                                     """),format.raw/*733.54*/("""if($(this).is(":checked")) """),format.raw/*733.81*/("""{"""),format.raw/*733.82*/("""
+                                                      $('#Breathing_Belt').change(function() """),format.raw/*746.94*/("""{"""),format.raw/*746.95*/("""
+                                                     """),format.raw/*747.54*/("""if($(this).is(":checked")) """),format.raw/*747.81*/("""{"""),format.raw/*747.82*/("""
 
-                                                       """),format.raw/*735.56*/("""var a =  parseInt($("#physiology").val()) + 1000
+                                                       """),format.raw/*749.56*/("""var a =  parseInt($("#physiology").val()) + 1000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*737.56*/("""}"""),format.raw/*737.57*/("""
-                                                       """),format.raw/*738.56*/("""else
-                                                       """),format.raw/*739.56*/("""{"""),format.raw/*739.57*/("""
-                                                           """),format.raw/*740.60*/("""var a =  parseInt($("#physiology").val()) - 1000
+                                                       """),format.raw/*751.56*/("""}"""),format.raw/*751.57*/("""
+                                                       """),format.raw/*752.56*/("""else
+                                                       """),format.raw/*753.56*/("""{"""),format.raw/*753.57*/("""
+                                                           """),format.raw/*754.60*/("""var a =  parseInt($("#physiology").val()) - 1000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*742.56*/("""}"""),format.raw/*742.57*/("""
-                                                     """),format.raw/*743.54*/("""}"""),format.raw/*743.55*/(""");
+                                                       """),format.raw/*756.56*/("""}"""),format.raw/*756.57*/("""
+                                                     """),format.raw/*757.54*/("""}"""),format.raw/*757.55*/(""");
 
-                                                      $('#Breathing_Thermal').change(function() """),format.raw/*745.97*/("""{"""),format.raw/*745.98*/("""
-                                                     """),format.raw/*746.54*/("""if($(this).is(":checked")) """),format.raw/*746.81*/("""{"""),format.raw/*746.82*/("""
+                                                      $('#Breathing_Thermal').change(function() """),format.raw/*759.97*/("""{"""),format.raw/*759.98*/("""
+                                                     """),format.raw/*760.54*/("""if($(this).is(":checked")) """),format.raw/*760.81*/("""{"""),format.raw/*760.82*/("""
 
-                                                       """),format.raw/*748.56*/("""var a =  parseInt($("#physiology").val()) + 10000
+                                                       """),format.raw/*762.56*/("""var a =  parseInt($("#physiology").val()) + 10000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*750.56*/("""}"""),format.raw/*750.57*/("""
-                                                       """),format.raw/*751.56*/("""else
-                                                       """),format.raw/*752.56*/("""{"""),format.raw/*752.57*/("""
-                                                           """),format.raw/*753.60*/("""var a =  parseInt($("#physiology").val()) - 10000
+                                                       """),format.raw/*764.56*/("""}"""),format.raw/*764.57*/("""
+                                                       """),format.raw/*765.56*/("""else
+                                                       """),format.raw/*766.56*/("""{"""),format.raw/*766.57*/("""
+                                                           """),format.raw/*767.60*/("""var a =  parseInt($("#physiology").val()) - 10000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*755.56*/("""}"""),format.raw/*755.57*/("""
-                                                     """),format.raw/*756.54*/("""}"""),format.raw/*756.55*/(""");
+                                                       """),format.raw/*769.56*/("""}"""),format.raw/*769.57*/("""
+                                                     """),format.raw/*770.54*/("""}"""),format.raw/*770.55*/(""");
 
-                                                      $('#Heart_Rate').change(function() """),format.raw/*758.90*/("""{"""),format.raw/*758.91*/("""
-                                                     """),format.raw/*759.54*/("""if($(this).is(":checked")) """),format.raw/*759.81*/("""{"""),format.raw/*759.82*/("""
+                                                      $('#Heart_Rate').change(function() """),format.raw/*772.90*/("""{"""),format.raw/*772.91*/("""
+                                                     """),format.raw/*773.54*/("""if($(this).is(":checked")) """),format.raw/*773.81*/("""{"""),format.raw/*773.82*/("""
 
-                                                       """),format.raw/*761.56*/("""var a =  parseInt($("#physiology").val()) + 100000
+                                                       """),format.raw/*775.56*/("""var a =  parseInt($("#physiology").val()) + 100000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*763.56*/("""}"""),format.raw/*763.57*/("""
-                                                       """),format.raw/*764.56*/("""else
-                                                       """),format.raw/*765.56*/("""{"""),format.raw/*765.57*/("""
-                                                           """),format.raw/*766.60*/("""var a =  parseInt($("#physiology").val()) - 100000
+                                                       """),format.raw/*777.56*/("""}"""),format.raw/*777.57*/("""
+                                                       """),format.raw/*778.56*/("""else
+                                                       """),format.raw/*779.56*/("""{"""),format.raw/*779.57*/("""
+                                                           """),format.raw/*780.60*/("""var a =  parseInt($("#physiology").val()) - 100000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*768.56*/("""}"""),format.raw/*768.57*/("""
-                                                     """),format.raw/*769.54*/("""}"""),format.raw/*769.55*/(""");
+                                                       """),format.raw/*782.56*/("""}"""),format.raw/*782.57*/("""
+                                                     """),format.raw/*783.54*/("""}"""),format.raw/*783.55*/(""");
 
-                                                      $('#Perspiration').change(function() """),format.raw/*771.92*/("""{"""),format.raw/*771.93*/("""
-                                                     """),format.raw/*772.54*/("""if($(this).is(":checked")) """),format.raw/*772.81*/("""{"""),format.raw/*772.82*/("""
+                                                      $('#Perspiration').change(function() """),format.raw/*785.92*/("""{"""),format.raw/*785.93*/("""
+                                                     """),format.raw/*786.54*/("""if($(this).is(":checked")) """),format.raw/*786.81*/("""{"""),format.raw/*786.82*/("""
 
-                                                       """),format.raw/*774.56*/("""var a =  parseInt($("#physiology").val()) + 1000000
+                                                       """),format.raw/*788.56*/("""var a =  parseInt($("#physiology").val()) + 1000000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*776.56*/("""}"""),format.raw/*776.57*/("""
-                                                       """),format.raw/*777.56*/("""else
-                                                       """),format.raw/*778.56*/("""{"""),format.raw/*778.57*/("""
-                                                           """),format.raw/*779.60*/("""var a =  parseInt($("#physiology").val()) - 1000000
+                                                       """),format.raw/*790.56*/("""}"""),format.raw/*790.57*/("""
+                                                       """),format.raw/*791.56*/("""else
+                                                       """),format.raw/*792.56*/("""{"""),format.raw/*792.57*/("""
+                                                           """),format.raw/*793.60*/("""var a =  parseInt($("#physiology").val()) - 1000000
                                                        $("#physiology").val(a.toString() );
-                                                       """),format.raw/*781.56*/("""}"""),format.raw/*781.57*/("""
-                                                     """),format.raw/*782.54*/("""}"""),format.raw/*782.55*/(""");
+                                                       """),format.raw/*795.56*/("""}"""),format.raw/*795.57*/("""
+                                                     """),format.raw/*796.54*/("""}"""),format.raw/*796.55*/(""");
 
-                                                 """),format.raw/*784.50*/("""}"""),format.raw/*784.51*/(""");
+                                                 """),format.raw/*798.50*/("""}"""),format.raw/*798.51*/(""");
                                     </script>
 
 
@@ -835,97 +849,97 @@ Seq[Any](format.raw/*1.89*/("""
         </table>
 
         <script>
-                                                $(document).ready(function()"""),format.raw/*818.77*/("""{"""),format.raw/*818.78*/("""
-                                                """),format.raw/*819.49*/("""$('#Accelerometer').change(function() """),format.raw/*819.87*/("""{"""),format.raw/*819.88*/("""
-                                                    """),format.raw/*820.53*/("""if($(this).is(":checked")) """),format.raw/*820.80*/("""{"""),format.raw/*820.81*/("""
-                                                       """),format.raw/*821.56*/("""var a =  parseInt($("#observation").val()) + 1
+                                                $(document).ready(function()"""),format.raw/*832.77*/("""{"""),format.raw/*832.78*/("""
+                                                """),format.raw/*833.49*/("""$('#Accelerometer').change(function() """),format.raw/*833.87*/("""{"""),format.raw/*833.88*/("""
+                                                    """),format.raw/*834.53*/("""if($(this).is(":checked")) """),format.raw/*834.80*/("""{"""),format.raw/*834.81*/("""
+                                                       """),format.raw/*835.56*/("""var a =  parseInt($("#observation").val()) + 1
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*823.56*/("""}"""),format.raw/*823.57*/("""
-                                                       """),format.raw/*824.56*/("""else
-                                                       """),format.raw/*825.56*/("""{"""),format.raw/*825.57*/("""
-                                                        """),format.raw/*826.57*/("""var a =  parseInt($("#observation").val()) - 1
+                                                       """),format.raw/*837.56*/("""}"""),format.raw/*837.57*/("""
+                                                       """),format.raw/*838.56*/("""else
+                                                       """),format.raw/*839.56*/("""{"""),format.raw/*839.57*/("""
+                                                        """),format.raw/*840.57*/("""var a =  parseInt($("#observation").val()) - 1
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*828.56*/("""}"""),format.raw/*828.57*/("""
-                                                     """),format.raw/*829.54*/("""}"""),format.raw/*829.55*/(""");
+                                                       """),format.raw/*842.56*/("""}"""),format.raw/*842.57*/("""
+                                                     """),format.raw/*843.54*/("""}"""),format.raw/*843.55*/(""");
 
-                                                     $('#Obser_other').change(function() """),format.raw/*831.90*/("""{"""),format.raw/*831.91*/("""
-                                                     """),format.raw/*832.54*/("""if($(this).is(":checked")) """),format.raw/*832.81*/("""{"""),format.raw/*832.82*/("""
-                                                       """),format.raw/*833.56*/("""var a =  parseInt($("#observation").val()) + 10
+                                                     $('#Obser_other').change(function() """),format.raw/*845.90*/("""{"""),format.raw/*845.91*/("""
+                                                     """),format.raw/*846.54*/("""if($(this).is(":checked")) """),format.raw/*846.81*/("""{"""),format.raw/*846.82*/("""
+                                                       """),format.raw/*847.56*/("""var a =  parseInt($("#observation").val()) + 10
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*835.56*/("""}"""),format.raw/*835.57*/("""
-                                                       """),format.raw/*836.56*/("""else
-                                                       """),format.raw/*837.56*/("""{"""),format.raw/*837.57*/("""
-                                                         """),format.raw/*838.58*/("""var a =  parseInt($("#observation").val()) - 10
+                                                       """),format.raw/*849.56*/("""}"""),format.raw/*849.57*/("""
+                                                       """),format.raw/*850.56*/("""else
+                                                       """),format.raw/*851.56*/("""{"""),format.raw/*851.57*/("""
+                                                         """),format.raw/*852.58*/("""var a =  parseInt($("#observation").val()) - 10
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*840.56*/("""}"""),format.raw/*840.57*/("""
-                                                     """),format.raw/*841.54*/("""}"""),format.raw/*841.55*/(""");
+                                                       """),format.raw/*854.56*/("""}"""),format.raw/*854.57*/("""
+                                                     """),format.raw/*855.54*/("""}"""),format.raw/*855.55*/(""");
 
-                                                      $('#Video_Face').change(function() """),format.raw/*843.90*/("""{"""),format.raw/*843.91*/("""
-                                                     """),format.raw/*844.54*/("""if($(this).is(":checked")) """),format.raw/*844.81*/("""{"""),format.raw/*844.82*/("""
+                                                      $('#Video_Face').change(function() """),format.raw/*857.90*/("""{"""),format.raw/*857.91*/("""
+                                                     """),format.raw/*858.54*/("""if($(this).is(":checked")) """),format.raw/*858.81*/("""{"""),format.raw/*858.82*/("""
 
-                                                       """),format.raw/*846.56*/("""var a =  parseInt($("#observation").val()) + 100
+                                                       """),format.raw/*860.56*/("""var a =  parseInt($("#observation").val()) + 100
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*848.56*/("""}"""),format.raw/*848.57*/("""
-                                                       """),format.raw/*849.56*/("""else
-                                                       """),format.raw/*850.56*/("""{"""),format.raw/*850.57*/("""
-                                                           """),format.raw/*851.60*/("""var a =  parseInt($("#observation").val()) - 100
+                                                       """),format.raw/*862.56*/("""}"""),format.raw/*862.57*/("""
+                                                       """),format.raw/*863.56*/("""else
+                                                       """),format.raw/*864.56*/("""{"""),format.raw/*864.57*/("""
+                                                           """),format.raw/*865.60*/("""var a =  parseInt($("#observation").val()) - 100
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*853.56*/("""}"""),format.raw/*853.57*/("""
-                                                     """),format.raw/*854.54*/("""}"""),format.raw/*854.55*/(""");
+                                                       """),format.raw/*867.56*/("""}"""),format.raw/*867.57*/("""
+                                                     """),format.raw/*868.54*/("""}"""),format.raw/*868.55*/(""");
 
-                                                      $('#Video_Room').change(function() """),format.raw/*856.90*/("""{"""),format.raw/*856.91*/("""
-                                                     """),format.raw/*857.54*/("""if($(this).is(":checked")) """),format.raw/*857.81*/("""{"""),format.raw/*857.82*/("""
+                                                      $('#Video_Room').change(function() """),format.raw/*870.90*/("""{"""),format.raw/*870.91*/("""
+                                                     """),format.raw/*871.54*/("""if($(this).is(":checked")) """),format.raw/*871.81*/("""{"""),format.raw/*871.82*/("""
 
-                                                       """),format.raw/*859.56*/("""var a =  parseInt($("#observation").val()) + 1000
+                                                       """),format.raw/*873.56*/("""var a =  parseInt($("#observation").val()) + 1000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*861.56*/("""}"""),format.raw/*861.57*/("""
-                                                       """),format.raw/*862.56*/("""else
-                                                       """),format.raw/*863.56*/("""{"""),format.raw/*863.57*/("""
-                                                           """),format.raw/*864.60*/("""var a =  parseInt($("#observation").val()) - 1000
+                                                       """),format.raw/*875.56*/("""}"""),format.raw/*875.57*/("""
+                                                       """),format.raw/*876.56*/("""else
+                                                       """),format.raw/*877.56*/("""{"""),format.raw/*877.57*/("""
+                                                           """),format.raw/*878.60*/("""var a =  parseInt($("#observation").val()) - 1000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*866.56*/("""}"""),format.raw/*866.57*/("""
-                                                     """),format.raw/*867.54*/("""}"""),format.raw/*867.55*/(""");
+                                                       """),format.raw/*880.56*/("""}"""),format.raw/*880.57*/("""
+                                                     """),format.raw/*881.54*/("""}"""),format.raw/*881.55*/(""");
 
-                                                      $('#Video_Theater').change(function() """),format.raw/*869.93*/("""{"""),format.raw/*869.94*/("""
-                                                     """),format.raw/*870.54*/("""if($(this).is(":checked")) """),format.raw/*870.81*/("""{"""),format.raw/*870.82*/("""
+                                                      $('#Video_Theater').change(function() """),format.raw/*883.93*/("""{"""),format.raw/*883.94*/("""
+                                                     """),format.raw/*884.54*/("""if($(this).is(":checked")) """),format.raw/*884.81*/("""{"""),format.raw/*884.82*/("""
 
-                                                       """),format.raw/*872.56*/("""var a =  parseInt($("#observation").val()) + 10000
+                                                       """),format.raw/*886.56*/("""var a =  parseInt($("#observation").val()) + 10000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*874.56*/("""}"""),format.raw/*874.57*/("""
-                                                       """),format.raw/*875.56*/("""else
-                                                       """),format.raw/*876.56*/("""{"""),format.raw/*876.57*/("""
-                                                           """),format.raw/*877.60*/("""var a =  parseInt($("#observation").val()) - 10000
+                                                       """),format.raw/*888.56*/("""}"""),format.raw/*888.57*/("""
+                                                       """),format.raw/*889.56*/("""else
+                                                       """),format.raw/*890.56*/("""{"""),format.raw/*890.57*/("""
+                                                           """),format.raw/*891.60*/("""var a =  parseInt($("#observation").val()) - 10000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*879.56*/("""}"""),format.raw/*879.57*/("""
-                                                     """),format.raw/*880.54*/("""}"""),format.raw/*880.55*/(""");
+                                                       """),format.raw/*893.56*/("""}"""),format.raw/*893.57*/("""
+                                                     """),format.raw/*894.54*/("""}"""),format.raw/*894.55*/(""");
 
-                                                      $('#FACS').change(function() """),format.raw/*882.84*/("""{"""),format.raw/*882.85*/("""
-                                                     """),format.raw/*883.54*/("""if($(this).is(":checked")) """),format.raw/*883.81*/("""{"""),format.raw/*883.82*/("""
+                                                      $('#FACS').change(function() """),format.raw/*896.84*/("""{"""),format.raw/*896.85*/("""
+                                                     """),format.raw/*897.54*/("""if($(this).is(":checked")) """),format.raw/*897.81*/("""{"""),format.raw/*897.82*/("""
 
-                                                       """),format.raw/*885.56*/("""var a =  parseInt($("#observation").val()) + 100000
+                                                       """),format.raw/*899.56*/("""var a =  parseInt($("#observation").val()) + 100000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*887.56*/("""}"""),format.raw/*887.57*/("""
-                                                       """),format.raw/*888.56*/("""else
-                                                       """),format.raw/*889.56*/("""{"""),format.raw/*889.57*/("""
-                                                           """),format.raw/*890.60*/("""var a =  parseInt($("#observation").val()) - 100000
+                                                       """),format.raw/*901.56*/("""}"""),format.raw/*901.57*/("""
+                                                       """),format.raw/*902.56*/("""else
+                                                       """),format.raw/*903.56*/("""{"""),format.raw/*903.57*/("""
+                                                           """),format.raw/*904.60*/("""var a =  parseInt($("#observation").val()) - 100000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*892.56*/("""}"""),format.raw/*892.57*/("""
-                                                     """),format.raw/*893.54*/("""}"""),format.raw/*893.55*/(""");
+                                                       """),format.raw/*906.56*/("""}"""),format.raw/*906.57*/("""
+                                                     """),format.raw/*907.54*/("""}"""),format.raw/*907.55*/(""");
 
-                                                      $('#Obser2d_other').change(function() """),format.raw/*895.93*/("""{"""),format.raw/*895.94*/("""
-                                                     """),format.raw/*896.54*/("""if($(this).is(":checked")) """),format.raw/*896.81*/("""{"""),format.raw/*896.82*/("""
+                                                      $('#Obser2d_other').change(function() """),format.raw/*909.93*/("""{"""),format.raw/*909.94*/("""
+                                                     """),format.raw/*910.54*/("""if($(this).is(":checked")) """),format.raw/*910.81*/("""{"""),format.raw/*910.82*/("""
 
-                                                       """),format.raw/*898.56*/("""var a =  parseInt($("#observation").val()) + 1000000
+                                                       """),format.raw/*912.56*/("""var a =  parseInt($("#observation").val()) + 1000000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*900.56*/("""}"""),format.raw/*900.57*/("""
-                                                       """),format.raw/*901.56*/("""else
-                                                       """),format.raw/*902.56*/("""{"""),format.raw/*902.57*/("""
-                                                           """),format.raw/*903.60*/("""var a =  parseInt($("#observation").val()) - 1000000
+                                                       """),format.raw/*914.56*/("""}"""),format.raw/*914.57*/("""
+                                                       """),format.raw/*915.56*/("""else
+                                                       """),format.raw/*916.56*/("""{"""),format.raw/*916.57*/("""
+                                                           """),format.raw/*917.60*/("""var a =  parseInt($("#observation").val()) - 1000000
                                                        $("#observation").val(a.toString() );
-                                                       """),format.raw/*905.56*/("""}"""),format.raw/*905.57*/("""
-                                                     """),format.raw/*906.54*/("""}"""),format.raw/*906.55*/(""");
+                                                       """),format.raw/*919.56*/("""}"""),format.raw/*919.57*/("""
+                                                     """),format.raw/*920.54*/("""}"""),format.raw/*920.55*/(""");
 
-                                                 """),format.raw/*908.50*/("""}"""),format.raw/*908.51*/(""");
+                                                 """),format.raw/*922.50*/("""}"""),format.raw/*922.51*/(""");
                                     </script>
 
         <input type="hidden" name="observation" id='observation' value=0>
@@ -944,8 +958,8 @@ Seq[Any](format.raw/*1.89*/("""
 
     </fieldset> -->
     </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
-    """)))}),format.raw/*927.6*/("""
-    """),format.raw/*928.5*/("""</form>
+    """)))}),format.raw/*941.6*/("""
+    """),format.raw/*942.5*/("""</form>
 
     </div>
 
@@ -958,11 +972,8 @@ Seq[Any](format.raw/*1.89*/("""
  </div>
 
 <script>
-    var wsUri = """"),_display_(/*941.19*/routes/*941.25*/.Application.socket.webSocketURL()),format.raw/*941.59*/("""";
-    var userName = """"),_display_(/*942.22*/userName),format.raw/*942.30*/(""""
-
-
-
+    var wsUri = """"),_display_(/*955.19*/routes/*955.25*/.Application.socket.webSocketURL()),format.raw/*955.59*/("""";
+    var userName = """"),_display_(/*956.22*/userName),format.raw/*956.30*/(""""
 </script>
 
 
@@ -973,20 +984,20 @@ Seq[Any](format.raw/*1.89*/("""
 """))}
   }
 
-  def render(userName:String,explVar:List[scala.Tuple3[String, Int, Int]],request:RequestHeader): play.twirl.api.HtmlFormat.Appendable = apply(userName,explVar)(request)
+  def render(userName:String,explVar:List[scala.Tuple3[Option[String], Int, Int]],request:RequestHeader): play.twirl.api.HtmlFormat.Appendable = apply(userName,explVar)(request)
 
-  def f:((String,List[scala.Tuple3[String, Int, Int]]) => (RequestHeader) => play.twirl.api.HtmlFormat.Appendable) = (userName,explVar) => (request) => apply(userName,explVar)(request)
+  def f:((String,List[scala.Tuple3[Option[String], Int, Int]]) => (RequestHeader) => play.twirl.api.HtmlFormat.Appendable) = (userName,explVar) => (request) => apply(userName,explVar)(request)
 
   def ref: this.type = this
 
 }
               /*
                   -- GENERATED --
-                  DATE: Fri Apr 01 18:31:40 CDT 2016
+                  DATE: Wed Dec 28 16:18:31 CST 2016
                   SOURCE: C:/first_play/app/views/ShowCreateStudy.scala.html
-                  HASH: fc00b5b9cddecabc949817f2984e539142556027
-                  MATRIX: 566->1|756->88|784->108|893->190|921->191|963->205|1252->467|1281->468|1320->480|2516->1649|2531->1655|2596->1699|2677->1753|2692->1759|2757->1803|4007->3025|4037->3033|4067->3034|6069->5009|6085->5015|6198->5117|6240->5119|6278->5129|12319->11142|12371->11184|12412->11186|12467->11212|12654->11367|12705->11389|15746->14402|15783->14422|15823->14423|15882->14454|15909->14471|15950->14473|16010->14504|16062->14528|16076->14532|16101->14535|16132->14537|16183->14560|16197->14564|16222->14567|16252->14568|16324->14608|16387->14639|16442->14665|17061->15256|17098->15276|17138->15277|17205->15316|17232->15333|17273->15335|17340->15373|17412->15417|17426->15421|17451->15424|17527->15471|17542->15475|17568->15478|17649->15527|17720->15566|17783->15600|18180->15969|18217->15989|18257->15990|18316->16021|18342->16037|18383->16039|18442->16069|18495->16094|18509->16098|18534->16101|18567->16106|18581->16110|18606->16113|18678->16153|18741->16184|18800->16214|19198->16584|19235->16604|19275->16605|19334->16636|19360->16652|19401->16654|19460->16684|19513->16709|19527->16713|19552->16716|19586->16722|19600->16726|19625->16729|19697->16769|19760->16800|19819->16830|20753->17736|20790->17756|20830->17757|20893->17792|20919->17808|20960->17810|21023->17844|21075->17868|21089->17872|21114->17875|21145->17877|21196->17900|21210->17904|21235->17907|21265->17908|21341->17952|21404->17983|21461->18011|22308->18830|22345->18850|22385->18851|22452->18890|22479->18907|22520->18909|22587->18947|22661->18993|22675->18997|22700->19000|22776->19047|22791->19051|22817->19054|22897->19102|22968->19141|23031->19175|23980->20096|24017->20116|24057->20117|24116->20148|24143->20165|24184->20167|24243->20197|24295->20221|24309->20225|24334->20228|24365->20230|24416->20253|24430->20257|24455->20260|24527->20300|24590->20331|24649->20361|25823->21506|25853->21507|25904->21529|25966->21562|25996->21563|26047->21585|26103->21612|26133->21613|26191->21642|26269->21691|26299->21692|26357->21721|26419->21754|26449->21755|26508->21785|26586->21834|26616->21835|26672->21862|26702->21863|26793->21925|26823->21926|26874->21948|26930->21975|26960->21976|27018->22005|27098->22056|27128->22057|27186->22086|27248->22119|27278->22120|27337->22150|27417->22201|27447->22202|27503->22229|27533->22230|27614->22282|27644->22283|27699->22309|27755->22336|27785->22337|27843->22366|27995->22489|28025->22490|28083->22519|28145->22552|28175->22553|28234->22583|28386->22706|28416->22707|28472->22734|28502->22735|28593->22797|28623->22798|28679->22825|28735->22852|28765->22853|28825->22884|28978->23008|29008->23009|29066->23038|29128->23071|29158->23072|29218->23103|29371->23227|29401->23228|29457->23255|29487->23256|29579->23319|29609->23320|29665->23347|29721->23374|29751->23375|29811->23406|29965->23531|29995->23532|30053->23561|30115->23594|30145->23595|30207->23628|30361->23753|30391->23754|30447->23781|30477->23782|30569->23845|30599->23846|30655->23873|30711->23900|30741->23901|30801->23932|30956->24058|30986->24059|31044->24088|31106->24121|31136->24122|31198->24155|31353->24281|31383->24282|31439->24309|31469->24310|31564->24376|31594->24377|31650->24404|31706->24431|31736->24432|31796->24463|31952->24590|31982->24591|32040->24620|32102->24653|32132->24654|32194->24687|32350->24814|32380->24815|32436->24842|32466->24843|32561->24909|32591->24910|32647->24937|32703->24964|32733->24965|32793->24996|32950->25124|32980->25125|33038->25154|33100->25187|33130->25188|33192->25221|33349->25349|33379->25350|33435->25377|33465->25378|33521->25405|33551->25406|35316->27142|35346->27143|35429->27197|35486->27225|35516->27226|35599->27280|35655->27307|35685->27308|35771->27365|35999->27564|36029->27565|36115->27622|36205->27683|36235->27684|36322->27742|36550->27941|36580->27942|36664->27997|36694->27998|36810->28085|36840->28086|36924->28141|36980->28168|37010->28169|37096->28226|37325->28426|37355->28427|37441->28484|37531->28545|37561->28546|37649->28605|37878->28805|37908->28806|37992->28861|38022->28862|38138->28949|38168->28950|38252->29005|38308->29032|38338->29033|38426->29092|38656->29293|38686->29294|38772->29351|38862->29412|38892->29413|38982->29474|39212->29675|39242->29676|39326->29731|39356->29732|39472->29819|39502->29820|39586->29875|39642->29902|39672->29903|39760->29962|39991->30164|40021->30165|40107->30222|40197->30283|40227->30284|40317->30345|40548->30547|40578->30548|40662->30603|40692->30604|40817->30700|40847->30701|40931->30756|40987->30783|41017->30784|41105->30843|41337->31046|41367->31047|41453->31104|41543->31165|41573->31166|41663->31227|41895->31430|41925->31431|42009->31486|42039->31487|42123->31542|42153->31543|44415->33776|44445->33777|44524->33827|44581->33855|44611->33856|44694->33910|44750->33937|44780->33938|44866->33995|45090->34190|45120->34191|45206->34248|45296->34309|45326->34310|45413->34368|45637->34563|45667->34564|45751->34619|45781->34620|45900->34710|45930->34711|46014->34766|46070->34793|46100->34794|46186->34851|46411->35047|46441->35048|46527->35105|46617->35166|46647->35167|46735->35226|46960->35422|46990->35423|47074->35478|47104->35479|47228->35574|47258->35575|47342->35630|47398->35657|47428->35658|47516->35717|47742->35914|47772->35915|47858->35972|47948->36033|47978->36034|48068->36095|48294->36292|48324->36293|48408->36348|48438->36349|48566->36448|48596->36449|48680->36504|48736->36531|48766->36532|48854->36591|49081->36789|49111->36790|49197->36847|49287->36908|49317->36909|49407->36970|49634->37168|49664->37169|49748->37224|49778->37225|49909->37327|49939->37328|50023->37383|50079->37410|50109->37411|50197->37470|50425->37669|50455->37670|50541->37727|50631->37788|50661->37789|50751->37850|50979->38049|51009->38050|51093->38105|51123->38106|51247->38201|51277->38202|51361->38257|51417->38284|51447->38285|51535->38344|51764->38544|51794->38545|51880->38602|51970->38663|52000->38664|52090->38725|52319->38925|52349->38926|52433->38981|52463->38982|52589->39079|52619->39080|52703->39135|52759->39162|52789->39163|52877->39222|53107->39423|53137->39424|53223->39481|53313->39542|53343->39543|53433->39604|53663->39805|53693->39806|53777->39861|53807->39862|53891->39917|53921->39918|56023->41991|56053->41992|56132->42042|56199->42080|56229->42081|56312->42135|56368->42162|56398->42163|56484->42220|56710->42417|56740->42418|56826->42475|56916->42536|56946->42537|57033->42595|57259->42792|57289->42793|57373->42848|57403->42849|57527->42944|57557->42945|57641->43000|57697->43027|57727->43028|57813->43085|58040->43283|58070->43284|58156->43341|58246->43402|58276->43403|58364->43462|58591->43660|58621->43661|58705->43716|58735->43717|58859->43812|58889->43813|58973->43868|59029->43895|59059->43896|59147->43955|59375->44154|59405->44155|59491->44212|59581->44273|59611->44274|59701->44335|59929->44534|59959->44535|60043->44590|60073->44591|60197->44686|60227->44687|60311->44742|60367->44769|60397->44770|60485->44829|60714->45029|60744->45030|60830->45087|60920->45148|60950->45149|61040->45210|61269->45410|61299->45411|61383->45466|61413->45467|61540->45565|61570->45566|61654->45621|61710->45648|61740->45649|61828->45708|62058->45909|62088->45910|62174->45967|62264->46028|62294->46029|62384->46090|62614->46291|62644->46292|62728->46347|62758->46348|62876->46437|62906->46438|62990->46493|63046->46520|63076->46521|63164->46580|63395->46782|63425->46783|63511->46840|63601->46901|63631->46902|63721->46963|63952->47165|63982->47166|64066->47221|64096->47222|64223->47320|64253->47321|64337->47376|64393->47403|64423->47404|64511->47463|64743->47666|64773->47667|64859->47724|64949->47785|64979->47786|65069->47847|65301->48050|65331->48051|65415->48106|65445->48107|65529->48162|65559->48163|66673->49246|66707->49252|67059->49576|67075->49582|67131->49616|67184->49641|67214->49649
-                  LINES: 19->1|22->1|23->3|29->9|29->9|30->10|38->18|38->18|42->22|64->44|64->44|64->44|65->45|65->45|65->45|86->66|86->66|86->66|141->121|141->121|141->121|141->121|142->122|287->267|287->267|287->267|288->268|289->269|290->270|350->330|350->330|350->330|351->331|351->331|351->331|352->332|352->332|352->332|352->332|352->332|352->332|352->332|352->332|352->332|353->333|354->334|355->335|366->346|366->346|366->346|367->347|367->347|367->347|368->348|368->348|368->348|368->348|368->348|368->348|368->348|369->349|370->350|371->351|383->363|383->363|383->363|384->364|384->364|384->364|385->365|385->365|385->365|385->365|385->365|385->365|385->365|386->366|387->367|388->368|398->378|398->378|398->378|399->379|399->379|399->379|400->380|400->380|400->380|400->380|400->380|400->380|400->380|401->381|402->382|403->383|422->402|422->402|422->402|423->403|423->403|423->403|424->404|424->404|424->404|424->404|424->404|424->404|424->404|424->404|424->404|425->405|426->406|428->408|442->422|442->422|442->422|443->423|443->423|443->423|444->424|444->424|444->424|444->424|444->424|444->424|444->424|445->425|446->426|447->427|471->451|471->451|471->451|472->452|472->452|472->452|473->453|473->453|473->453|473->453|473->453|473->453|473->453|473->453|474->454|475->455|476->456|495->475|495->475|496->476|496->476|496->476|497->477|497->477|497->477|498->478|499->479|499->479|500->480|501->481|501->481|502->482|503->483|503->483|504->484|504->484|505->485|505->485|506->486|506->486|506->486|507->487|508->488|508->488|509->489|510->490|510->490|511->491|512->492|512->492|513->493|513->493|514->494|514->494|515->495|515->495|515->495|516->496|518->498|518->498|519->499|520->500|520->500|521->501|523->503|523->503|524->504|524->504|526->506|526->506|527->507|527->507|527->507|528->508|530->510|530->510|531->511|532->512|532->512|533->513|535->515|535->515|536->516|536->516|538->518|538->518|539->519|539->519|539->519|541->521|543->523|543->523|544->524|545->525|545->525|546->526|548->528|548->528|549->529|549->529|551->531|551->531|552->532|552->532|552->532|554->534|556->536|556->536|557->537|558->538|558->538|559->539|561->541|561->541|562->542|562->542|564->544|564->544|565->545|565->545|565->545|567->547|569->549|569->549|570->550|571->551|571->551|572->552|574->554|574->554|575->555|575->555|577->557|577->557|578->558|578->558|578->558|580->560|582->562|582->562|583->563|584->564|584->564|585->565|587->567|587->567|588->568|588->568|590->570|590->570|619->599|619->599|620->600|620->600|620->600|621->601|621->601|621->601|622->602|624->604|624->604|625->605|626->606|626->606|627->607|629->609|629->609|630->610|630->610|632->612|632->612|633->613|633->613|633->613|634->614|636->616|636->616|637->617|638->618|638->618|639->619|641->621|641->621|642->622|642->622|644->624|644->624|645->625|645->625|645->625|647->627|649->629|649->629|650->630|651->631|651->631|652->632|654->634|654->634|655->635|655->635|657->637|657->637|658->638|658->638|658->638|660->640|662->642|662->642|663->643|664->644|664->644|665->645|667->647|667->647|668->648|668->648|670->650|670->650|671->651|671->651|671->651|673->653|675->655|675->655|676->656|677->657|677->657|678->658|680->660|680->660|681->661|681->661|683->663|683->663|714->694|714->694|715->695|715->695|715->695|716->696|716->696|716->696|717->697|719->699|719->699|720->700|721->701|721->701|722->702|724->704|724->704|725->705|725->705|727->707|727->707|728->708|728->708|728->708|729->709|731->711|731->711|732->712|733->713|733->713|734->714|736->716|736->716|737->717|737->717|739->719|739->719|740->720|740->720|740->720|742->722|744->724|744->724|745->725|746->726|746->726|747->727|749->729|749->729|750->730|750->730|752->732|752->732|753->733|753->733|753->733|755->735|757->737|757->737|758->738|759->739|759->739|760->740|762->742|762->742|763->743|763->743|765->745|765->745|766->746|766->746|766->746|768->748|770->750|770->750|771->751|772->752|772->752|773->753|775->755|775->755|776->756|776->756|778->758|778->758|779->759|779->759|779->759|781->761|783->763|783->763|784->764|785->765|785->765|786->766|788->768|788->768|789->769|789->769|791->771|791->771|792->772|792->772|792->772|794->774|796->776|796->776|797->777|798->778|798->778|799->779|801->781|801->781|802->782|802->782|804->784|804->784|838->818|838->818|839->819|839->819|839->819|840->820|840->820|840->820|841->821|843->823|843->823|844->824|845->825|845->825|846->826|848->828|848->828|849->829|849->829|851->831|851->831|852->832|852->832|852->832|853->833|855->835|855->835|856->836|857->837|857->837|858->838|860->840|860->840|861->841|861->841|863->843|863->843|864->844|864->844|864->844|866->846|868->848|868->848|869->849|870->850|870->850|871->851|873->853|873->853|874->854|874->854|876->856|876->856|877->857|877->857|877->857|879->859|881->861|881->861|882->862|883->863|883->863|884->864|886->866|886->866|887->867|887->867|889->869|889->869|890->870|890->870|890->870|892->872|894->874|894->874|895->875|896->876|896->876|897->877|899->879|899->879|900->880|900->880|902->882|902->882|903->883|903->883|903->883|905->885|907->887|907->887|908->888|909->889|909->889|910->890|912->892|912->892|913->893|913->893|915->895|915->895|916->896|916->896|916->896|918->898|920->900|920->900|921->901|922->902|922->902|923->903|925->905|925->905|926->906|926->906|928->908|928->908|947->927|948->928|961->941|961->941|961->941|962->942|962->942
+                  HASH: e3682e4d90d31ac372fba1cbf7a7aee89a2dc9ee
+                  MATRIX: 574->1|772->96|800->116|909->198|937->199|979->213|1268->475|1297->476|1336->488|2532->1657|2547->1663|2612->1707|2693->1761|2708->1767|2773->1811|4023->3033|4053->3041|4083->3042|6085->5017|6101->5023|6214->5125|6256->5127|6294->5137|12355->11170|12407->11212|12448->11214|12503->11240|12690->11395|12741->11417|15943->14591|15980->14611|16020->14612|16079->14643|16106->14660|16147->14662|16207->14693|16259->14717|16273->14721|16298->14724|16329->14726|16380->14749|16394->14753|16419->14756|16449->14757|16521->14797|16584->14828|16639->14854|17018->15205|17055->15225|17095->15226|17154->15257|17181->15274|17222->15276|17281->15306|17333->15330|17347->15334|17372->15337|17403->15339|17454->15362|17468->15366|17493->15369|17523->15370|17595->15410|17658->15441|17713->15467|18332->16058|18369->16078|18409->16079|18476->16118|18503->16135|18544->16137|18611->16175|18683->16219|18697->16223|18722->16226|18798->16273|18813->16277|18839->16280|18920->16329|18991->16368|19054->16402|19451->16771|19488->16791|19528->16792|19587->16823|19613->16839|19654->16841|19713->16871|19766->16896|19780->16900|19805->16903|19838->16908|19852->16912|19877->16915|19949->16955|20012->16986|20071->17016|20469->17386|20506->17406|20546->17407|20605->17438|20631->17454|20672->17456|20731->17486|20784->17511|20798->17515|20823->17518|20857->17524|20871->17528|20896->17531|20968->17571|21031->17602|21090->17632|22024->18538|22061->18558|22101->18559|22164->18594|22190->18610|22231->18612|22294->18646|22346->18670|22360->18674|22385->18677|22416->18679|22467->18702|22481->18706|22506->18709|22536->18710|22612->18754|22675->18785|22732->18813|23579->19632|23616->19652|23656->19653|23723->19692|23750->19709|23791->19711|23858->19749|23932->19795|23946->19799|23971->19802|24047->19849|24062->19853|24088->19856|24168->19904|24239->19943|24302->19977|25251->20898|25288->20918|25328->20919|25387->20950|25414->20967|25455->20969|25514->20999|25566->21023|25580->21027|25605->21030|25636->21032|25687->21055|25701->21059|25726->21062|25798->21102|25861->21133|25920->21163|27094->22308|27124->22309|27175->22331|27237->22364|27267->22365|27318->22387|27374->22414|27404->22415|27462->22444|27540->22493|27570->22494|27628->22523|27690->22556|27720->22557|27779->22587|27857->22636|27887->22637|27943->22664|27973->22665|28064->22727|28094->22728|28145->22750|28201->22777|28231->22778|28289->22807|28369->22858|28399->22859|28457->22888|28519->22921|28549->22922|28608->22952|28688->23003|28718->23004|28774->23031|28804->23032|28885->23084|28915->23085|28970->23111|29026->23138|29056->23139|29114->23168|29266->23291|29296->23292|29354->23321|29416->23354|29446->23355|29505->23385|29657->23508|29687->23509|29743->23536|29773->23537|29864->23599|29894->23600|29950->23627|30006->23654|30036->23655|30096->23686|30249->23810|30279->23811|30337->23840|30399->23873|30429->23874|30489->23905|30642->24029|30672->24030|30728->24057|30758->24058|30850->24121|30880->24122|30936->24149|30992->24176|31022->24177|31082->24208|31236->24333|31266->24334|31324->24363|31386->24396|31416->24397|31478->24430|31632->24555|31662->24556|31718->24583|31748->24584|31840->24647|31870->24648|31926->24675|31982->24702|32012->24703|32072->24734|32227->24860|32257->24861|32315->24890|32377->24923|32407->24924|32469->24957|32624->25083|32654->25084|32710->25111|32740->25112|32835->25178|32865->25179|32921->25206|32977->25233|33007->25234|33067->25265|33223->25392|33253->25393|33311->25422|33373->25455|33403->25456|33465->25489|33621->25616|33651->25617|33707->25644|33737->25645|33832->25711|33862->25712|33918->25739|33974->25766|34004->25767|34064->25798|34221->25926|34251->25927|34309->25956|34371->25989|34401->25990|34463->26023|34620->26151|34650->26152|34706->26179|34736->26180|34792->26207|34822->26208|36595->27952|36625->27953|36708->28007|36765->28035|36795->28036|36878->28090|36934->28117|36964->28118|37050->28175|37278->28374|37308->28375|37394->28432|37484->28493|37514->28494|37601->28552|37829->28751|37859->28752|37943->28807|37973->28808|38089->28895|38119->28896|38203->28951|38259->28978|38289->28979|38375->29036|38604->29236|38634->29237|38720->29294|38810->29355|38840->29356|38928->29415|39157->29615|39187->29616|39271->29671|39301->29672|39417->29759|39447->29760|39531->29815|39587->29842|39617->29843|39705->29902|39935->30103|39965->30104|40051->30161|40141->30222|40171->30223|40261->30284|40491->30485|40521->30486|40605->30541|40635->30542|40751->30629|40781->30630|40865->30685|40921->30712|40951->30713|41039->30772|41270->30974|41300->30975|41386->31032|41476->31093|41506->31094|41596->31155|41827->31357|41857->31358|41941->31413|41971->31414|42096->31510|42126->31511|42210->31566|42266->31593|42296->31594|42384->31653|42616->31856|42646->31857|42732->31914|42822->31975|42852->31976|42942->32037|43174->32240|43204->32241|43288->32296|43318->32297|43402->32352|43432->32353|45694->34586|45724->34587|45803->34637|45860->34665|45890->34666|45973->34720|46029->34747|46059->34748|46145->34805|46369->35000|46399->35001|46485->35058|46575->35119|46605->35120|46692->35178|46916->35373|46946->35374|47030->35429|47060->35430|47179->35520|47209->35521|47293->35576|47349->35603|47379->35604|47465->35661|47690->35857|47720->35858|47806->35915|47896->35976|47926->35977|48014->36036|48239->36232|48269->36233|48353->36288|48383->36289|48507->36384|48537->36385|48621->36440|48677->36467|48707->36468|48795->36527|49021->36724|49051->36725|49137->36782|49227->36843|49257->36844|49347->36905|49573->37102|49603->37103|49687->37158|49717->37159|49845->37258|49875->37259|49959->37314|50015->37341|50045->37342|50133->37401|50360->37599|50390->37600|50476->37657|50566->37718|50596->37719|50686->37780|50913->37978|50943->37979|51027->38034|51057->38035|51188->38137|51218->38138|51302->38193|51358->38220|51388->38221|51476->38280|51704->38479|51734->38480|51820->38537|51910->38598|51940->38599|52030->38660|52258->38859|52288->38860|52372->38915|52402->38916|52526->39011|52556->39012|52640->39067|52696->39094|52726->39095|52814->39154|53043->39354|53073->39355|53159->39412|53249->39473|53279->39474|53369->39535|53598->39735|53628->39736|53712->39791|53742->39792|53868->39889|53898->39890|53982->39945|54038->39972|54068->39973|54156->40032|54386->40233|54416->40234|54502->40291|54592->40352|54622->40353|54712->40414|54942->40615|54972->40616|55056->40671|55086->40672|55170->40727|55200->40728|57302->42801|57332->42802|57411->42852|57478->42890|57508->42891|57591->42945|57647->42972|57677->42973|57763->43030|57989->43227|58019->43228|58105->43285|58195->43346|58225->43347|58312->43405|58538->43602|58568->43603|58652->43658|58682->43659|58806->43754|58836->43755|58920->43810|58976->43837|59006->43838|59092->43895|59319->44093|59349->44094|59435->44151|59525->44212|59555->44213|59643->44272|59870->44470|59900->44471|59984->44526|60014->44527|60138->44622|60168->44623|60252->44678|60308->44705|60338->44706|60426->44765|60654->44964|60684->44965|60770->45022|60860->45083|60890->45084|60980->45145|61208->45344|61238->45345|61322->45400|61352->45401|61476->45496|61506->45497|61590->45552|61646->45579|61676->45580|61764->45639|61993->45839|62023->45840|62109->45897|62199->45958|62229->45959|62319->46020|62548->46220|62578->46221|62662->46276|62692->46277|62819->46375|62849->46376|62933->46431|62989->46458|63019->46459|63107->46518|63337->46719|63367->46720|63453->46777|63543->46838|63573->46839|63663->46900|63893->47101|63923->47102|64007->47157|64037->47158|64155->47247|64185->47248|64269->47303|64325->47330|64355->47331|64443->47390|64674->47592|64704->47593|64790->47650|64880->47711|64910->47712|65000->47773|65231->47975|65261->47976|65345->48031|65375->48032|65502->48130|65532->48131|65616->48186|65672->48213|65702->48214|65790->48273|66022->48476|66052->48477|66138->48534|66228->48595|66258->48596|66348->48657|66580->48860|66610->48861|66694->48916|66724->48917|66808->48972|66838->48973|67952->50056|67986->50062|68338->50386|68354->50392|68410->50426|68463->50451|68493->50459
+                  LINES: 19->1|22->1|23->3|29->9|29->9|30->10|38->18|38->18|42->22|64->44|64->44|64->44|65->45|65->45|65->45|86->66|86->66|86->66|141->121|141->121|141->121|141->121|142->122|287->267|287->267|287->267|288->268|289->269|290->270|351->331|351->331|351->331|352->332|352->332|352->332|353->333|353->333|353->333|353->333|353->333|353->333|353->333|353->333|353->333|354->334|355->335|356->336|364->344|364->344|364->344|365->345|365->345|365->345|366->346|366->346|366->346|366->346|366->346|366->346|366->346|366->346|366->346|367->347|368->348|369->349|380->360|380->360|380->360|381->361|381->361|381->361|382->362|382->362|382->362|382->362|382->362|382->362|382->362|383->363|384->364|385->365|397->377|397->377|397->377|398->378|398->378|398->378|399->379|399->379|399->379|399->379|399->379|399->379|399->379|400->380|401->381|402->382|412->392|412->392|412->392|413->393|413->393|413->393|414->394|414->394|414->394|414->394|414->394|414->394|414->394|415->395|416->396|417->397|436->416|436->416|436->416|437->417|437->417|437->417|438->418|438->418|438->418|438->418|438->418|438->418|438->418|438->418|438->418|439->419|440->420|442->422|456->436|456->436|456->436|457->437|457->437|457->437|458->438|458->438|458->438|458->438|458->438|458->438|458->438|459->439|460->440|461->441|485->465|485->465|485->465|486->466|486->466|486->466|487->467|487->467|487->467|487->467|487->467|487->467|487->467|487->467|488->468|489->469|490->470|509->489|509->489|510->490|510->490|510->490|511->491|511->491|511->491|512->492|513->493|513->493|514->494|515->495|515->495|516->496|517->497|517->497|518->498|518->498|519->499|519->499|520->500|520->500|520->500|521->501|522->502|522->502|523->503|524->504|524->504|525->505|526->506|526->506|527->507|527->507|528->508|528->508|529->509|529->509|529->509|530->510|532->512|532->512|533->513|534->514|534->514|535->515|537->517|537->517|538->518|538->518|540->520|540->520|541->521|541->521|541->521|542->522|544->524|544->524|545->525|546->526|546->526|547->527|549->529|549->529|550->530|550->530|552->532|552->532|553->533|553->533|553->533|555->535|557->537|557->537|558->538|559->539|559->539|560->540|562->542|562->542|563->543|563->543|565->545|565->545|566->546|566->546|566->546|568->548|570->550|570->550|571->551|572->552|572->552|573->553|575->555|575->555|576->556|576->556|578->558|578->558|579->559|579->559|579->559|581->561|583->563|583->563|584->564|585->565|585->565|586->566|588->568|588->568|589->569|589->569|591->571|591->571|592->572|592->572|592->572|594->574|596->576|596->576|597->577|598->578|598->578|599->579|601->581|601->581|602->582|602->582|604->584|604->584|633->613|633->613|634->614|634->614|634->614|635->615|635->615|635->615|636->616|638->618|638->618|639->619|640->620|640->620|641->621|643->623|643->623|644->624|644->624|646->626|646->626|647->627|647->627|647->627|648->628|650->630|650->630|651->631|652->632|652->632|653->633|655->635|655->635|656->636|656->636|658->638|658->638|659->639|659->639|659->639|661->641|663->643|663->643|664->644|665->645|665->645|666->646|668->648|668->648|669->649|669->649|671->651|671->651|672->652|672->652|672->652|674->654|676->656|676->656|677->657|678->658|678->658|679->659|681->661|681->661|682->662|682->662|684->664|684->664|685->665|685->665|685->665|687->667|689->669|689->669|690->670|691->671|691->671|692->672|694->674|694->674|695->675|695->675|697->677|697->677|728->708|728->708|729->709|729->709|729->709|730->710|730->710|730->710|731->711|733->713|733->713|734->714|735->715|735->715|736->716|738->718|738->718|739->719|739->719|741->721|741->721|742->722|742->722|742->722|743->723|745->725|745->725|746->726|747->727|747->727|748->728|750->730|750->730|751->731|751->731|753->733|753->733|754->734|754->734|754->734|756->736|758->738|758->738|759->739|760->740|760->740|761->741|763->743|763->743|764->744|764->744|766->746|766->746|767->747|767->747|767->747|769->749|771->751|771->751|772->752|773->753|773->753|774->754|776->756|776->756|777->757|777->757|779->759|779->759|780->760|780->760|780->760|782->762|784->764|784->764|785->765|786->766|786->766|787->767|789->769|789->769|790->770|790->770|792->772|792->772|793->773|793->773|793->773|795->775|797->777|797->777|798->778|799->779|799->779|800->780|802->782|802->782|803->783|803->783|805->785|805->785|806->786|806->786|806->786|808->788|810->790|810->790|811->791|812->792|812->792|813->793|815->795|815->795|816->796|816->796|818->798|818->798|852->832|852->832|853->833|853->833|853->833|854->834|854->834|854->834|855->835|857->837|857->837|858->838|859->839|859->839|860->840|862->842|862->842|863->843|863->843|865->845|865->845|866->846|866->846|866->846|867->847|869->849|869->849|870->850|871->851|871->851|872->852|874->854|874->854|875->855|875->855|877->857|877->857|878->858|878->858|878->858|880->860|882->862|882->862|883->863|884->864|884->864|885->865|887->867|887->867|888->868|888->868|890->870|890->870|891->871|891->871|891->871|893->873|895->875|895->875|896->876|897->877|897->877|898->878|900->880|900->880|901->881|901->881|903->883|903->883|904->884|904->884|904->884|906->886|908->888|908->888|909->889|910->890|910->890|911->891|913->893|913->893|914->894|914->894|916->896|916->896|917->897|917->897|917->897|919->899|921->901|921->901|922->902|923->903|923->903|924->904|926->906|926->906|927->907|927->907|929->909|929->909|930->910|930->910|930->910|932->912|934->914|934->914|935->915|936->916|936->916|937->917|939->919|939->919|940->920|940->920|942->922|942->922|961->941|962->942|975->955|975->955|975->955|976->956|976->956
                   -- GENERATED --
               */
           

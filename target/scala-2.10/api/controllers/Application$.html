@@ -81,7 +81,20 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="controllers.Application.EditHideSubjectMdl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="controllers.Application.AddMoreSubjectsMdl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AddMoreSubjectsMdlextendsProductwithSerializable"></a>
+      <a id="AddMoreSubjectsMdl:AddMoreSubjectsMdl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Application$$AddMoreSubjectsMdl.html"><span class="name">AddMoreSubjectsMdl</span></a><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>, <span name="subjectNo">subjectNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      
+    </li><li name="controllers.Application.EditHideSubjectMdl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="EditHideSubjectMdlextendsProductwithSerializable"></a>
       <a id="EditHideSubjectMdl:EditHideSubjectMdl"></a>
       <h4 class="signature">
@@ -90,7 +103,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Application$$EditHideSubjectMdl.html"><span class="name">EditHideSubjectMdl</span></a><span class="params">(<span name="studyId">studyId: <span class="extype" name="scala.Int">Int</span></span>, <span name="subjectID">subjectID: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="hide">hide: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Application$$EditHideSubjectMdl.html"><span class="name">EditHideSubjectMdl</span></a><span class="params">(<span name="studyId">studyId: <span class="extype" name="scala.Int">Int</span></span>, <span name="subjectID">subjectID: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="hide">hide: <span class="extype" name="scala.Int">Int</span></span>, <span name="badSubject">badSubject: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -491,6 +504,19 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Results</dd></dl></div>
+    </li><li name="controllers.Application#AddMoreSubjects" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AddMoreSubjects:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="AddMoreSubjects:Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">AddMoreSubjects</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="play.api.http.Status#BAD_GATEWAY" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BAD_GATEWAY:Int"></a>
       <a id="BAD_GATEWAY:Int"></a>
@@ -1363,6 +1389,19 @@
       </span>
       </h4>
       
+    </li><li name="controllers.Application#InitiateNewStudy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InitiateNewStudy:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="InitiateNewStudy:Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">InitiateNewStudy</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="controllers.Application#InsertNewStudy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="InsertNewStudy:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
       <a id="InsertNewStudy:Action[AnyContent]"></a>
@@ -1373,19 +1412,6 @@
       </span>
       <span class="symbol">
         <span class="name">InsertNewStudy</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="controllers.Application#InsertSession" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="InsertSession:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="InsertSession:Action[AnyContent]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">InsertSession</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       
@@ -2199,19 +2225,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Results</dd></dl></div>
-    </li><li name="controllers.Application#Register" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Register:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="Register:Action[AnyContent]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Register</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
-      </span>
-      </h4>
-      
     </li><li name="play.api.mvc.Results#RequestTimeout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="RequestTimeout:Results.this.Status"></a>
       <a id="RequestTimeout:Status"></a>
@@ -2366,6 +2379,19 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       <span class="symbol">
         <span class="name">ShowDriveDialog</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="controllers.Application#ShowInitiateStudy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShowInitiateStudy:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="ShowInitiateStudy:Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ShowInitiateStudy</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       
@@ -2772,6 +2798,32 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       
+    </li><li name="controllers.Application#addMoreSubjects" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addMoreSubjects:play.api.data.Form[controllers.Application.AddMoreSubjectsMdl]"></a>
+      <a id="addMoreSubjects:Form[AddMoreSubjectsMdl]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addMoreSubjects</span><span class="result">: <span class="extype" name="play.api.data.Form">Form</span>[<a href="Application$$AddMoreSubjectsMdl.html" class="extype" name="controllers.Application.AddMoreSubjectsMdl">AddMoreSubjectsMdl</a>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="controllers.Application#addNewSubject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="addNewSubject(studyNo:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="addNewSubject(Int):Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">addNewSubject</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="controllers.Application#addNewTopSummary" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="addNewTopSummary:play.api.data.Form[controllers.Application.NewTopSummary]"></a>
       <a id="addNewTopSummary:Form[NewTopSummary]"></a>
@@ -2937,6 +2989,32 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </h4>
       <p class="shortcomment cmt"> This method is called once the user select one subject to be displayed
 </p>
+    </li><li name="controllers.Application#displaySubjectInProgress" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="displaySubjectInProgress(studyNo:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="displaySubjectInProgress(Int):Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">displaySubjectInProgress</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="controllers.Application#drp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="drp(studyNo:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="drp(Int):Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">drp</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="controllers.Application#editDataType" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="editDataType:play.api.data.Form[controllers.Application.ExistingDataType]"></a>
       <a id="editDataType:Form[ExistingDataType]"></a>
@@ -2973,32 +3051,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       <span class="symbol">
         <span class="name">editPsychometric</span><span class="result">: <span class="extype" name="play.api.data.Form">Form</span>[<a href="Application$$ExistingPsychometric.html" class="extype" name="controllers.Application.ExistingPsychometric">ExistingPsychometric</a>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="controllers.Application#editStudy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="editStudy(studyId:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="editStudy(Int):Action[AnyContent]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">editStudy</span><span class="params">(<span name="studyId">studyId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="controllers.Application#editSubject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="editSubject(study_no:Int,Subject_id:String):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="editSubject(Int,String):Action[AnyContent]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">editSubject</span><span class="params">(<span name="study_no">study_no: <span class="extype" name="scala.Int">Int</span></span>, <span name="Subject_id">Subject_id: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       
@@ -3164,6 +3216,32 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       
+    </li><li name="controllers.Application#getVideo2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getVideo2(studyNo:Int,subjectId:String,sessionName:String):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="getVideo2(Int,String,String):Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getVideo2</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>, <span name="subjectId">subjectId: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="sessionName">sessionName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
+    </li><li name="controllers.Application#getVideo3" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getVideo3(studyNo:Int,subjectId:String,sessionName:String,fileName:String):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="getVideo3(Int,String,String,String):Action[AnyContent]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getVideo3</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>, <span name="subjectId">subjectId: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="sessionName">sessionName: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="fileName">fileName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+      </span>
+      </h4>
+      
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <a id="hashCode():Int"></a>
@@ -3200,19 +3278,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       <span class="symbol">
         <span class="name">infoForPortrait</span><span class="params">(<span name="studyId">studyId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
-      </span>
-      </h4>
-      
-    </li><li name="controllers.Application#insertSubject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="insertSubject:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="insertSubject:Action[AnyContent]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">insertSubject</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       
@@ -3256,19 +3321,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="controllers.Application#newSession" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="newSession:play.api.data.Form[Models.NewSession]"></a>
-      <a id="newSession:Form[NewSession]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">newSession</span><span class="result">: <span class="extype" name="play.api.data.Form">Form</span>[<a href="../Models/NewSession.html" class="extype" name="Models.NewSession">NewSession</a>]</span>
-      </span>
-      </h4>
-      
     </li><li name="controllers.Application#newStudy2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="newStudy2:play.api.data.Form[Models.NewStudy]"></a>
       <a id="newStudy2:Form[NewStudy]"></a>
@@ -3283,19 +3335,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </h4>
       <p class="shortcomment cmt"> Called whne user finish entering all the fields and hit enter to create new study
 </p>
-    </li><li name="controllers.Application#newSubject" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="newSubject:play.api.data.Form[Models.Subject]"></a>
-      <a id="newSubject:Form[Subject]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">newSubject</span><span class="result">: <span class="extype" name="play.api.data.Form">Form</span>[<a href="../Models/Subject.html" class="extype" name="Models.Subject">Subject</a>]</span>
-      </span>
-      </h4>
-      
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -3332,32 +3371,6 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       <span class="symbol">
         <span class="name">outputStream</span><span class="params">(<span name="a">a: (<span class="extype" name="java.io.OutputStream">OutputStream</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <span class="extype" name="play.api.libs.iteratee.Enumerator">Enumerator</span>[<span class="extype" name="scala.Array">Array</span>[<span class="extype" name="scala.Byte">Byte</span>]]</span>
-      </span>
-      </h4>
-      
-    </li><li name="play.api.mvc.BodyParsers.parse" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="parse"></a>
-      <a id="parse:parse"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <span class="name">parse</span>
-      </span>
-      </h4>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>BodyParsers</dd></dl></div>
-    </li><li name="controllers.Application#registerForm" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="registerForm:play.api.data.Form[Models.NewUser]"></a>
-      <a id="registerForm:Form[NewUser]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">registerForm</span><span class="result">: <span class="extype" name="play.api.data.Form">Form</span>[<a href="../Models/NewUser.html" class="extype" name="Models.NewUser">NewUser</a>]</span>
       </span>
       </h4>
       
@@ -3648,19 +3661,22 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       
-    </li><li name="controllers.Application#submitRegistration" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="submitRegistration:play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="submitRegistration:Action[AnyContent]"></a>
+    </li><li name="controllers.Application#startNewSubject" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="startNewSubject(studyLoc:String,subjectLocation:String,subjectid:String):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="startNewSubject(String,String,String):Action[AnyContent]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">submitRegistration</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+        <span class="name">startNewSubject</span><span class="params">(<span name="studyLoc">studyLoc: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="subjectLocation">subjectLocation: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="subjectid">subjectid: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
-      
+      <p class="shortcomment cmt">this function will be called by Muhsin app to notify us that a new subject started
+</p><div class="fullcomment"><div class="comment cmt"><p>this function will be called by Muhsin app to notify us that a new subject started
+</p></div><dl class="paramcmts block"><dt class="param">subjectid</dt><dd class="cmt"><p>The name of the subject</p></dd><dt>returns</dt><dd class="cmt"><p>
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -3688,15 +3704,15 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </h4>
       
     </li><li name="controllers.Application#test" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="test():play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
-      <a id="test():Action[AnyContent]"></a>
+      <a id="test(studyNo:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="test(Int):Action[AnyContent]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">test</span><span class="params">()</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
+        <span class="name">test</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       
@@ -3713,16 +3729,16 @@ which in turn will call ReciveOuthData. The redirect Url will contain the code a
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="controllers.Application#uploadFile" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="uploadFile:play.api.mvc.Action[play.api.mvc.MultipartFormData[play.api.libs.Files.TemporaryFile]]"></a>
-      <a id="uploadFile:Action[MultipartFormData[TemporaryFile]]"></a>
+    </li><li name="controllers.Application#updateVidoefromServer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="updateVidoefromServer(studyNo:Int):play.api.mvc.Action[play.api.mvc.AnyContent]"></a>
+      <a id="updateVidoefromServer(Int):Action[AnyContent]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">uploadFile</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.MultipartFormData">MultipartFormData</span>[<span class="extype" name="play.api.libs.Files.TemporaryFile">TemporaryFile</span>]]</span>
+        <span class="name">updateVidoefromServer</span><span class="params">(<span name="studyNo">studyNo: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="play.api.mvc.Action">Action</span>[<span class="extype" name="play.api.mvc.AnyContent">AnyContent</span>]</span>
       </span>
       </h4>
       

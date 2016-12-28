@@ -20,12 +20,15 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
     private ArrayList<Integer> distinctActionType;
     private ArrayList<String> distinctAnno;
     private ArrayList<Integer> consumedActivity = new ArrayList<>();
-    private double max =0;
+    private double max =-1000000;
+    private double min = 1000000;
     private boolean addToHeader = false;
     private int frameCtr =1;
     private ArrayList<Double> avergaSignal = new ArrayList<>(20);
     private int ctrForArray =0;
     private String baselineName = "Baseline Mean";
+    private boolean logarithmic = false;
+    private double minY = 0;
 
     public double findMeanOfInterval( TreeMap<Double, Double> all, double start, double end, boolean abs )
     {
@@ -106,13 +109,17 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
         distinctAnno = new ArrayList<>();
         distinctActionType = new ArrayList<>();
         for(Activity temp: activities) {
-            if(!distinctActionType.contains(temp.actionType)) {
+            //if(!temp.annotation.toLowerCase().contains("light")) {
+            if (!distinctActionType.contains(temp.actionType)) {
                 distinctActionType.add(temp.actionType);
                 distinctAnno.add(temp.label);
             }
-            meanPerInterval.put(temp.startTime, findMeanOfInterval(blSignal,previous, temp.startTime, false));
-            meanPerInterval.put(temp.endTime, findMeanOfInterval(blSignal,temp.startTime, temp.endTime, false));
-            previous = temp.endTime;
+            if(!temp.annotation.toLowerCase().contains("light")) {
+                meanPerInterval.put(temp.startTime, findMeanOfInterval(blSignal, previous, temp.startTime, false));
+                meanPerInterval.put(temp.endTime, findMeanOfInterval(blSignal, temp.startTime, temp.endTime, false));
+                previous = temp.endTime;
+
+            }
         }
 
 
@@ -142,6 +149,13 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
                 str = "Cognitive Stressor";
             else if(str.toLowerCase().contains("motoric"))
                 str = "Sensorimotor Stressor";
+
+            if(str.toLowerCase().contains("light"))
+            {
+                columnName = "bgCol" + "line" +util;
+            }
+            else
+                columnName = "bgCol" + util;
 
             util++;
             obj = new JSONObject();
@@ -246,6 +260,9 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
                         addObjectToArrayJson( new DecimalFormat("#.####").format(temp));
                         if(max < temp)
                             max = temp;
+
+                        if(min > temp)
+                            min= temp;
                     }
                 }
                 //addObjectToArrayJson(Double.toString(getMeanForPoint(time)));
@@ -300,24 +317,64 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
         if(max ==0)
             max = 0.05;
 
+        System.out.println("max  " + max);
+        System.out.println("min  " + minY);
+
+        double newMax = max + 0.1 * (max - minY);
+        if(logarithmic) {
+            newMax = max + 0.1 * (max - min);
+        }
+
+
+        System.out.println("new Max  " + newMax);
+
         JSONObject line,head, cel;
         JSONArray arr;
         int aux =0;
+        boolean isFirst = true;
         Iterator each = content.iterator(), it;
-        while(each.hasNext()){
-            line =  (JSONObject) each.next();
-            arr = (JSONArray) line.get("c");
-            it =arr.iterator();
-            aux =0;
-            while(it.hasNext()){
-                head=  (JSONObject)header.get(aux);
-                cel = (JSONObject) it.next();
-                if(head.get("color")=="grey") {
-                    if(cel.get("v") !=null)
-                        //cel.replace("v", max);
-                        cel.put("v",max);
+
+        if(!logarithmic || max > 1) {
+            while (each.hasNext()) {
+                line = (JSONObject) each.next();
+                arr = (JSONArray) line.get("c");
+                it = arr.iterator();
+                aux = 0;
+                while (it.hasNext()) {
+                    head = (JSONObject) header.get(aux);
+                    cel = (JSONObject) it.next();
+                    if (head.get("color") == "grey") {
+                        if (cel.get("v") != null) {
+                            cel.put("v", newMax);  // if this is stimuls but the vlues are more than 1
+                        }
+
+                    }
+                    aux++;
                 }
-                aux++;
+            }
+        }
+        else{
+            while (each.hasNext()) {
+                line = (JSONObject) each.next();
+                arr = (JSONArray) line.get("c");
+                it = arr.iterator();
+                aux = 0;
+                while (it.hasNext()) {
+                    head = (JSONObject) header.get(aux);
+                    cel = (JSONObject) it.next();
+                    if (head.get("color") == "grey") {
+                        if (cel.get("v") != null) {
+
+                            if(head.get("id").toString().toLowerCase().contains("line")) {
+                                cel.put("v", newMax);
+                            }
+                            else
+                                cel.put("v", min);  // if this is stimuls but the vlues are more than 1
+                        }
+
+                    }
+                    aux++;
+                }
             }
         }
     }
@@ -329,7 +386,7 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
 
     }
 
-    public AnnotatedChartFromExcelWithBaseLine(String fileName,TreeMap<Double, Double> bl,  ArrayList<Activity>  act, int signal, String baselineSessionName)
+    public AnnotatedChartFromExcelWithBaseLine(String fileName,TreeMap<Double, Double> bl,  ArrayList<Activity>  act, int signal, String baselineSessionName, int isLog, double minY)
     {
         super(signal, fileName);
         activities = act;
@@ -340,6 +397,9 @@ public class AnnotatedChartFromExcelWithBaseLine extends JsonFromExcel {
             baselineName = "Mean " +baselineSessionName;
         }
 
+        if(isLog ==1)
+            logarithmic = true;
+        this.minY = minY;
     }
 
 

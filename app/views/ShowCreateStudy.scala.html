@@ -1,4 +1,4 @@
-@(userName: String, explVar : List[(String, Int, Int)])(implicit request: RequestHeader)
+@(userName: String, explVar : List[(Option[String], Int, Int)])(implicit request: RequestHeader)
 @import helper._
 <!DOCTYPE html>
 <html>
@@ -213,7 +213,7 @@
             </div>
         </div>
 
-        <fieldset>
+        <fieldset  style="width: 700px;">
             <h2 class="fs-title">Experimental Design</h2>
             <h3 class="fs-subtitle"></h3>
             <table id="zob" cellspacing="0" class="data_table" id="add_sessions_table">
@@ -222,13 +222,13 @@
                 <input type="hidden" name="code" id= "code" value=" ">
                 <input type="hidden" name="studyId"  value="1">
 
-                    <label>How many unique sessions your study have? </label>
+                    <label>How many unique sessions your study has? </label>
                     <input type="number" class="form-control"  name="pName", id = "noVar">
 
 
 
 
-                    <label>How many treatems arms this study have? </label>
+                    <label>How many treatem arms this study has? </label>
                     <input type="number" class="form-control" name="min" value ="1" id = "noPoints">
 
 
@@ -303,6 +303,7 @@
             <tr>
                 <td id = "kareem"><input  type="checkbox" id="publicCh" name="publicCh" value=1 style="width: 20px;">Public study&nbsp;&nbsp;&nbsp;&nbsp;<br> </td>
                 <td id = "kareem"><input type="checkbox" id="portraitCh" name="portraitCh" value=1 style="width: 20px">Generate Portrait&nbsp;&nbsp;&nbsp;<br> </td>
+                <td id = "kareem3"><input type="checkbox" id="quickCreation" name="quickCreation" value=1 style="width: 20px">Quick &nbsp;&nbsp;&nbsp;<br> </td>
                 <input  type="hidden" name="public" id='public' value=0>
                 <input  type="hidden" name="portrait" id='portrait' value=0>
             </tr>
@@ -324,12 +325,25 @@
             <h2 class="fs-title">Explanatory Variables</h2>
             <table cellspacing="0" class="data_table" id="add_sessions_table">
                 <tr>
-                    <td class="cell_1">Key Explanatory Variables:</td>
+                    <td class="cell_1">Key Explanatory Variable:</td>
                     <td>
                         <select class="select_field"  id="explanatoryPrim" name="study_type"  style="width: 300px" required>
                             @for(temp <- explVar){
                             @if(temp._3 == 1 ) {
                              <option id="op1" value=@temp._2  selected ="selected"> @temp._1 </option>
+                            }
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="cell_1">Backup Key Explanatory Variables:</td>
+                    <td>
+                        <select class="select_field"  id="explanatoryPrimBackUp" name="study_type"  style="width: 300px" required>
+                            @for(temp <- explVar){
+                            @if(temp._3 == 1 ) {
+                            <option id="op3" value=@temp._2  selected ="selected"> @temp._1 </option>
                             }
                             }
                         </select>
@@ -573,7 +587,7 @@
 
             <input type="button" name="previous" class="previous action-button" value="Previous" />
            <!-- <input type="button" name="next" class="next action-button" value="Next" /> -->
-            <input type="submit" name="submit" class="submit action-button" value="Submit" id="createStudy"/>
+            <input type="submit" id="sb" name="submit" class="submit action-button" value="Submit" id="createStudy"/>
       </fieldset>
     <!--<fieldset>
         <h2 class="fs-title">Psychometrics</h2>
@@ -940,9 +954,6 @@
 <script>
     var wsUri = "@routes.Application.socket.webSocketURL()";
     var userName = "@userName"
-
-
-
 </script>
 
 
